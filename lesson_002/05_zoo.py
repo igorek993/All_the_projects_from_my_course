@@ -26,7 +26,6 @@ print(zoo)
 
 # выведите на консоль в какой клетке сидит лев (lion) и жаворонок (lark).
 # Номера при выводе должны быть понятны простому человеку, не программисту.
-
-print('the lion is in the cell number: ',  zoo.index('lion') +1 , 'the lark is in the cell number: ' , zoo.index('lark') +1)
-# TODO Введите новые переменные для индексов элементов (или номеров клеток) и используйте их в print - много вычислений
-#  в print является плохой практикой
+lion_cell_number = zoo.index('lion') + 1
+lark_cell_number = zoo.index('lark') + 1
+print('the lion is in the cell number: ', lion_cell_number, 'the lark is in the cell number: ', lark_cell_number)

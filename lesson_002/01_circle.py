@@ -11,10 +11,8 @@ radius = 42
 #       точность указывается в функции round()
 
 pi = 3.1415926
-area_of_a_circle = pi*(radius**2)
+area_of_a_circle = pi * (radius ** 2)
 print('The area is', round(area_of_a_circle, 4))
-
-
 
 # Далее, пусть есть координаты точки
 point_1 = (23, 34)
@@ -30,14 +28,11 @@ point_1 = (23, 34)
 # расстояние на координатной сетке - корень из (x1 - x2) ** 2 + (y1 - y2) ** 2
 # Example: moscow_london = ((moscow[0] - london[0]) ** 2 + (moscow[1] - london[1]) ** 2) ** .5
 
-point_0 = (0,0)
+point_0 = (0, 0)
 
 distance_point0_to1 = ((point_0[0] - point_1[0]) ** 2 + (point_0[1] - point_1[1]) ** 2) ** .5
 
-print(distance_point0_to1 < radius)
-# TODO Точка лежащия на границе круга тоже принадлежит ему - уточните условие. Также начинайте знакомиться с РЕР8,
-#  в следующем модуле стиль кода тоже оценивается. Пайчарм имеет удобный инструмет для приведения стиля кода к РЕР8:
-#  меню Code/Reformat Code
+print(distance_point0_to1 <= radius)
 
 # Аналогично для другой точки
 point_2 = (30, 30)
@@ -46,13 +41,10 @@ point_2 = (30, 30)
 
 distance_point0_to2 = ((point_0[0] - point_2[0]) ** 2 + (point_0[1] - point_2[1]) ** 2) ** .5
 
-print(distance_point0_to2 < radius)
-# TODO Аналогично
+print(distance_point0_to2 <= radius)
 
 # Пример вывода на консоль:
 #
 # 77777.7777
 # False
 # False
-
-

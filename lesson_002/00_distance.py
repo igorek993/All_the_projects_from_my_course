@@ -26,8 +26,7 @@ distance ['Moscow']['London'] = moscow_london
 distance ['Moscow']['Paris'] = moscow_paris
 
 london_paris = ((london[0] - paris[0]) ** 2 + (london[1] - paris[1]) ** 2) ** .5
-london_moscow = ((london[0] - moscow[0]) ** 2 + (london[1] - moscow[1]) ** 2) ** .5
-# TODO Излишнее вычисление, расстояния Москва-Лондон и Лондон-Москва равны
+london_moscow = moscow_london
 distance['London'] = {}
 distance ['London']['Moscow'] = london_moscow
 distance ['London']['Paris'] = london_paris
