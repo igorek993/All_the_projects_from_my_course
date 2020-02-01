@@ -53,3 +53,4 @@ blue_length = violator_songs_dict['Blue Dress']
 songs_length = sweet_legth+policy_length+blue_length
 
 print('А другие три песни звучат',int(songs_length), 'минут')
+# TODO Округлите также как это сделано выше (для первых трех песен)

@@ -15,7 +15,7 @@ print(zoo)
 birds = ['rooster', 'ostrich', 'lark', ]
 #  и выведите список на консоль
 
-zoo.extend(birds)
+zoo.extend(birds)  # Другой вариант: zoo += birds
 print(zoo)
 
 # уберите слона
@@ -28,3 +28,5 @@ print(zoo)
 # Номера при выводе должны быть понятны простому человеку, не программисту.
 
 print('the lion is in the cell number: ',  zoo.index('lion') +1 , 'the lark is in the cell number: ' , zoo.index('lark') +1)
+# TODO Введите новые переменные для индексов элементов (или номеров клеток) и используйте их в print - много вычислений
+#  в print является плохой практикой

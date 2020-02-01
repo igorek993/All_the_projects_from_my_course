@@ -53,7 +53,12 @@ tables_t_2_p = store[goods['Стол']][1]['price']
 tables_sum = (tables_t_1_q * tables_t_1_p) + (tables_t_2_q * tables_t_2_p)
 
 print('There are', tables_quantity_general, 'tables in the warehouse,', 'their total value is', tables_sum, 'rub')
-
+# TODO К точности расчётов вопросов нет. Но такой код сложно читать и изменять. Названия переменны следует делать
+#  полными словами, сокращения лучше не использовать или только в редких случаях. Введите переменные table_code,
+#  table_item_1, table_quantity_1, table_price_1, table_item_2, table_quantity_2, table_price_2, table_cost_1,
+#  table_cost_2, table_quantity_total, table_cost_total. Такой код называется "самокомменирующим кодом", имена
+#  переменных комментируют его не хуже отдельных комментариев.
+#  Для остальной мебели надо сделать также.
 
 #Диван
 couch_quantity_general = store[goods['Диван']][0]['quantity'] + store[goods['Диван']][1]['quantity']
