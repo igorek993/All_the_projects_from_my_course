@@ -43,6 +43,41 @@ lamps_price = lamps_item['price']
 lamps_cost = lamps_quantity * lamps_price
 print('Лампа -', lamps_quantity, 'шт, стоимость', lamps_cost, 'руб')
 
+#Стол
+tables_quantity_general =store[goods['Стол']][0]['quantity']+ store[goods['Стол']][1]['quantity']
+tables_t_1_q = store[goods['Стол']][0]['quantity']
+tables_t_2_q = store[goods['Стол']][1]['quantity']
+tables_t_1_p = store[goods['Стол']][0]['price']
+tables_t_2_p = store[goods['Стол']][1]['price']
+
+tables_sum = (tables_t_1_q * tables_t_1_p) + (tables_t_2_q * tables_t_2_p)
+
+print('There are', tables_quantity_general, 'tables in the warehouse,', 'their total value is', tables_sum, 'rub')
+
+
+#Диван
+couch_quantity_general = store[goods['Диван']][0]['quantity'] + store[goods['Диван']][1]['quantity']
+couch_t_1_q=store[goods['Диван']][0]['quantity']
+couch_t_2_q=store[goods['Диван']][1]['quantity']
+couch_t_1_p=store[goods['Диван']][0]['price']
+couch_t_2_p=store[goods['Диван']][1]['price']
+couch_sum = (couch_t_1_q * couch_t_1_p) + (couch_t_2_q*couch_t_2_p)
+
+print('There are', couch_quantity_general, 'couches in the warehouse,', 'their total value is', couch_sum, 'rub')
+
+#Стул
+
+chair_quantity_general = store[goods['Стул']][0]['quantity']+store[goods['Стул']][1]['quantity']+store[goods['Стул']][2]['quantity']
+chair_t_1_q=store[goods['Стул']][0]['quantity']
+chair_t_2_q=store[goods['Стул']][1]['quantity']
+chair_t_3_q=store[goods['Стул']][2]['quantity']
+chair_t_1_p=store[goods['Стул']][0]['price']
+chair_t_2_p=store[goods['Стул']][1]['price']
+chair_t_3_p=store[goods['Стул']][2]['price']
+
+chair_sum= (chair_t_1_q*chair_t_1_p)+(chair_t_2_q*chair_t_2_p)+(chair_t_3_q*chair_t_3_p)
+print('There are', chair_quantity_general, 'chairs in the warehouse,', 'their total value is', chair_sum, 'rub')
+
 # Вывести стоимость каждого вида товара на складе:
 # один раз распечать сколько всего столов и их общая стоимость,
 # один раз распечать сколько всего стульев и их общая стоимость,
@@ -51,8 +86,6 @@ print('Лампа -', lamps_quantity, 'шт, стоимость', lamps_cost, '�
 
 # WARNING для знающих циклы: БЕЗ циклов. Да, с переменными; да, неэффективно; да, копипаста.
 # Это задание на ручное вычисление - что бы потом понять как работают циклы и насколько с ними проще жить.
-
-# TODO здесь ваш код
 
 ##########################################################################################
 # ВНИМАНИЕ! После того как __ВСЯ__ домашняя работа сделана и запушена на сервер,         #
