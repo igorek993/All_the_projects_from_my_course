@@ -45,6 +45,7 @@ print('Лампа -', lamps_quantity, 'шт, стоимость', lamps_cost, '�
 
 # Стол
 table_code = store[goods['Стол']]
+# TODO table_item_1(2) дважды используются в расчётах, а читаются они лучше чем индексы
 table_quantity_1 = table_code[0]['quantity']
 table_quantity_2 = table_code[1]['quantity']
 tables_quantity_total = table_quantity_1 + table_quantity_2

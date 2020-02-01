@@ -29,3 +29,5 @@ print(zoo)
 lion_cell_number = zoo.index('lion') + 1
 lark_cell_number = zoo.index('lark') + 1
 print('the lion is in the cell number: ', lion_cell_number, 'the lark is in the cell number: ', lark_cell_number)
+
+# зачет!

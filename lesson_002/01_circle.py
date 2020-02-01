@@ -48,3 +48,5 @@ print(distance_point0_to2 <= radius)
 # 77777.7777
 # False
 # False
+
+# зачет!
