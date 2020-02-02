@@ -45,20 +45,13 @@ print('Лампа -', lamps_quantity, 'шт, стоимость', lamps_cost, '�
 
 # Стол
 table_code = store[goods['Стол']]
-# TODO table_item_1(2) дважды используются в расчётах, а читаются они лучше чем индексы
-
-# I am sorry, I did not quite understand your last comment. Would you be able to give me an example of what I should do
-# and what you mean when you use the word ´index´?
-# Thank you!
-
-table_quantity_1 = table_code[0]['quantity']
-# TODO here you use table_code variable with an index 0 (see below too)
-table_quantity_2 = table_code[1]['quantity']
+table_item_1 = table_code[0]
+table_item_2 = table_code[1]
+table_quantity_1 = table_item_1['quantity']
+table_quantity_2 = table_item_2['quantity']
 tables_quantity_total = table_quantity_1 + table_quantity_2
-table_price_1 = table_code[0]['price']
-# TODO and here the same table_code[0], my suggestion is: create new variable table_item_1 = table_code[0] and
-#  use it instead of indexing the table_code
-table_price_2 = table_code[1]['price']
+table_price_1 = table_item_1['price']
+table_price_2 = table_item_2['price']
 table_cost_total = (table_quantity_1 * table_price_1) + (table_quantity_2 * table_price_2)
 
 print('There are', tables_quantity_total, 'tables in the warehouse,', 'their total value is', table_cost_total, 'rub')
