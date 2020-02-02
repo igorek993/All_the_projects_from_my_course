@@ -46,6 +46,11 @@ print('Лампа -', lamps_quantity, 'шт, стоимость', lamps_cost, '�
 # Стол
 table_code = store[goods['Стол']]
 # TODO table_item_1(2) дважды используются в расчётах, а читаются они лучше чем индексы
+
+# I am sorry, I did not quite understand your last comment. Would you be able to give me an example of what I should do
+# and what you mean when you use the word ´index´?
+# Thank you!
+
 table_quantity_1 = table_code[0]['quantity']
 table_quantity_2 = table_code[1]['quantity']
 tables_quantity_total = table_quantity_1 + table_quantity_2
