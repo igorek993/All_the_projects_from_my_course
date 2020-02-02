@@ -52,9 +52,12 @@ table_code = store[goods['Стол']]
 # Thank you!
 
 table_quantity_1 = table_code[0]['quantity']
+# TODO here you use table_code variable with an index 0 (see below too)
 table_quantity_2 = table_code[1]['quantity']
 tables_quantity_total = table_quantity_1 + table_quantity_2
 table_price_1 = table_code[0]['price']
+# TODO and here the same table_code[0], my suggestion is: create new variable table_item_1 = table_code[0] and
+#  use it instead of indexing the table_code
 table_price_2 = table_code[1]['price']
 table_cost_total = (table_quantity_1 * table_price_1) + (table_quantity_2 * table_price_2)
 
