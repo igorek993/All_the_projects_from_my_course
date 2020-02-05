@@ -10,5 +10,13 @@
 #   Студенту надо попросить ХХХ.ХХ рублей
 
 educational_grant, expenses = 10000, 12000
+yearly_expenses = 12000
+monthly_expenses_current = 12000
+count = 0
+while count <= 9:
+    monthly_expenses_current = (monthly_expenses_current + (monthly_expenses_current*0.03))
+    yearly_expenses += monthly_expenses_current
+    count += 1
 
-# TODO здесь ваш код
+money_needed = yearly_expenses - 100000
+print('Студенту надо попросить', round(money_needed, 2), 'рублей')
