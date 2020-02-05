@@ -10,7 +10,7 @@
 # Использовать только операторы if/elif/else, можно вложенные
 
 envelop_x, envelop_y = 10, 7
-paper_x, paper_y = 8, 9
+paper_x, paper_y = 6, 9
 # проверить для
 # paper_x, paper_y = 9, 8
 # paper_x, paper_y = 6, 8
@@ -24,6 +24,7 @@ if envelop_x > paper_x and envelop_y > paper_y:
     print('yes')
 else:
     print('no')
+# TODO Код даёт не верный результат. Очевидно, нужно проверить два варианта расположения листа в конверте
 
 # Усложненное задание, решать по желанию.
 # Заданы размеры hole_x, hole_y прямоугольного отверстия и размеры brick_х, brick_у, brick_z кирпича (все размеры
@@ -52,7 +53,8 @@ hole_x, hole_y = 8, 9
 # brick_x, brick_y, brick_z = 3, 11, 6
 # (просто раскоментировать нужную строку и проверить свой код)
 
-if hole_x > brick_x and hole_y > brick_y:
-    print('yes')
-else:
-    print('no')
+# if hole_x > brick_x and hole_y > brick_y:
+#     print('yes')
+# else:
+#     print('no')
+# TODO это не работает
