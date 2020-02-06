@@ -14,10 +14,13 @@ yearly_expenses = 12000
 monthly_expenses_current = 12000
 count = 0
 while count < 9:
-    monthly_expenses_current = (monthly_expenses_current + (monthly_expenses_current * 0.03))
+    # monthly_expenses_current = (monthly_expenses_current + (monthly_expenses_current * 0.03))
+    monthly_expenses_current *= 1.03  # the same calculation but a bit shorter
     # I thought I did include the inflation rate correctly by excluding the very first month from the loop.
     yearly_expenses += monthly_expenses_current
     count += 1
 
 money_needed = yearly_expenses - 100000
 print('Студенту надо попросить', round(money_needed, 2), 'рублей')
+
+# зачет!
