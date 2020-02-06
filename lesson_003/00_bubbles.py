@@ -13,7 +13,8 @@ for _ in range(3):
     sd.circle(center_position=point, radius=radius, width=2)
 sd.sleep(1)
 sd.clear_screen()
-# TODO Согласно РЕР8 до и после определения функции должно быть по две пустых строки
+
+
 # Написать функцию рисования пузырька, принммающую 3 (или более) параметра: точка рисования, шаг и цвет
 def buble(point, step, color):
     radius = 50

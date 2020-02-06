@@ -5,47 +5,34 @@ import simple_draw as sd
 
 # Нарисовать стену из кирпичей. Размер кирпича - 100х50
 # Использовать вложенные циклы for
-# TODO Во всём файле поправьте стиль кода (см. РЕР8). Можно воспользоваться меню Пайчарма - Code/Reformat Code
 
-# TODO Введите константы с размерами кирпича. В коде кругом, где можно нужно использовать переменные, константы или
-#  данные полученные программно - так делается гибкий код. При изменении любого параметра будет достаточно это сделать
-#  в одном месте - вверху модуля (файла с кодом), где находятся константы, а не выискивать число по всему коду.
-
-sd.set_screen_size(600, 675)
-square_point = sd.get_point(0,0)
+square_point = sd.get_point(0, 0)
 sd.square(square_point, side=1000, color=(127, 63, 0))
-left_x =0
-left_y = -52
-right_x= 100
-right_y= -2
-for _ in range (15):
-    right_x = 100
-    left_x = 0
-    left_y +=104
-    right_y+=104
-    for _ in range(10):
-        left_bottom_point = sd.get_point(left_x,left_y)
-        right_top_point = sd.get_point(right_x,right_y)
-        sd.rectangle(left_bottom_point, right_top_point, color=(0, 0, 255))
-        left_x+=102
-        right_x +=102
+brick_width = 100
+brick_height = 50
+left_x = -100
+left_y = -50
+right_x = left_x + brick_width
+right_y = left_y + brick_height
+left_bottom_point = sd.get_point(left_x, left_y)
+right_top_point = sd.get_point(right_x, right_y)
+sd.rectangle(left_bottom_point, right_top_point, color=(0, 0, 0), width=3)
 
-left_x =0
-left_y = -105
-right_x= 100
-right_y= -53
-for _ in range (15):
-    right_x = 50
-    left_x = -50
-    left_y +=104
-    right_y+=104
-    for _ in range(10):
-        left_bottom_point = sd.get_point(left_x,left_y)
-        right_top_point = sd.get_point(right_x,right_y)
-        sd.rectangle(left_bottom_point, right_top_point, color=(0, 0, 255))
-        left_x+=102
-        right_x +=102
-# TODO Код
+for _ in range(14):
+    left_x = -100
+    left_y = left_y + brick_height
+    for _ in range(15):
+        left_x = left_x + brick_width
+        left_bottom_point = sd.get_point(left_x, left_y)
+        sd.rectangle(left_bottom_point, right_top_point, color=(0, 0, 0), width=3)
+
+# I am really sorry, but I genuinely can´t understand the way I should write this code properly. I can't get
+# how I can use even and odd numbers because we have never done anything with them so far. The second thing I cant
+# understand is why the first brick changes its colour if I use 0,0 coordinate, so I just made them negative. I can't
+# even really phrase those question that I have cause they are all small and really detailed. I would highly appreciate if
+# you could give me more hints on how to make this code work in a way it should. The last issue is my time zone
+# (I live in Melbourne) which is so different to yours, I only have a bit of time every evening to ask questions in
+# our telegram channel. Thank you!
 
 #  ПОДСКАЗКА
 #  Как работал бы человек если ему надо заложить

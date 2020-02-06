@@ -11,12 +11,11 @@
 
 educational_grant, expenses = 10000, 12000
 yearly_expenses = 12000
-# TODO Расчёт должен начинаться с 0, иначе выходит вы расходов насчитали за 11 месяцев
 monthly_expenses_current = 12000
 count = 0
-while count <= 9:
-    monthly_expenses_current = (monthly_expenses_current + (monthly_expenses_current*0.03))
-    # TODO Не учтено, что в первый месяц инфляции ещё нет (см. задание)
+while count < 9:
+    monthly_expenses_current = (monthly_expenses_current + (monthly_expenses_current * 0.03))
+    # I thought I did include the inflation rate correctly by excluding the very first month from the loop.
     yearly_expenses += monthly_expenses_current
     count += 1
 
