@@ -56,5 +56,21 @@ for _ in range (15):
 #  а вложенный по коордитане "x". Для цикла for по "у" итерируем по range(0, sd.resolution[1], brick_height,
 #  а для "х" сами допишите, пожалуйста. Чётные ряды нужно сдвигать на полкирпича.
 
+# Another example of my code
+
+for _ in range(14):
+    left_x = -100
+    left_y = left_y + brick_height
+    for _ in range(10):
+        a = 5
+        a = a + 1
+        if a % 2 == 1:
+            left_x = left_x + brick_width
+            left_bottom_point = sd.get_point(left_x, left_y)
+            sd.rectangle(left_bottom_point, right_top_point, color=(0, 0, 0), width=3)
+        elif a % 2 == 0:
+            left_x = left_x + brick_width
+            left_bottom_point = sd.get_point(left_x, left_y)
+            sd.rectangle(left_bottom_point, right_top_point, color=(0, 0, 0), width=3)
 
 sd.pause()
