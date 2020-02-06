@@ -63,3 +63,5 @@ for name, code in goods.items():
         total_goods_quantity += item['quantity']
         total_goods_price += item['quantity'] * item['price']
     print(name, '-', total_goods_quantity, 'шт, стоимость', total_goods_price, 'руб')
+    
+# зачет! В конце файла надо оставлять одну пустую строку (см. РЕР8)

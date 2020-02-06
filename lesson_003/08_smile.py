@@ -53,3 +53,5 @@ for _ in range(10):
     smile(point_x=x, point_y=y, color=color)
 
 sd.pause()
+
+# зачет!
