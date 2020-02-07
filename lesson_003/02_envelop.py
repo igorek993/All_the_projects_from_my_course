@@ -19,7 +19,10 @@ paper_x, paper_y = 6, 9
 # paper_x, paper_y = 9, 11
 # (просто раскоментировать нужную строку и проверить свой код)
 
-if (envelop_x > paper_x and envelop_y > paper_y) or (envelop_x > paper_y and envelop_y > paper_x):
+if (
+        envelop_x > paper_x and envelop_y > paper_y
+        or envelop_x > paper_y and envelop_y > paper_x
+):
     print('yes')
 else:
     print('no')
@@ -51,9 +54,17 @@ hole_x, hole_y = 8, 9
 brick_x, brick_y, brick_z = 7, 18, 8
 # (просто раскоментировать нужную строку и проверить свой код)
 
-if (hole_x > brick_x and hole_y > brick_y) or (hole_x > brick_y and hole_y > brick_x) or (
-        hole_x > brick_z and hole_y > brick_y) or (hole_y > brick_z and hole_x > brick_y) or (
-        hole_y > brick_x and hole_x > brick_y) or (hole_y > brick_z and hole_x > brick_x):
+if (
+        hole_x > brick_x and hole_y > brick_y
+        or hole_x > brick_y and hole_y > brick_x
+        or hole_x > brick_z and hole_y > brick_y
+        or hole_y > brick_z and hole_x > brick_y
+        or hole_y > brick_x and hole_x > brick_y
+        or hole_y > brick_z and hole_x > brick_x
+):
     print('yes')
 else:
     print('no')
+
+# зачет! Показал вариант форматирования длинных вычислений. Так как or имеет более низкий приоритет чем and то и скобки
+# вокруг каждого условия можно не ставить
