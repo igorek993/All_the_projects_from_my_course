@@ -19,3 +19,5 @@ for y in range(0, sd.resolution[1], brick_height):
 sd.pause()
 
 # This code looks way better and easier than the one from my first attempt :D. Thank you for checking it!
+
+# зачет!
