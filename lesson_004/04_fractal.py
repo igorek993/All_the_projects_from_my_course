@@ -51,6 +51,7 @@ draw_branches_2(sd.get_point(300, 30), angle=90, length=100)
 
 
 # I'll do it after finishing the first part of the task :)
+# зачет!
 
 # 4) Усложненное задание (делать по желанию)
 # - сделать рандомное отклонение угла ветвей в пределах 40% от 30-ти градусов

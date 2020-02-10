@@ -43,7 +43,9 @@ def hexagon(point, angle, length, color):
 
 
 shapes_functions = {0: triangle, 1: square, 2: pentagon, 3: hexagon}
+# TODO Отличная идея сохранить функции в словаре!
 shapes = [': треугольник', ': квадрат', ': пятиугольник', ': шестиугольник']
+# TODO Но тут таже проблема - две переменные. Создайте один список словарей с ключами "имя" фигуры, "функция" отрисовки
 
 print('what shape would you like to draw?')
 for _ in range(0, len(shapes), 1):
