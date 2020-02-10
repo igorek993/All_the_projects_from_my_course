@@ -27,7 +27,48 @@ import simple_draw as sd
 # sd.line()
 # Результат решения см lesson_004/results/exercise_01_shapes.jpg
 
-# TODO здесь ваш код
+# - треугольник
+
+point = sd.get_point(150, 150)
+
+
+def triangle(point, angle, length):
+    for _ in range(3):
+        v1 = sd.get_vector(point, angle, length, 3)
+        v1.draw()
+        point = v1.end_point
+        angle = angle + 120
+
+
+# - квадрат
+
+def square(point, angle, length):
+    for _ in range(4):
+        v1 = sd.get_vector(point, angle, length, 3)
+        v1.draw()
+        point = v1.end_point
+        angle = angle + 90
+
+
+# - пятиугольник
+
+def pentagon(point, angle, length):
+    for _ in range(5):
+        v1 = sd.get_vector(point, angle, length, 3)
+        v1.draw()
+        point = v1.end_point
+        angle = angle + 72
+
+
+# - шестиугольник
+
+def hexagon(point, angle, length):
+    for _ in range(6):
+        v1 = sd.get_vector(point, angle, length, 3)
+        v1.draw()
+        point = v1.end_point
+        angle = angle + 60
+
 
 # Часть 1-бис.
 # Попробуйте прикинуть обьем работы, если нужно будет внести изменения в этот код.

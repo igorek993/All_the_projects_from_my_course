@@ -2,13 +2,14 @@
 
 import simple_draw as sd
 
-
+sd.resolution = (1200, 900)
 # На основе кода из практической части реализовать снегопад:
 # - создать списки данных для отрисовки N снежинок
 # - нарисовать падение этих N снежинок
 # - создать список рандомных длинн лучей снежинок (от 10 до 100) и пусть все снежинки будут разные
 
 N = 20
+
 
 # Пригодятся функции
 # sd.get_point()
@@ -17,17 +18,51 @@ N = 20
 # sd.random_number()
 # sd.user_want_exit()
 
-# TODO здесь ваш код
-while True:
-    sd.clear_screen()
-    pass
-    pass
-    pass
-    sd.sleep(0.1)
-    if sd.user_want_exit():
-        break
 
-sd.pause()
+def snow():
+    while True:
+        x = []
+        for _ in range(20):
+            x.append(sd.random_number(0, sd.resolution[0]))
+        y = []
+        for _ in range(20):
+            y.append(sd.random_number(sd.resolution[1] - (sd.resolution[1] / 2), sd.resolution[1]))
+        flake_length = []
+        for _ in range(20):
+            flake_length.append(sd.random_number(20, 100))
+        x_1 = []
+        y_2 = []
+        for point_1, point_2, length in zip(x, y, flake_length):
+            sd.snowflake(sd.get_point(point_1, point_2), length)
+            x_1.append(point_1 + sd.random_number(1, 15))
+            y_2.append(point_2 - sd.random_number(1, 30))
+        sd.sleep(0.1)
+        sd.clear_screen()
+        while True:
+            sd.clear_screen()
+            for point_1, point_2, length in zip(x_1, y_2, flake_length):
+                sd.snowflake(sd.get_point(point_1, point_2), length)
+            sd.sleep(0.1)
+            for a, b in enumerate(x_1):
+                x_1[a] += sd.random_number(-30, 30)
+            for a, b in enumerate(y_2):
+                y_2[a] -= sd.random_number(10, 30)
+            sd.sleep(0.1)
+            for a, b in enumerate(y_2):
+                if y_2[a] < -80:
+                    y_2[a] = (sd.random_number(sd.resolution[1] - (sd.resolution[1] / 2), sd.resolution[1]))
+            else:
+                continue
+            if sd.user_want_exit():
+                break
+
+
+# I haven't finished yet, just wanted you to take a look at it first to optimize the code a little bit
+# so I can start thinking on the second part. Thank you!
+
+snow()
+
+sd.pause(x, y)
 
 # подсказка! для ускорения отрисовки можно
 #  - убрать clear_screen()
@@ -43,5 +78,3 @@ sd.pause()
 # - сделать сугоб внизу экрана - если снежинка долетает до низа, оставлять её там,
 #   и добавлять новую снежинку
 # Результат решения см https://youtu.be/XBx0JtxHiLg
-
-
