@@ -96,6 +96,9 @@ def hexagon(point, angle, length):
 # Будьте ленивыми, не используйте копи-пасту!
 
 def general(point, angle, length):
+    # TODO 1) Название важно: "нарисовать_фигуру", "полигон" и т.п.
+    #  2) Нужен дополнительный параметр - число сторон
+
     v1 = sd.get_vector(point, angle, length, 3)
     v1.draw()
     point = v1.end_point
@@ -103,11 +106,17 @@ def general(point, angle, length):
 
 # I cant understand how I can make the general function recognise what angle it should add to the primary one(60?72?90??)
 # Should I use 'if' somehow or there is another way of doing this? Or maybe I took too many lines of the code?
+    # TODO 1) Помечайте свои вопросы TODO - так их легче найти
+    #  2) У вас практически готовый код в любой из выше решализованных функций. Надо только действительно вычислить угол
+    #  и указать число сторон. Сумма внешних углов правильного многоугольника равна 360. Следовательно очевидна формула
+    #  нахождения одного угла, раз уж они все равны.
 
 def triangle_2(point, angle, length):
     for _ in range(3):
         general(point, angle, length)
         angle = angle + 120
+    # TODO Тут надо вызвать общую функцию, подставив ей нужные параметры (фактически только передав все аргументы
+    #  в незменном виде и добавив число сторон)
 
 
 triangle_2(sd.get_point(300, 100), 0, 200)
