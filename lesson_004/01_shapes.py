@@ -70,7 +70,6 @@ def hexagon(point, angle, length):
         angle = angle + 60
 
 
-hexagon(sd.get_point(300, 100), 45, 200)
 # зачет первой части
 
 # Часть 1-бис.
@@ -95,6 +94,24 @@ hexagon(sd.get_point(300, 100), 45, 200)
 # А теперь - сколько надо работы что бы внести изменения в код? Выгода на лицо :)
 # Поэтому среди программистов есть принцип D.R.Y. https://clck.ru/GEsA9
 # Будьте ленивыми, не используйте копи-пасту!
+
+def general(point, angle, length):
+    v1 = sd.get_vector(point, angle, length, 3)
+    v1.draw()
+    point = v1.end_point
+    angle = angle + ???
+
+# I cant understand how I can make the general function recognise what angle it should add to the primary one(60?72?90??)
+# Should I use 'if' somehow or there is another way of doing this? Or maybe I took too many lines of the code?
+
+def triangle_2(point, angle, length):
+    for _ in range(3):
+        general(point, angle, length)
+        angle = angle + 120
+
+
+triangle_2(sd.get_point(300, 100), 0, 200)
+
 
 
 sd.pause()

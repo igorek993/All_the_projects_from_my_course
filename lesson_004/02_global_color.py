@@ -16,8 +16,6 @@ import simple_draw as sd
 # и константы COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_GREEN, COLOR_CYAN, COLOR_BLUE, COLOR_PURPLE
 # Результат решения см lesson_004/results/exercise_02_global_color.jpg
 
-# TODO здесь ваш код
-
 
 def triangle(point, angle, length, color):
     for _ in range(3):
@@ -62,35 +60,33 @@ def all_shapes(color):
     hexagon(point_4, 0, 100, color)
 
 
-colors = [sd.COLOR_RED, sd.COLOR_ORANGE, sd.COLOR_YELLOW, sd.COLOR_GREEN, sd.COLOR_CYAN, sd.COLOR_BLUE, sd.COLOR_PURPLE]
-text_to_print = ['0: red ', '1: orange', '2: yellow ', '3: green', '4: cyan', '5: blue',
-                 '6: purple', 'Please, select a color:']
-# TODO Сейчас две переменных связанных с выбором цвета, это не очень удобно. При необходимости изменения кол-ва цветов
-#  придётся согласованно менять две переменные.
-#  Сделайте список словарей с ключами "имя" цвета и "код" цвета. Пример:
 colors = [
-    {'name': 'Красный', 'code': sd.COLOR_RED},
-    {'name': 'Оранжевый', 'code': sd.COLOR_ORANGE},
-    ...
+    {'name': 'red', 'code': sd.COLOR_RED},
+    {'name': 'orange', 'code': sd.COLOR_ORANGE},
+    {'name': 'yellow', 'code': sd.COLOR_YELLOW},
+    {'name': 'green', 'code': sd.COLOR_GREEN},
+    {'name': 'cyan', 'code': sd.COLOR_CYAN},
+    {'name': 'blue', 'code': sd.COLOR_BLUE},
+    {'name': 'purple', 'code': sd.COLOR_PURPLE},
 ]
 
 
-for _ in range(len(text_to_print)):
-    print(text_to_print[_])
-
-
 def ask_for_a_color():
+    number = 0
+    for i in colors:
+        print(number, i['name'])
+        number += 1
+    print('Please, select a color:')
     user_input = input()
     color = int(user_input)
-    if color <= len(colors):
-        all_shapes(colors[color])
-    else:
+    while color > len(colors) - 1:
         print('This color does not exist')
-        ask_for_a_color()
-        # TODO Рекурсия очень мощный инструмент, но имеет большие накладные расходы в виде увеличения объема
-        #  потребляемой выполняемым кодом памяти и т.д. Применять её следует к месту, например при работе с
-        #  нерегулярдными данными, как то деревья и проч. Для задачи обработки ввода пользователя достаточно применить
-        #  простой цикл while.
+        print('Please, select a color:')
+        user_input = input()
+        color = int(user_input)
+    else:
+        all_shapes(colors[color]['code'])
+
 
 ask_for_a_color()
 
