@@ -77,3 +77,5 @@ draw_branches_3(sd.get_point(300, 30), angle=90, length=100)
 # sd.random_number()
 
 sd.pause()
+
+# зачет!
