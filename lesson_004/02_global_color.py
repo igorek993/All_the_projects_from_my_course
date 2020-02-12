@@ -86,3 +86,5 @@ def ask_for_a_color():
 all_shapes(ask_for_a_color())
 
 sd.pause()
+
+# зачет!

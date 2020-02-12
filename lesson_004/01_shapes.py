@@ -95,12 +95,17 @@ def hexagon(point, angle, length):
 # Поэтому среди программистов есть принцип D.R.Y. https://clck.ru/GEsA9
 # Будьте ленивыми, не используйте копи-пасту!
 
-def draw_a_shape(point, angle, length, number_of_sides):
+def draw_a_shape(start_point, angle, length, number_of_sides):
+    current_point = start_point
     for _ in range(number_of_sides):
-        v1 = sd.get_vector(point, angle, length, 3)
-        v1.draw()
-        point = v1.end_point
+        # v1 = sd.get_vector(point, angle, length, 3)
+        # v1.draw()
+        # point = v1.end_point
+        # Используем другую функцию рисовая вектора и немного упрощаем код
+        current_point = sd.get_vector(current_point, angle, length, 3)
         angle = angle + (360 / number_of_sides)
+        # TODO Теперь попробуйте изменить range в for так, чтобы angle считался автоматически (начальный угол - это
+        #  угол проворода фигуры, максимальный это 360 + угол_проворота, шаг угла уже знаете как найти)
 
 
 def triangle_2(point, angle, length):
@@ -119,6 +124,9 @@ def hexagon_2(point, angle, length):
     draw_a_shape(point, angle, length, 6)
 
 
+triangle_2(point, 0, 100)
 square_2(point, 0, 100)
+pentagon_2(point, 0, 100)
+hexagon_2(point, 0, 100)
 
 sd.pause()

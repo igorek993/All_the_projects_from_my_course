@@ -66,3 +66,5 @@ def ask_for_a_shape():
 
 ask_for_a_shape()
 sd.pause()
+
+# зачет!
