@@ -95,32 +95,30 @@ def hexagon(point, angle, length):
 # Поэтому среди программистов есть принцип D.R.Y. https://clck.ru/GEsA9
 # Будьте ленивыми, не используйте копи-пасту!
 
-def general(point, angle, length):
-    # TODO 1) Название важно: "нарисовать_фигуру", "полигон" и т.п.
-    #  2) Нужен дополнительный параметр - число сторон
+def draw_a_shape(point, angle, length, number_of_sides):
+    for _ in range(number_of_sides):
+        v1 = sd.get_vector(point, angle, length, 3)
+        v1.draw()
+        point = v1.end_point
+        angle = angle + (360 / number_of_sides)
 
-    v1 = sd.get_vector(point, angle, length, 3)
-    v1.draw()
-    point = v1.end_point
-    angle = angle + ???
-
-# I cant understand how I can make the general function recognise what angle it should add to the primary one(60?72?90??)
-# Should I use 'if' somehow or there is another way of doing this? Or maybe I took too many lines of the code?
-    # TODO 1) Помечайте свои вопросы TODO - так их легче найти
-    #  2) У вас практически готовый код в любой из выше решализованных функций. Надо только действительно вычислить угол
-    #  и указать число сторон. Сумма внешних углов правильного многоугольника равна 360. Следовательно очевидна формула
-    #  нахождения одного угла, раз уж они все равны.
 
 def triangle_2(point, angle, length):
-    for _ in range(3):
-        general(point, angle, length)
-        angle = angle + 120
-    # TODO Тут надо вызвать общую функцию, подставив ей нужные параметры (фактически только передав все аргументы
-    #  в незменном виде и добавив число сторон)
+    draw_a_shape(point, angle, length, 3)
 
 
-triangle_2(sd.get_point(300, 100), 0, 200)
+def square_2(point, angle, length):
+    draw_a_shape(point, angle, length, 4)
 
 
+def pentagon_2(point, angle, length):
+    draw_a_shape(point, angle, length, 5)
+
+
+def hexagon_2(point, angle, length):
+    draw_a_shape(point, angle, length, 6)
+
+
+square_2(point, 0, 100)
 
 sd.pause()

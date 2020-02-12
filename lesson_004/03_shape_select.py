@@ -42,24 +42,26 @@ def hexagon(point, angle, length, color):
         angle = angle + 60
 
 
-shapes_functions = {0: triangle, 1: square, 2: pentagon, 3: hexagon}
-# TODO Отличная идея сохранить функции в словаре!
-shapes = [': треугольник', ': квадрат', ': пятиугольник', ': шестиугольник']
-# TODO Но тут таже проблема - две переменные. Создайте один список словарей с ключами "имя" фигуры, "функция" отрисовки
-
-print('what shape would you like to draw?')
-for _ in range(0, len(shapes), 1):
-    print(_, shapes[_])
+shapes_functions = [
+    {'name': 'треугольник', 'function': triangle},
+    {'name': 'квадрат', 'function': square},
+    {'name': 'пятиугольник', 'function': pentagon},
+    {'name': 'шестиугольник', 'function': hexagon}
+]
 
 
 def ask_for_a_shape():
-    user_input = input()
-    shape = int(user_input)
-    if shape <= len(shapes):
-        shapes_functions[shape](sd.get_point(250, 250), 0, 100, sd.COLOR_YELLOW)
-    else:
-        print('This shape does not exist, please try again')
-        ask_for_a_shape()
+    while True:
+        for number, variable in enumerate(shapes_functions):
+            print(number, variable['name'])
+        print('what shape would you like to draw?')
+        user_input = input()
+        shape = int(user_input)
+        if shape <= len(shapes_functions) - 1:
+            shapes_functions[shape]['function'](sd.get_point(250, 250), 0, 100, sd.COLOR_YELLOW)
+            break
+        else:
+            print('This shape does not exist, please try again')
 
 
 ask_for_a_shape()

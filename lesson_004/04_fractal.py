@@ -40,7 +40,6 @@ def draw_branches_2(start_point, angle, length):
 # root_point = sd.get_point(300, 30)
 # draw_branches(start_point=root_point, angle=90, length=100)
 
-draw_branches_2(sd.get_point(300, 30), angle=90, length=100)
 
 # Пригодятся функции
 # sd.get_point()
@@ -58,6 +57,21 @@ draw_branches_2(sd.get_point(300, 30), angle=90, length=100)
 # - сделать рандомное отклонение длины ветвей в пределах 20% от коэффициента 0.75
 # Возможный результат решения см lesson_004/results/exercise_04_fractal_02.jpg
 
+
+def draw_branches_3(start_point, angle, length):
+    angle_shift = (30 * sd.random_number(-40, 40) / 100)
+    length_shift = ((0.75 * sd.random_number(-20, 20)) / 100)
+    if length < 5:
+        return
+    v1 = sd.get_vector(start_point, angle + 30, length, 3)
+    v1.draw()
+    v2 = sd.get_vector(start_point, angle - 30, length, 3)
+    v2.draw()
+    draw_branches_3(v1.end_point, angle + 30 + angle_shift, length * (.75 + - length_shift))
+    draw_branches_3(v2.end_point, angle - 30 + angle_shift, length * (.75 + - length_shift))
+
+
+draw_branches_3(sd.get_point(300, 30), angle=90, length=100)
 
 # Пригодятся функции
 # sd.random_number()

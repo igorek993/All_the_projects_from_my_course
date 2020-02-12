@@ -20,57 +20,37 @@ N = 20
 
 
 def snow():
+    x_list = []
+    y_list = []
+    flake_length_list = []
+    for _ in range(20):
+        x_list.append(sd.random_number(0, sd.resolution[0]))
+        y_list.append(sd.random_number(sd.resolution[1] - (sd.resolution[1] / 2), sd.resolution[1]))
+        flake_length_list.append(sd.random_number(20, 100))
     while True:
-        x = []
-        for _ in range(20):
-            x.append(sd.random_number(0, sd.resolution[0]))
-        y = []
-        for _ in range(20):
-            y.append(sd.random_number(sd.resolution[1] - (sd.resolution[1] / 2), sd.resolution[1]))
-        flake_length = []
-        for _ in range(20):
-            flake_length.append(sd.random_number(20, 100))
-        x_1 = []
-        y_2 = []
-        for point_1, point_2, length in zip(x, y, flake_length):
-            sd.snowflake(sd.get_point(point_1, point_2), length)
-            x_1.append(point_1 + sd.random_number(1, 15))
-            y_2.append(point_2 - sd.random_number(1, 30))
-        sd.sleep(0.1)
         sd.clear_screen()
-        while True:
-            sd.clear_screen()
-            for point_1, point_2, length in zip(x_1, y_2, flake_length):
-                sd.snowflake(sd.get_point(point_1, point_2), length)
-            sd.sleep(0.1)
-            for a, b in enumerate(x_1):
-                x_1[a] += sd.random_number(-30, 30)
-            for a, b in enumerate(y_2):
-                y_2[a] -= sd.random_number(10, 30)
-            sd.sleep(0.1)
-            for a, b in enumerate(y_2):
-                if y_2[a] < -80:
-                    y_2[a] = (sd.random_number(sd.resolution[1] - (sd.resolution[1] / 2), sd.resolution[1]))
-            else:
-                continue
-            if sd.user_want_exit():
-                break
-# TODO Очень всё избыточно и запутано. Надо проще.
-#  1) До основного цикла заполняем данные о снежинках: координаты и размеры. Так как эти списки имеют один размер (по
-#  числу снежинок), то заполнять все три списка можно в одном цикле. Названия переменных должны говорить о том что там
-#  находится (просто "икс" говорит о том, что там одна координата, а не список).
-#  2) Далее, основной цикл while True:, всё верно, а внутри него находятся:
-#        а) очистка экрана
-#        б) ОДИН for итерирующий по снежинкам. Этот for отрисовывает один кадр "мультфильма" Снегопад.
-#        в) sd.sleep(0.1)
-#        г) и проверка "не желает ли пользователь выйти"
-# 3) Внутри цикла for перебираем по очереди снежинки, и проверяем, а не лежит ли снежинка на земле? если нет, то
-# сдвигаем её (уменьшаем ей игрек)
-# Далее - отрисовываем текущую снежинку.
-# Всё просто и логично :)
+        for point_1, point_2, length in zip(x_list, y_list, flake_length_list):
+            sd.snowflake(sd.get_point(point_1, point_2), length)
+            for a, b in enumerate(x_list):
+                x_list[a] += sd.random_number(-15, 15)
+            for a, b in enumerate(y_list):
+                y_list[a] -= sd.random_number(0, 2)
+            for a, b in enumerate(y_list):
+                if y_list[a] < -40:
+                    y_list[a] = (sd.random_number(sd.resolution[1] - (sd.resolution[1] / 2), sd.resolution[1]))
+        sd.sleep(0.1)
+        if sd.user_want_exit():
+            break
 
-# I haven't finished yet, just wanted you to take a look at it first to optimize the code a little bit
-# so I can start thinking on the second part. Thank you!
+
+# TODO Question. I think I followed your instructions and the code looks better now. What do you think? I am a
+#  bit confused with the animation that became a lot faster even though I did not change the Y parameter at all, but I
+#  still had to put it down to (0-2) in (((y_list[a] -= sd.random_number(0, 2)))).
+
+# TODO question 2. I tried to apply this advise (для ускорения отрисовки можно) and I cant figure out where I have to
+#  place this bit (на старом месте снежинки отрисовать её же, но цветом sd.background_color) inside my code.
+#  If you could help me with that, it would be wonderful. Thank you!
+
 
 snow()
 

@@ -72,26 +72,17 @@ colors = [
 
 
 def ask_for_a_color():
-    number = 0
-    for i in colors:
-        print(number, i['name'])
-        number += 1
-        # TODO Примените enumerate в for вместо отдельного счётчика
-
-    print('Please, select a color:')
-    user_input = input()
-    color = int(user_input)
-    while color > len(colors) - 1:
-        print('This color does not exist')
+    while True:
+        for i, c in enumerate(colors):
+            print(i, c['name'])
         print('Please, select a color:')
-        user_input = input()
-        color = int(user_input)
-    else:
-        all_shapes(colors[color]['code'])
-        # TODo Согласно назначению функции "спросить цвет" и возвращать надо именно цвет, а вызвать функцию
-        #  рисования фигуры надо в основном коде
+        color = int(input())
+        if color <= len(colors) - 1:
+            return colors[color]['code']
+        else:
+            print('This color does not exist')
 
 
-ask_for_a_color()
+all_shapes(ask_for_a_color())
 
 sd.pause()
