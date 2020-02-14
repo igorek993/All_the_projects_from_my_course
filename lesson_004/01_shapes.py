@@ -97,12 +97,9 @@ def hexagon(point, angle, length):
 
 def draw_a_shape(start_point, angle, length, number_of_sides):
     current_point = start_point
-    for angle in range((360 // number_of_sides), (360 + (360 // number_of_sides)), 360 // number_of_sides):
-        # TODO 1) начальный угол равен углу проворота фигуры заданному атрибутом функции - angle.
-        #  2) Максимальный угло надо увеличить не на "шаг угла" (внешний угол правильного многоугольника), а
-        #  на начальный угол проворота фигуры
-        #  3) Заметьте, "шаг угла" вычисляется несколько раз, то есть код дублируется и делаются излишние вычисления.
-        #  Создайте отдельную переменную
+    max_angle = 360 + angle
+    angle_step = 360 // number_of_sides
+    for angle in range(angle, max_angle, angle_step):
         current_vector = sd.get_vector(current_point, angle, length, 3)
         sd.vector(current_point, angle, length)
         current_point = current_vector.end_point
@@ -124,9 +121,8 @@ def hexagon_2(point, angle, length):
     draw_a_shape(point, angle, length, 6)
 
 
-triangle_2(start_point, 10, 100)
+#triangle_2(start_point, 0, 100)
 square_2(start_point, 20, 100)
-pentagon_2(start_point, 30, 100)
-hexagon_2(start_point, 40, 100)
-# TOdO Угол проворота игнорируется универсальной функцией
+#pentagon_2(start_point, 30, 100)
+#hexagon_2(start_point, 0, 100)
 sd.pause()
