@@ -26,7 +26,7 @@ def snow():
     number_of_snowflakes = 20
     for _ in range(number_of_snowflakes):
         x_list.append(sd.random_number(0, sd.resolution[0]))
-        y_list.append(sd.random_number(sd.resolution[1] * 0.5, sd.resolution[1]))
+        y_list.append(sd.random_number(sd.resolution[1], sd.resolution[1] * 2))
         flake_length_list.append(sd.random_number(20, 50))
     while True:
         sd.start_drawing()
@@ -36,7 +36,7 @@ def snow():
             x_list[i] += sd.random_number(-15, 15)
             y_list[i] -= sd.random_number(4, 30)
             if y_list[i] < 50:
-                y_list[i] = sd.random_number((sd.resolution[1] * 0.5), sd.resolution[1])
+                y_list[i] = sd.random_number(sd.resolution[1], sd.resolution[1] * 2)
             sd.snowflake(sd.get_point(x_list[i], y_list[i]), length)
         sd.finish_drawing()
         sd.sleep(0.1)
@@ -62,3 +62,5 @@ sd.pause()
 # - сделать сугоб внизу экрана - если снежинка долетает до низа, оставлять её там,
 #   и добавлять новую снежинку
 # Результат решения см https://youtu.be/XBx0JtxHiLg
+
+# зачет!
