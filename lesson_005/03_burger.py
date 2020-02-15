@@ -39,3 +39,5 @@ my_burger.add_Ketchup()
 my_burger.add_Onions()
 my_burger.add_chili()
 my_burger.add_bbq_sauce()
+
+# зачет!

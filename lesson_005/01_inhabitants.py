@@ -8,5 +8,5 @@ from lesson_005.room_2 import folks as folks_2
 
 print('В комнате room_1 живут', folks, 'В комнате room_2 живут', folks_2)
 
-
+# TODO Нужно вывести имена, на не список - то есть без скобок и кавычек
 
