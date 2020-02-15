@@ -100,9 +100,10 @@ def draw_a_shape(start_point, angle, length, number_of_sides):
     max_angle = 360 + angle
     angle_step = 360 // number_of_sides
     for angle in range(angle, max_angle, angle_step):
-        current_vector = sd.get_vector(current_point, angle, length, 3)
-        sd.vector(current_point, angle, length)
-        current_point = current_vector.end_point
+        # I've removed two extra lines and all still work correctly! It's magic!
+        # current_vector = sd.get_vector(current_point, angle, length, 3)
+        current_point = sd.vector(current_point, angle, length)
+        # current_point = current_vector.end_point
 
 
 def triangle_2(point, angle, length):
@@ -121,8 +122,10 @@ def hexagon_2(point, angle, length):
     draw_a_shape(point, angle, length, 6)
 
 
-#triangle_2(start_point, 0, 100)
+triangle_2(start_point, 0, 100)
 square_2(start_point, 20, 100)
-#pentagon_2(start_point, 30, 100)
-#hexagon_2(start_point, 0, 100)
+pentagon_2(start_point, 30, 100)
+hexagon_2(start_point, 0, 100)
 sd.pause()
+
+# зачет!
