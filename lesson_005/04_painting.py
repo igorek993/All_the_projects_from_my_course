@@ -54,7 +54,7 @@ while True:
     if shift_radius >= radius + 140:
         shift_radius = radius
     draw_sun(150, 800, 150, angle=angle)
-    angle += 30
+    angle += 30  # TODO переменную "угол" можно использовать внутри модуля sun.py.
     draw_snow(x_list, y_list, flake_length_list, number_of_snowflakes)
     if sd.user_want_exit():
         break

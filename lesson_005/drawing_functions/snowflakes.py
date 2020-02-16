@@ -2,7 +2,8 @@ import simple_draw as sd
 
 
 def draw_snow(x_list, y_list, flake_length_list, number_of_snowflakes):
-    for _ in range(number_of_snowflakes):
+    for _ in range(number_of_snowflakes):  # TODO Чуть не зачёл, но увидев это! :) Интересно, что вы осознаёте что этот
+        # цикл не нужен (раз после первой же итерации делаете break), но почему-то его оставили....
         x_list.append(sd.random_number(0, 310))
         y_list.append(sd.random_number(200, 500))
         flake_length_list.append(sd.random_number(20, 50))
