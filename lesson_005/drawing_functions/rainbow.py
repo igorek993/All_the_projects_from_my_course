@@ -4,9 +4,8 @@ import simple_draw as sd
 def draw_rainbow(point, radius_shift):
     rainbow_colors = (sd.COLOR_RED, sd.COLOR_ORANGE, sd.COLOR_YELLOW, sd.COLOR_GREEN,
                       sd.COLOR_CYAN, sd.COLOR_BLUE, sd.COLOR_PURPLE)
-    for _ in range(1):
-        colour = rainbow_colors[sd.random_number(0, 6)]
-        sd.circle(center_position=point, radius=radius_shift, color=colour, width=20)
+    colour = rainbow_colors[sd.random_number(0, 6)]
+    sd.circle(center_position=point, radius=radius_shift, color=colour, width=20)
 
 
 if __name__ == '__main__':
