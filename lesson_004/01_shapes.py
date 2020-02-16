@@ -104,7 +104,7 @@ def draw_a_shape(start_point, angle, length, number_of_sides):
         # current_vector = sd.get_vector(current_point, angle, length, 3)
         current_point = sd.vector(current_point, angle, length)
         # current_point = current_vector.end_point
-
+# Does it mean that sd.vector gives it's last point back after drawing itself?
 
 def triangle_2(point, angle, length):
     draw_a_shape(point, angle, length, 3)

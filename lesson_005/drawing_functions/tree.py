@@ -13,3 +13,9 @@ def draw_tree(start_point, angle, length):
     v2.draw(color=color)
     draw_tree(v1.end_point, angle + 30 + angle_shift, length * (.75 + - length_shift))
     draw_tree(v2.end_point, angle - 30 + angle_shift, length * (.75 + - length_shift))
+
+
+def draw_tree_2(start_point, angle, length):
+    sd.start_drawing()
+    draw_tree(start_point, angle, length)
+    sd.finish_drawing()

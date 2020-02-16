@@ -15,10 +15,9 @@ from lesson_005.district.soviet_street.house1.room2 import folks as folks_6
 from lesson_005.district.soviet_street.house2.room1 import folks as folks_7
 from lesson_005.district.soviet_street.house2.room2 import folks as folks_8
 
-suburb_list = [folks_1, folks_2, folks_3, folks_4, folks_5, folks_6, folks_7, folks_8]
+people = [folks_1, folks_2, folks_3, folks_4, folks_5, folks_6, folks_7, folks_8]
+suburb_list = []
+for person in people:
+    suburb_list.extend(person)
 a = ','
-
-print('На районе живут', a.join(folks_1) + ',', a.join(folks_2) + ',', a.join(folks_3), a.join(folks_4) + ',',
-      a.join(folks_5) + ',', a.join(folks_6) + ',', a.join(folks_7) + ',', a.join(folks_8))
-# TODO Очень сложно.
-#  Просто сделайте общий список и выведите одним ', '.join(общий_список). Списки учились объединять в модуле 2, задача 5
+print('На районе живут:', a.join(suburb_list))
