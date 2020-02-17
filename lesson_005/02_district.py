@@ -15,8 +15,10 @@ from lesson_005.district.soviet_street.house1.room2 import folks as folks_6_h1_r
 from lesson_005.district.soviet_street.house2.room1 import folks as folks_7_h2_r1
 from lesson_005.district.soviet_street.house2.room2 import folks as folks_8_h2_r2
 
-people = folks_1_h1_r1 + folks_2_h1_r2 + folks_3_h2_r1 + folks_4_h2_r2 + folks_5_h1_r1 + \
-         folks_6_h1_r2 + folks_7_h2_r1 + folks_8_h2_r2
+people = (
+        folks_1_h1_r1 + folks_2_h1_r2 + folks_3_h2_r1 + folks_4_h2_r2 + folks_5_h1_r1
+        + folks_6_h1_r2 + folks_7_h2_r1 + folks_8_h2_r2
+)
 print('На районе живут:', ', '.join(people))
 
 # I understood you in a wrong way and started making up a filter an a small database for the all the people to
