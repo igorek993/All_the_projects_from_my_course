@@ -18,12 +18,11 @@ from lesson_005.district.soviet_street.house2.room2 import folks as folks_8_h2_r
 people = folks_1_h1_r1 + folks_2_h1_r2 + folks_3_h2_r1 + folks_4_h2_r2 + folks_5_h1_r1 + \
          folks_6_h1_r2 + folks_7_h2_r1 + folks_8_h2_r2
 print('На районе живут:', ', '.join(people))
-# TOdO Кстати, сразу не обратил внимание - Вадим настаивает, чтобы у в синонимах содержалась кратко информация об улице,
-#  доме и комнате. И это, конечно, удобнее!
 
 # I understood you in a wrong way and started making up a filter an a small database for the all the people to
 # extract the data afterwards. But apparently, I just had to change the names of the variables after as...
 # that was funny...
+# Не имена, а способ объединения списков мы изменили
 
 # folks_data = {
 #     'central_street': [
@@ -54,3 +53,5 @@ print('На районе живут:', ', '.join(people))
 #                 continue
 #             elif i != d:
 #                 print(c)
+
+# зачет!
