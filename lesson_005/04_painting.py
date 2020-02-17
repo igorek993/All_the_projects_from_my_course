@@ -33,10 +33,8 @@ from lesson_005.drawing_functions.rainbow import draw_rainbow
 from lesson_005.drawing_functions.sun import draw_sun
 
 sd.set_screen_size(1600, 1000)
-
 house_width_range = range(400, 900)
 house_height_range = range(100, 500)
-angle = 30
 x_list = []
 y_list = []
 flake_length_list = []
@@ -53,8 +51,7 @@ while True:
     shift_radius = shift_radius + 20
     if shift_radius >= radius + 140:
         shift_radius = radius
-    draw_sun(150, 800, 150, angle=angle)
-    angle += 30  # TODO переменную "угол" можно использовать внутри модуля sun.py.
+    draw_sun(150, 800, 150)
     draw_snow(x_list, y_list, flake_length_list, number_of_snowflakes)
     if sd.user_want_exit():
         break

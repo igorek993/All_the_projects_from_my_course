@@ -6,21 +6,51 @@
 # https://docs.python.org/3/library/stdtypes.html#str.join
 
 import pprint
-from lesson_005.district.central_street.house1.room1 import folks as folks_1
-from lesson_005.district.central_street.house1.room2 import folks as folks_2
-from lesson_005.district.central_street.house2.room1 import folks as folks_3
-from lesson_005.district.central_street.house2.room2 import folks as folks_4
-from lesson_005.district.soviet_street.house1.room1 import folks as folks_5
-from lesson_005.district.soviet_street.house1.room2 import folks as folks_6
-from lesson_005.district.soviet_street.house2.room1 import folks as folks_7
-from lesson_005.district.soviet_street.house2.room2 import folks as folks_8
+from lesson_005.district.central_street.house1.room1 import folks as folks_1_h1_r1
+from lesson_005.district.central_street.house1.room2 import folks as folks_2_h1_r2
+from lesson_005.district.central_street.house2.room1 import folks as folks_3_h2_r1
+from lesson_005.district.central_street.house2.room2 import folks as folks_4_h2_r2
+from lesson_005.district.soviet_street.house1.room1 import folks as folks_5_h1_r1
+from lesson_005.district.soviet_street.house1.room2 import folks as folks_6_h1_r2
+from lesson_005.district.soviet_street.house2.room1 import folks as folks_7_h2_r1
+from lesson_005.district.soviet_street.house2.room2 import folks as folks_8_h2_r2
 
-people = [folks_1, folks_2, folks_3, folks_4, folks_5, folks_6, folks_7, folks_8]
-suburb_list = []
-for person in people:
-    suburb_list.extend(person)
-a = ','
-# TODO Всё проще, намного проще! Просто сложите эти списки с помощью оператора сложения "+"
-print('На районе живут:', ', '.join(suburb_list))  # TODO разделитель обычно пишут прямо с join как показал
+people = folks_1_h1_r1 + folks_2_h1_r2 + folks_3_h2_r1 + folks_4_h2_r2 + folks_5_h1_r1 + \
+         folks_6_h1_r2 + folks_7_h2_r1 + folks_8_h2_r2
+print('На районе живут:', ', '.join(people))
 # TOdO Кстати, сразу не обратил внимание - Вадим настаивает, чтобы у в синонимах содержалась кратко информация об улице,
 #  доме и комнате. И это, конечно, удобнее!
+
+# I understood you in a wrong way and started making up a filter an a small database for the all the people to
+# extract the data afterwards. But apparently, I just had to change the names of the variables after as...
+# that was funny...
+
+# folks_data = {
+#     'central_street': [
+#         {'house number': 'house_1', 'rooms': [
+#             {'room_number': 'room_1', 'folks': folks_1},
+#             {'room_number': 'room_2', 'folks': folks_2}]},
+#
+#         {'house number': 'house_2', 'rooms': [
+#             {'room_number': 'room_1', 'folks': folks_3},
+#             {'room_number': 'room_2', 'folks': folks_4}]}
+#     ],
+#     'soviet_street': [
+#         {'house number': 'house_1', 'rooms': [
+#             {'room_number': 'room_1', 'folks': folks_5},
+#             {'room_number': 'room_2', 'folks': folks_6}]},
+#
+#         {'house number': 'house_2', 'rooms': [
+#             {'room_number': 'room_1', 'folks': folks_7},
+#             {'room_number': 'room_2', 'folks': folks_8}]}
+#     ]
+#
+# }
+#
+# for i, c in enumerate(people):
+#     for d, f in enumerate(people):
+#         if c == f:
+#             if i == d:
+#                 continue
+#             elif i != d:
+#                 print(c)
