@@ -49,7 +49,13 @@ make_up_a_number()
 while True:
     print('What is your number?')
     user_input = input()
+    # TODO Создайте функцию проверки ввода, введенное должно быть:
+    #  1) числом (состояить из цифр)
+    #  2) должно быть 4х значным
+    #  3) цифры должны быть уникальными (1122 нельзя)
+    #  4) начинаться не должно с нуля
+
     number_check(user_input)
     if game_over():
         break
-print('you win the game in', count, 'turns! Would you like to try again?')
+print('you win the game in', count, 'turns! Would you like to try again?')  #TODO В конце файла нужна одна пустая строка

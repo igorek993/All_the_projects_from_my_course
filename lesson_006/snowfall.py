@@ -44,3 +44,4 @@ def escaped_snowflakes():
 
 def delete_from_list():
     pass # I do not understand why would I create a list just to delete the same variables from it?...
+    # TODO Practice makes perfect. Just traning in using lists
