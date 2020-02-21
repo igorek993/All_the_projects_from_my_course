@@ -43,19 +43,16 @@
 # Это пример применения SOLID принципа (см https://goo.gl/GFMoaI) в архитектуре программ.
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
-from lesson_006.mastermind_engine import make_up_a_number, number_check, game_over, count
+from lesson_006.mastermind_engine import make_up_a_number, number_check, game_over, count, number_ask_filter_1, \
+    number_ask_filter_2, a
 
 make_up_a_number()
+print('What is your number?')
 while True:
-    print('What is your number?')
-    user_input = input()
-    # TODO Создайте функцию проверки ввода, введенное должно быть:
-    #  1) числом (состояить из цифр)
-    #  2) должно быть 4х значным
-    #  3) цифры должны быть уникальными (1122 нельзя)
-    #  4) начинаться не должно с нуля
-
-    number_check(user_input)
+    number_ask_filter_1()
+    number_ask_filter_2()  # todo I am not sure how I can make first two filters to illiterate over themselves again
+    # todo and again until I get a right number so I can put it into the next function, would you give me a tip, please?
+    number_check()
     if game_over():
         break
-print('you win the game in', count, 'turns! Would you like to try again?')  #TODO В конце файла нужна одна пустая строка
+    print('you win the game in', count, 'turns! Would you like to try again?')

@@ -4,6 +4,7 @@ x_list = []
 y_list = []
 flake_length_list = []
 sd.resolution = (1200, 900)
+number_escaped_snowflakes = []
 
 
 def create_snowflakes(n):
@@ -42,6 +43,9 @@ def escaped_snowflakes():
             print(number_escaped_snowflakes)
 
 
-def delete_from_list():
-    pass # I do not understand why would I create a list just to delete the same variables from it?...
-    # TODO Practice makes perfect. Just traning in using lists
+def delete_from_list(*args):
+    global number_escaped_snowflakes
+    args = list(args)
+    for i in args:
+        number_escaped_snowflakes.remove(i)
+    print(number_escaped_snowflakes)
