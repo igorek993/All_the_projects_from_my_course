@@ -2,6 +2,7 @@ import random
 
 numbers = []
 count = 1
+let_it_go = True
 
 
 def make_up_a_number():
@@ -19,12 +20,10 @@ def make_up_a_number():
 
 user_number = []
 user_input = 0
-a = 0
 
 
 def number_ask_filter_1():
     global user_input
-    global a
     while True:
         a = 0
         user_input = input()
@@ -48,8 +47,9 @@ def number_ask_filter_1():
 def number_ask_filter_2():
     global user_input
     global user_number
+    global let_it_go
+    let_it_go = True
     user_number = []
-    global a
     for i in user_input:
         user_number.append(int(i))
         print(user_number)
@@ -60,6 +60,8 @@ def number_ask_filter_2():
                 count_1 += 1
             if count_1 == 2:
                 print('There can not be two similar digits')
+                let_it_go = False
+                return let_it_go
 
 
 def number_check():

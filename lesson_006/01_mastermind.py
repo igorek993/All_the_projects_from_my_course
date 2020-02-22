@@ -44,15 +44,16 @@
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
 from lesson_006.mastermind_engine import make_up_a_number, number_check, game_over, count, number_ask_filter_1, \
-    number_ask_filter_2, a
+    number_ask_filter_2, let_it_go
 
 make_up_a_number()
 print('What is your number?')
 while True:
     number_ask_filter_1()
-    number_ask_filter_2()  # todo I am not sure how I can make first two filters to illiterate over themselves again
-    # todo and again until I get a right number so I can put it into the next function, would you give me a tip, please?
-    number_check()
-    if game_over():
-        break
-    print('you win the game in', count, 'turns! Would you like to try again?')
+    number_ask_filter_2()
+    if let_it_go == True: #todo if I run the function and let_it_go becomes False inside number_ask_filter_2()
+                            # it still ramains True when it comes back here. I do not understand why?
+        number_check()
+        if game_over():
+            break
+        print('you win the game in', count, 'turns! Would you like to try again?')
