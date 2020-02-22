@@ -20,7 +20,7 @@ import simple_draw as sd
 #  если есть номера_достигших_низа_экрана() то
 #       удалить_снежинки(номера)
 #       создать_снежинки(count)
-
+# TODO Не реализовано создание снежинок
 
 from lesson_006.snowfall import create_snowflakes, draw_colored_snowflakes, move_snowflakes, \
     draw_background_snowflakes, escaped_snowflakes, delete_from_list
@@ -30,9 +30,12 @@ while True:
     draw_background_snowflakes()
     move_snowflakes()
     draw_colored_snowflakes(sd.COLOR_YELLOW)
-    escaped_snowflakes()
+    escaped_snowflakes()  # TODO Эта функция должна возвращать список, то есть тут нужна переменная в которую будет
+                          #  присвоен этот список упавших снежинок. После этого, если список упавшин не пуст, надо из
+                          #  списков координат и размеров снежинок удалить соотвествующие элементы, а после этого
+                          #  добавить такое же кол-во новых с помощью отдельной фукнции
     sd.sleep(0.1)
     if sd.user_want_exit():
-        delete_from_list(0, 5, 7, 2, 6)
+        delete_from_list(0, 5, 7, 2, 6)  # TODO Это и правда странно, как сам "захардкоженный" список так и место вызова
         break
 sd.pause()

@@ -51,9 +51,15 @@ print('What is your number?')
 while True:
     number_ask_filter_1()
     number_ask_filter_2()
-    if let_it_go == True: #todo if I run the function and let_it_go becomes False inside number_ask_filter_2()
+    if let_it_go == True: # if I run the function and let_it_go becomes False inside number_ask_filter_2()
                             # it still ramains True when it comes back here. I do not understand why?
+                            # TODO 1) Импортировать можно только константы, функции, классы. Переменные будут иметь
+                            #  значение которое у них было на момент импорта (в строке 47)
+                            #  2) Сравнивать булеву переменную с Тrue/False избыточно
         number_check()
         if game_over():
             break
         print('you win the game in', count, 'turns! Would you like to try again?')
+        # TODO 1) При любой попытка выводится "вы выиграли" хотя это не так
+        #  2) сount не изменяется, всегда равно 1
+        #  3) Реального сообщения о выигрыше нет

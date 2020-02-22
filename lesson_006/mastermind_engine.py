@@ -22,11 +22,13 @@ user_number = []
 user_input = 0
 
 
-def number_ask_filter_1():
+def number_ask_filter_1():  # TODO Загадочное название функции. Использование номеров тут тоже не удачно,
+                            #  не ясно чем 1 от 2 отличаются
     global user_input
     while True:
         a = 0
-        user_input = input()
+        user_input = input()  # TODO В модуле mastermind_engine не должно быть работы с консолью
+                              #  (в задании объясняется почему). Эту функцию лучше разместить в основном модуле
         if len(user_input) > 4:
             print('too long')
             number_ask_filter_1()
@@ -41,6 +43,7 @@ def number_ask_filter_1():
         else:
             print('only numbers')
             number_ask_filter_1()
+            # TODO Рекурсию тут исплользовать нельзя. Она хороша во фракталах, обходе бинарных деревье и т.п.
         break
 
 
@@ -79,7 +82,7 @@ def number_check():
     if bulls_and_cows['bulls'] == 4:
         game_over()
     else:
-        print(bulls_and_cows)
+        print(bulls_and_cows)  # TODO Согласно заданию, эта функция должна возвращать словарь, а не выводить его
     count = count + 1
     user_number = []
 

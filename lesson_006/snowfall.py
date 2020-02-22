@@ -4,7 +4,9 @@ x_list = []
 y_list = []
 flake_length_list = []
 sd.resolution = (1200, 900)
-number_escaped_snowflakes = []
+
+number_escaped_snowflakes = []  # TODO Тут эта переменная не нужна, эти данные будут возвращаться в основной модуль и
+# приходить обратно через аргументы функций
 
 
 def create_snowflakes(n):
@@ -37,15 +39,17 @@ def draw_colored_snowflakes(color):
 def escaped_snowflakes():
     global number_escaped_snowflakes
     number_escaped_snowflakes = []
-    for _ in range(number):
+    for _ in range(number):  # TODO подчеркиванием можно назвать "лишнюю" переменную которая не используется или которая
+                             #  сильно зашумляет код. Тут лучше назвать ещё очевидно и точно - "индекс"
         if y_list[_] <= 0:
-            number_escaped_snowflakes.append(_)
-            print(number_escaped_snowflakes)
+            number_escaped_snowflakes.append(_)  # TODO "(_)" выглядит сюрреалистично!
+            print(number_escaped_snowflakes)  # TODO Ранее посчитал, что это отладочный принт. Список надо вернуть через
+                                              #  return
 
 
 def delete_from_list(*args):
     global number_escaped_snowflakes
     args = list(args)
     for i in args:
-        number_escaped_snowflakes.remove(i)
+        number_escaped_snowflakes.remove(i)  # TODO Удалять надо конечно сами данные о снежинках - координаты и размер
     print(number_escaped_snowflakes)
