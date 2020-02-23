@@ -1,8 +1,6 @@
 import random
 
 numbers = []
-count = 1
-let_it_go = True
 
 
 def make_up_a_number():
@@ -16,46 +14,36 @@ def make_up_a_number():
         numbers.append(random.choice(numbers_to_choose))
         numbers_to_choose.remove(numbers[taken_number])
         taken_number = taken_number + 1
+    print(numbers)
 
 
 user_number = []
-user_input = 0
 
 
-def number_ask_filter_1():  # TODO Загадочное название функции. Использование номеров тут тоже не удачно,
-                            #  не ясно чем 1 от 2 отличаются
-    global user_input
-    while True:
-        a = 0
-        user_input = input()  # TODO В модуле mastermind_engine не должно быть работы с консолью
-                              #  (в задании объясняется почему). Эту функцию лучше разместить в основном модуле
-        if len(user_input) > 4:
-            print('too long')
-            number_ask_filter_1()
-        elif len(user_input) < 4:
-            print('too short')
-            number_ask_filter_1()
-        elif user_input[0] == '0':
-            print('the first digit can not be 0')
-            number_ask_filter_1()
-        elif user_input.isnumeric():
-            break
-        else:
-            print('only numbers')
-            number_ask_filter_1()
-            # TODO Рекурсию тут исплользовать нельзя. Она хороша во фракталах, обходе бинарных деревье и т.п.
-        break
+def user_input_check(user_input):
+    if len(user_input) > 4:
+        print('too long')
+        return False
+    elif len(user_input) < 4:
+        print('too short')
+        return False
+    elif user_input[0] == '0':
+        print('the first digit can not be 0')
+        return False
+    else:
+        pass
+    if user_input.isnumeric():
+        pass
+    else:
+        print('only numbers')
+        return False
 
 
-def number_ask_filter_2():
-    global user_input
+def user_input_check_2(user_input):
     global user_number
-    global let_it_go
-    let_it_go = True
     user_number = []
     for i in user_input:
         user_number.append(int(i))
-        print(user_number)
     for b in user_number:
         count_1 = 0
         for c in user_number:
@@ -63,8 +51,7 @@ def number_ask_filter_2():
                 count_1 += 1
             if count_1 == 2:
                 print('There can not be two similar digits')
-                let_it_go = False
-                return let_it_go
+                return False
 
 
 def number_check():
@@ -82,9 +69,7 @@ def number_check():
     if bulls_and_cows['bulls'] == 4:
         game_over()
     else:
-        print(bulls_and_cows)  # TODO Согласно заданию, эта функция должна возвращать словарь, а не выводить его
-    count = count + 1
-    user_number = []
+        return print(bulls_and_cows)
 
 
 def game_over():

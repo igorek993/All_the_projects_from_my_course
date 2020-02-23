@@ -5,9 +5,6 @@ y_list = []
 flake_length_list = []
 sd.resolution = (1200, 900)
 
-number_escaped_snowflakes = []  # TODO Тут эта переменная не нужна, эти данные будут возвращаться в основной модуль и
-# приходить обратно через аргументы функций
-
 
 def create_snowflakes(n):
     global number
@@ -37,19 +34,31 @@ def draw_colored_snowflakes(color):
 
 
 def escaped_snowflakes():
-    global number_escaped_snowflakes
     number_escaped_snowflakes = []
-    for _ in range(number):  # TODO подчеркиванием можно назвать "лишнюю" переменную которая не используется или которая
-                             #  сильно зашумляет код. Тут лучше назвать ещё очевидно и точно - "индекс"
-        if y_list[_] <= 0:
-            number_escaped_snowflakes.append(_)  # TODO "(_)" выглядит сюрреалистично!
-            print(number_escaped_snowflakes)  # TODO Ранее посчитал, что это отладочный принт. Список надо вернуть через
-                                              #  return
+    for index in range(number):
+        if y_list[index] <= -50:
+            number_escaped_snowflakes.append(index)
+    return number_escaped_snowflakes
 
 
-def delete_from_list(*args):
-    global number_escaped_snowflakes
-    args = list(args)
-    for i in args:
-        number_escaped_snowflakes.remove(i)  # TODO Удалять надо конечно сами данные о снежинках - координаты и размер
-    print(number_escaped_snowflakes)
+def delete_from_list(number_escaped_snowflakes):
+    global x_list
+    global y_list
+    global flake_length_list
+    count_to_add = 0
+    for index in number_escaped_snowflakes:
+        del x_list[index]
+        del y_list[index]
+        del flake_length_list[index]
+        count_to_add = count_to_add + 1
+    return count_to_add
+
+
+def add_new_snowflakes(count_to_add):
+    global x_list
+    global y_list
+    global flake_length_list
+    for number in range(count_to_add):
+        x_list.append(sd.random_number(0, sd.resolution[0]))
+        y_list.append(sd.random_number(sd.resolution[1], sd.resolution[1] * 2))
+        flake_length_list.append(sd.random_number(20, 50))

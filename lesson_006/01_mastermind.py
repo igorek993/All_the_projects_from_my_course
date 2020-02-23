@@ -43,23 +43,21 @@
 # Это пример применения SOLID принципа (см https://goo.gl/GFMoaI) в архитектуре программ.
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
-from lesson_006.mastermind_engine import make_up_a_number, number_check, game_over, count, number_ask_filter_1, \
-    number_ask_filter_2, let_it_go
+from lesson_006.mastermind_engine import make_up_a_number, number_check, game_over, user_input_check, \
+    user_input_check_2
 
 make_up_a_number()
 print('What is your number?')
+count = 1
 while True:
-    number_ask_filter_1()
-    number_ask_filter_2()
-    if let_it_go == True: # if I run the function and let_it_go becomes False inside number_ask_filter_2()
-                            # it still ramains True when it comes back here. I do not understand why?
-                            # TODO 1) Импортировать можно только константы, функции, классы. Переменные будут иметь
-                            #  значение которое у них было на момент импорта (в строке 47)
-                            #  2) Сравнивать булеву переменную с Тrue/False избыточно
+    user_input = input()
+    if user_input_check(user_input) == False:
+        continue
+    elif user_input_check_2(user_input) == False:
+        continue
+    else:
         number_check()
+        count = count + 1
         if game_over():
+            print('you win the game in', count, 'turns! Would you like to try again?')
             break
-        print('you win the game in', count, 'turns! Would you like to try again?')
-        # TODO 1) При любой попытка выводится "вы выиграли" хотя это не так
-        #  2) сount не изменяется, всегда равно 1
-        #  3) Реального сообщения о выигрыше нет
