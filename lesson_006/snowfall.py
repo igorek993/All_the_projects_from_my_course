@@ -36,7 +36,7 @@ def draw_colored_snowflakes(color):
 def escaped_snowflakes():
     number_escaped_snowflakes = []
     for index in range(number):
-        if y_list[index] <= -50:
+        if y_list[index] <= -50:  # TOdO  Вместо числа тут следует использовать размер снежинки
             number_escaped_snowflakes.append(index)
     return number_escaped_snowflakes
 
@@ -47,6 +47,12 @@ def delete_from_list(number_escaped_snowflakes):
     global flake_length_list
     count_to_add = 0
     for index in number_escaped_snowflakes:
+        # TODO Замечаете что некоторые снежинки пропадают с экрана ещё не долетев но низа? Уберите стирание упавших в
+        #  основном цикле снегопада (именно упавших) и заметите, что они замирают в середине экрана. Это происходит от
+        #  того, что при удалении "снежинки" из середины списка, вся вторая половниа списка получает новые номера
+        #  элементов, на единицу меньше, согласны? И после этого удаление из второй половины списка происходит не
+        #  корректно. Поправить это можно слегка изменив порядок удаления. Догадайтесь сами как при удалении никогда не
+        #  попадать во "вторую" половниу списка, а только в "первую".
         del x_list[index]
         del y_list[index]
         del flake_length_list[index]

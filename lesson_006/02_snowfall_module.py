@@ -31,7 +31,8 @@ while True:
     draw_colored_snowflakes(sd.COLOR_YELLOW)
     number_escaped_snowflakes = escaped_snowflakes()
     sd.sleep(0.1)
-    if not number_escaped_snowflakes:
+    if not number_escaped_snowflakes:  # TODO уберите not и переместите содержание ветки else сюда, ДЗЕН Питона гласит:
+                                       #  Simple is better than complex.
         continue
     else:
         draw_background_snowflakes()

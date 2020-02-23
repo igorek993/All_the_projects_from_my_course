@@ -51,13 +51,13 @@ print('What is your number?')
 count = 1
 while True:
     user_input = input()
-    if user_input_check(user_input) == False:
+    if user_input_check(user_input) == False:  # TODO Достаточно if not user_input... без самого сравнения
         continue
-    elif user_input_check_2(user_input) == False:
+    elif user_input_check_2(user_input) == False:  # TODO Достаточно if not user_input... без самого сравнения
         continue
     else:
         number_check()
-        count = count + 1
+        count = count + 1   # TODO На первом же цикле count равен 2
         if game_over():
             print('you win the game in', count, 'turns! Would you like to try again?')
             break
