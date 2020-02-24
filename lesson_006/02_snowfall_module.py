@@ -22,7 +22,7 @@ import simple_draw as sd
 #       создать_снежинки(count)
 
 from lesson_006.snowfall import create_snowflakes, draw_colored_snowflakes, move_snowflakes, \
-    draw_background_snowflakes, escaped_snowflakes, delete_from_list, add_new_snowflakes
+    draw_background_snowflakes, escaped_snowflakes, delete_and_add_snowflakes
 
 create_snowflakes(20)
 while True:
@@ -31,13 +31,8 @@ while True:
     draw_colored_snowflakes(sd.COLOR_YELLOW)
     number_escaped_snowflakes = escaped_snowflakes()
     sd.sleep(0.1)
-    if not number_escaped_snowflakes:  # TODO уберите not и переместите содержание ветки else сюда, ДЗЕН Питона гласит:
-                                       #  Simple is better than complex.
-        continue
-    else:
-        draw_background_snowflakes()
-        count_to_add = delete_from_list(number_escaped_snowflakes)
-        add_new_snowflakes(count_to_add)
+    if number_escaped_snowflakes:
+        delete_and_add_snowflakes(number_escaped_snowflakes)
     if sd.user_want_exit():
         break
 sd.pause()

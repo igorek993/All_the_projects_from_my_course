@@ -43,21 +43,43 @@
 # Это пример применения SOLID принципа (см https://goo.gl/GFMoaI) в архитектуре программ.
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
-from lesson_006.mastermind_engine import make_up_a_number, number_check, game_over, user_input_check, \
-    user_input_check_2
+from lesson_006.mastermind_engine import make_up_a_number, number_check, game_over, \
+    user_input_check_for_two_same_digits
+
+
+def user_input_check(user_input):
+    if len(user_input) > 4:
+        print('too long')
+        return False
+    elif len(user_input) < 4:
+        print('too short')
+        return False
+    elif user_input[0] == '0':
+        print('the first digit can not be 0')
+        return False
+    else:
+        pass
+    if user_input.isnumeric():
+        return True
+    else:
+        print('only numbers')
+        return False
+
 
 make_up_a_number()
 print('What is your number?')
-count = 1
+count = 0
 while True:
     user_input = input()
-    if user_input_check(user_input) == False:  # TODO Достаточно if not user_input... без самого сравнения
+    if not user_input_check(user_input):
         continue
-    elif user_input_check_2(user_input) == False:  # TODO Достаточно if not user_input... без самого сравнения
+    elif not user_input_check_for_two_same_digits(user_input):
+        print('There can not be two similar digits')
         continue
     else:
         number_check()
-        count = count + 1   # TODO На первом же цикле count равен 2
+        print(number_check())
+        count = count + 1
         if game_over():
             print('you win the game in', count, 'turns! Would you like to try again?')
             break

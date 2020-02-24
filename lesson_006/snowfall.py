@@ -36,35 +36,19 @@ def draw_colored_snowflakes(color):
 def escaped_snowflakes():
     number_escaped_snowflakes = []
     for index in range(number):
-        if y_list[index] <= -50:  # TOdO  Вместо числа тут следует использовать размер снежинки
+        if y_list[index] <= -flake_length_list[index]:
             number_escaped_snowflakes.append(index)
     return number_escaped_snowflakes
 
 
-def delete_from_list(number_escaped_snowflakes):
+def delete_and_add_snowflakes(number_escaped_snowflakes):
     global x_list
     global y_list
     global flake_length_list
-    count_to_add = 0
     for index in number_escaped_snowflakes:
-        # TODO Замечаете что некоторые снежинки пропадают с экрана ещё не долетев но низа? Уберите стирание упавших в
-        #  основном цикле снегопада (именно упавших) и заметите, что они замирают в середине экрана. Это происходит от
-        #  того, что при удалении "снежинки" из середины списка, вся вторая половниа списка получает новые номера
-        #  элементов, на единицу меньше, согласны? И после этого удаление из второй половины списка происходит не
-        #  корректно. Поправить это можно слегка изменив порядок удаления. Догадайтесь сами как при удалении никогда не
-        #  попадать во "вторую" половниу списка, а только в "первую".
-        del x_list[index]
-        del y_list[index]
-        del flake_length_list[index]
-        count_to_add = count_to_add + 1
-    return count_to_add
-
-
-def add_new_snowflakes(count_to_add):
-    global x_list
-    global y_list
-    global flake_length_list
-    for number in range(count_to_add):
-        x_list.append(sd.random_number(0, sd.resolution[0]))
-        y_list.append(sd.random_number(sd.resolution[1], sd.resolution[1] * 2))
-        flake_length_list.append(sd.random_number(20, 50))
+        x_list.insert(index, (sd.random_number(0, sd.resolution[0])))
+        y_list.insert(index, sd.random_number(sd.resolution[1], sd.resolution[1] * 2))
+        flake_length_list.insert(index, sd.random_number(20, 50))
+        del x_list[index + 1]
+        del y_list[index + 1]
+        del flake_length_list[index + 1]
