@@ -52,3 +52,5 @@ def delete_and_add_snowflakes(number_escaped_snowflakes):
         del x_list[index + 1]
         del y_list[index + 1]
         del flake_length_list[index + 1]
+        # TODO Это называется хак (или лайфхак:). Нужны именно отдельные функции удаления и добавления снежинок. Если
+        #  сдаётесь - напишите, подскажу.
