@@ -30,7 +30,7 @@ while True:
     move_snowflakes()
     draw_colored_snowflakes(sd.COLOR_YELLOW)
     number_escaped_snowflakes = escaped_snowflakes()
-    sd.sleep(0.1)
+    sd.sleep(0.001)
     if number_escaped_snowflakes:
         delete_snowflakes(number_escaped_snowflakes)
         add_snowflakes(number_escaped_snowflakes)

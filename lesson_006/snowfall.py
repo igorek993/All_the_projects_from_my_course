@@ -48,6 +48,8 @@ def delete_snowflakes(number_escaped_snowflakes):
     for index in number_escaped_snowflakes:
         x_list.insert(index, 0)
         y_list.insert(index, 0)
+        # TODO Нет. Представьте что у вас две снежинки упали: № 2 и № 5. Если удалить 2ю, а потом 5ю, то удалится 6я,
+        #  так? А если 5ю удалить первой, это как-то повлияет на вторую?
         flake_length_list.insert(index, 0)
         del x_list[index + 1]
         del y_list[index + 1]

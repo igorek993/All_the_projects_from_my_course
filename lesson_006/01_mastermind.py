@@ -83,3 +83,5 @@ while True:
         if game_over():
             print('you win the game in', count, 'turns! Would you like to try again?')
             break
+
+# зачет!
