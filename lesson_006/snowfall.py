@@ -41,16 +41,24 @@ def escaped_snowflakes():
     return number_escaped_snowflakes
 
 
-def delete_and_add_snowflakes(number_escaped_snowflakes):
+def delete_snowflakes(number_escaped_snowflakes):
     global x_list
     global y_list
     global flake_length_list
     for index in number_escaped_snowflakes:
-        x_list.insert(index, (sd.random_number(0, sd.resolution[0])))
-        y_list.insert(index, sd.random_number(sd.resolution[1], sd.resolution[1] * 2))
-        flake_length_list.insert(index, sd.random_number(20, 50))
+        x_list.insert(index, 0)
+        y_list.insert(index, 0)
+        flake_length_list.insert(index, 0)
         del x_list[index + 1]
         del y_list[index + 1]
         del flake_length_list[index + 1]
-        # TODO Это называется хак (или лайфхак:). Нужны именно отдельные функции удаления и добавления снежинок. Если
-        #  сдаётесь - напишите, подскажу.
+
+
+def add_snowflakes(number_escaped_snowflakes):
+    global x_list
+    global y_list
+    global flake_length_list
+    for index in number_escaped_snowflakes:
+        x_list[index] = (sd.random_number(0, sd.resolution[0]))
+        y_list[index] = (sd.random_number(sd.resolution[1], sd.resolution[1] * 2))
+        flake_length_list[index] = (sd.random_number(20, 50))

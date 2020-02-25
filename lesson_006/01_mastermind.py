@@ -78,11 +78,8 @@ while True:
         continue
     else:
         number_check()
-        print(number_check())  # TODO Сделайте вывод удобочитаемым для простого человека, он же пользователь, зачем ему
-                               #  видеть скобки, кавычки, ключи на английском? (только не переименовывайте сами ключи!,
-                               #  они для программистов)
+        print('There are', number_check()[0], 'bulls and', number_check()[1], 'cows')
         count = count + 1
         if game_over():
             print('you win the game in', count, 'turns! Would you like to try again?')
             break
-# TODO При выигрыше выводится None перед сообщением о победе.

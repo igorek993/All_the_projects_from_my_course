@@ -22,7 +22,7 @@ import simple_draw as sd
 #       создать_снежинки(count)
 
 from lesson_006.snowfall import create_snowflakes, draw_colored_snowflakes, move_snowflakes, \
-    draw_background_snowflakes, escaped_snowflakes, delete_and_add_snowflakes
+    draw_background_snowflakes, escaped_snowflakes, delete_snowflakes, add_snowflakes
 
 create_snowflakes(20)
 while True:
@@ -32,7 +32,8 @@ while True:
     number_escaped_snowflakes = escaped_snowflakes()
     sd.sleep(0.1)
     if number_escaped_snowflakes:
-        delete_and_add_snowflakes(number_escaped_snowflakes)
+        delete_snowflakes(number_escaped_snowflakes)
+        add_snowflakes(number_escaped_snowflakes)
     if sd.user_want_exit():
         break
 sd.pause()

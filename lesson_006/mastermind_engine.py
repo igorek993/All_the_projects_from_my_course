@@ -47,10 +47,7 @@ def number_check():
                     bulls_and_cows['bulls'] += 1
                 else:
                     bulls_and_cows['cows'] += 1
-    if bulls_and_cows['bulls'] == 4:
-        game_over()
-    else:
-        return bulls_and_cows
+    return [bulls_and_cows['bulls'], bulls_and_cows['cows']]
 
 
 def game_over():
