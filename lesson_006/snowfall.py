@@ -49,10 +49,15 @@ def delete_snowflakes(number_escaped_snowflakes):
         x_list.insert(index, 0)
         y_list.insert(index, 0)
         # TODO Нет. Представьте что у вас две снежинки упали: № 2 и № 5. Если удалить 2ю, а потом 5ю, то удалится 6я,
-        #  так? А если 5ю удалить первой, это как-то повлияет на вторую?
+        #  так? А если поменять подход и 5ю удалить первой, а 2ю после, будет ошибка в индексе?
         # I do not think it is going to affect any other flake as far as I can see it... because it crates a new
         # variable prior to deleting each flake that does not allow it to change its index. I am not really
         # sure what is the other way of doing this. I think I might need a tip in this case:)
+        # TODO Видимо слишком кратко пояснил. Хотел сказать, что ваш вариант конечно рабочий, но не очень удачный.
+        #  Вы ставляете "пустышку", потом удаляете с учётом сдвига. Функция удаления не должна ничего всталять: "одна
+        #  функция, одно дело за которое она отвечает", "называние должно чётко отражать то что делает функция".
+        #  Выше предложил подумать как можно удалять не влияя на ещё не удалённые элементы, кажется вы не прокрутили в
+        #  голове описанное выше "упражнение" со снежинкой № 2 и № 5. Немного переформулировал предыдущую тудушку.
         flake_length_list.insert(index, 0)
         del x_list[index + 1]
         del y_list[index + 1]
