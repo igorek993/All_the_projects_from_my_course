@@ -37,7 +37,7 @@ class Snowflake:
 
 
 #
-# flake = Snowflake()
+# flake = Snowflake(1)
 # while True:
 #     flake.clear_previous_picture()
 #     flake.move()

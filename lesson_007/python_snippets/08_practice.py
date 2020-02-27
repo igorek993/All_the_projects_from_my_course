@@ -47,7 +47,7 @@ class Man:
         else:
             cprint('{} деньги кончились!'.format(self.name), color='red')
 
-    def go_to_the_house(self, house):
+    def move_to_a_house(self, house):
         self.house = house
         self.fullness -= 10
         cprint('{} Вьехал в дом'.format(self.name), color='cyan')
@@ -91,7 +91,7 @@ citizens = [
 
 my_sweet_home = House()
 for citisen in citizens:
-    citisen.go_to_the_house(house=my_sweet_home)
+    citisen.move_to_a_house(house=my_sweet_home)
 
 for day in range(1, 366):
     print('================ день {} =================='.format(day))
