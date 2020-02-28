@@ -44,7 +44,7 @@ class Snowflake:
 #     if sd.user_want_exit():
 #         break
 
-def get_flakes(first_amount, amount_to_add):
+def get_flakes_ugly_version(first_amount, amount_to_add):
     global flakes
     if not flakes:
         for number in range(first_amount):
@@ -53,10 +53,18 @@ def get_flakes(first_amount, amount_to_add):
     elif amount_to_add > 0:
         for number in range(amount_to_add):
             flakes.append(Snowflake())
+# ToDO Эту функцию не стоило трогать, она уже была совершенной! Сравните с предыдущим вариантом:
+
+
+def get_flakes(amount):
+    new_flakes = []
+    for _ in range(amount):
+        new_flakes.append(Snowflake())
+    return new_flakes
 
 
 def get_fallen_flakes(flakes_list):
-    flakes = flakes_list
+    flakes = flakes_list  # TODO Используйте аргумент функции в коде, не нужно вводить "дубликаты"
     count = 0
     for flake in flakes:
         if flake.can_fall():
@@ -65,7 +73,8 @@ def get_fallen_flakes(flakes_list):
 
 
 def del_snowflakes():
-    global flakes
+    global flakes  # TODO Статайте использовать по возможности только передачу данных через аргументы, как в предыдущей
+    # функции
     for flake in flakes:
         if flake.y < flake.length:
             flake.clear_previous_picture()
@@ -84,7 +93,8 @@ while True:
         flake.draw()
     fallen_flakes = get_fallen_flakes(flakes)  # подчитать сколько снежинок уже упало
     if fallen_flakes:
-        get_flakes(1, amount_to_add=fallen_flakes)  # добавить еще сверху#
+        get_flakes(1, amount_to_add=fallen_flakes)  # добавить еще сверху
+        #  TODO Добавлять надо к списку flakes с помощью метода .extend()
         del_snowflakes()
     sd.finish_drawing()
     sd.sleep(0.1)
