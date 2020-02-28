@@ -41,38 +41,38 @@ class Man:
         self.house = None
 
     def __str__(self):
-        return 'Я - {}, сытость {}'.format(
+        return 'I am - {}, fullness {}'.format(
             self.name, self.fullness)
 
     def eat(self):
         if self.house.food >= 10:
-            cprint('{} поел'.format(self.name), color='yellow')
+            cprint('{} had some food'.format(self.name), color='yellow')
             self.fullness += 10
             self.house.food -= 10
         else:
-            cprint('{} нет еды'.format(self.name), color='red')
+            cprint('{} there is no food'.format(self.name), color='red')
 
     def work(self):
-        cprint('{} сходил на работу'.format(self.name), color='blue')
+        cprint('{} worked today'.format(self.name), color='blue')
         self.house.money += 150
         self.fullness -= 10
 
     def watch_MTV(self):
-        cprint('{} смотрел MTV целый день'.format(self.name), color='green')
+        cprint('{} was watching MTV all day long'.format(self.name), color='green')
         self.fullness -= 10
 
     def shopping(self):
         if self.house.money >= 50:
-            cprint('{} сходил в магазин за едой'.format(self.name), color='magenta')
+            cprint('{} bought some groceries'.format(self.name), color='magenta')
             self.house.money -= 50
             self.house.food += 50
         else:
-            cprint('{} деньги кончились!'.format(self.name), color='red')
+            cprint('{} ran out of money!'.format(self.name), color='red')
 
     def move_to_a_house(self, house):
         self.house = house
         self.fullness -= 10
-        cprint('{} Вьехал в дом'.format(self.name), color='cyan')
+        cprint('{} moved to a house'.format(self.name), color='cyan')
 
     def take_cat_home(self, cat):
         cat.house = self.house
@@ -94,7 +94,7 @@ class Man:
 
     def act(self):
         if self.fullness <= 0:
-            cprint('{} умер...'.format(self.name), color='red')
+            cprint('{} passed away...'.format(self.name), color='red')
             return
         dice = randint(1, 6)
         if self.fullness <= 20:
@@ -124,7 +124,7 @@ class House:
         self.cleanliness = 100
 
     def __str__(self):
-        return 'В доме еды осталось {}, денег осталось {}, cleanliness is {}, cat food is {} '.format(
+        return 'There is {} food left in the house, money {} left, cleanliness is {}, cat food is {} '.format(
             self.food, self.money, self.cleanliness, self.food_bowl_fullness)
 
 
@@ -180,18 +180,18 @@ for cat in cats:
     sam.take_cat_home(cat=cat)
 
 for day in range(1, 366):
-    print('================ день {} =================='.format(day))
+    print('================ day {} =================='.format(day))
     for cat in cats:
         cat.act()
     sam.act()
-    print('--- в конце дня ---')
+    print('--- in the end of the day ---')
     print(sam)
     print(my_sweet_home)
     for cat in cats:
         print(cat)
 
-# TODO В целом тут всё достаточно хорошо для первой попытки. Одно замечание к размышленю:
-#  Интересно, при чтении можно интонацией менять раскладку с русской на английскую? :)
-#  Пример из вывода работы скрипта:
-#  Я - Sam, сытость 20
-#  Это к вопросу о том, зачем смешивать в интерфейсе языки (раскладки)?
+# hahahaha it's a funny comment... The thing is that I speak English/Spanish/Russian every day mixing them up together
+# every hour depending who I should talk to. That is why for me it's like a common thing to have a
+# mixture of these three languages everywhere. If you could only take a look at my notes from my Master's degree, it's
+# a mess of these three languages, no one can read them :D. I am sorry for that, I did not
+# think about it for some reason, I'll change everything to English.

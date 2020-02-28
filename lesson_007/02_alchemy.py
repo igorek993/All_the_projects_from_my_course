@@ -30,6 +30,8 @@ class Water:
             return Steam()
         elif isinstance(other, Earth):
             return Dirt()
+        elif isinstance(other, SmallCat):
+            return 'wet kitty'
 
 
 class Air:
@@ -56,6 +58,8 @@ class Fire:
             return Steam()
         elif isinstance(other, Air):
             return Thunder()
+        elif isinstance(other, SmallCat):
+            return 'no more myau'
 
 
 class Earth:
@@ -121,7 +125,7 @@ class Lava:
 
 class SmallCat:
     def __str__(self):
-        return 'myau'
+        return 'a small cat'
 
     def __add__(self, other):
         if isinstance(other, Water):
@@ -130,9 +134,10 @@ class SmallCat:
             return 'no more myau'
 
 
-# TODO Примените тут свой код, покажите, работает ли он. Пример из задания:
 print(Water(), '+', Air(), '=', Water() + Air())
-
+print(Water(), '+', SmallCat(), '=', Water() + SmallCat())
+print(Fire(), '+', SmallCat(), '=', Fire() + SmallCat())
+print(Fire(), '+', Earth(), '=', Fire() + Earth())
 # Усложненное задание (делать по желанию)
 # Добавить еще элемент в игру.
 # Придумать что будет при сложении существующих элементов с новым.
