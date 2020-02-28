@@ -44,17 +44,19 @@ class Snowflake:
 #     if sd.user_want_exit():
 #         break
 
-def get_flakes(count):
-    flakes = []
-    for number in range(count):
-        flakes.append(Snowflake())
-    return flakes
-
-
-def get_fallen_flakes():
+def get_flakes(first_amount, amount_to_add):
     global flakes
-    # TODO Чтобы не использовать переменные из внешней области видимости - передавайте список снежинок через аргумент
-    #  функции
+    if not flakes:
+        for number in range(first_amount):
+            flakes.append(Snowflake())
+        return flakes
+    elif amount_to_add > 0:
+        for number in range(amount_to_add):
+            flakes.append(Snowflake())
+
+
+def get_fallen_flakes(flakes_list):
+    flakes = flakes_list
     count = 0
     for flake in flakes:
         if flake.can_fall():
@@ -62,28 +64,28 @@ def get_fallen_flakes():
     return count
 
 
-def append_flakes(count):
+def del_snowflakes():
     global flakes
-    for number in range(count):
-        flakes.append(Snowflake())
-    # TODO Это не замечание, это к размышлению: сравните эту функцию и get_flakes, в чём разница? Первая не испльзует
-    #  ничего из глобальной области видимости и поэтому она может считаться чистой функцией. Попытайтесь использовать
-    #  именно её в главном цикле основного кода для добавления новых снежинок.
+    for flake in flakes:
+        if flake.y < flake.length:
+            flake.clear_previous_picture()
+            flakes.remove(flake)
+
 
 # шаг 2: создать снегопад - список объектов Снежинка в отдельном списке, обработку примерно так:
-flakes = get_flakes(count=3)  # создать список снежинок
+flakes = []  # создать список снежинок
 
 while True:
     sd.start_drawing()
+    get_flakes(20, 0)
     for flake in flakes:
         flake.clear_previous_picture()
         flake.move()
         flake.draw()
-    fallen_flakes = get_fallen_flakes()  # подчитать сколько снежинок уже упало
+    fallen_flakes = get_fallen_flakes(flakes)  # подчитать сколько снежинок уже упало
     if fallen_flakes:
-        append_flakes(count=fallen_flakes)  # добавить еще сверху
-        # TODO Заметили как лавинообразно нарастает кол-во новых снежинок? Чтобы этого не было, надо удалять из списка
-        #  упавшие снежинки - создайте такую функцию
+        get_flakes(1, amount_to_add=fallen_flakes)  # добавить еще сверху#
+        del_snowflakes()
     sd.finish_drawing()
     sd.sleep(0.1)
     if sd.user_want_exit():
