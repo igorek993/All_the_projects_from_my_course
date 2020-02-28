@@ -136,8 +136,10 @@ class SmallCat:
 
 print(Water(), '+', Air(), '=', Water() + Air())
 print(Water(), '+', SmallCat(), '=', Water() + SmallCat())
-print(Fire(), '+', SmallCat(), '=', Fire() + SmallCat())
+print(Fire(), '+', SmallCat(), '=', Fire() + SmallCat())  # жалко котёнка!
 print(Fire(), '+', Earth(), '=', Fire() + Earth())
 # Усложненное задание (делать по желанию)
 # Добавить еще элемент в игру.
 # Придумать что будет при сложении существующих элементов с новым.
+
+# зачет!

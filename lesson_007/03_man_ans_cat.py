@@ -195,3 +195,8 @@ for day in range(1, 366):
 # mixture of these three languages everywhere. If you could only take a look at my notes from my Master's degree, it's
 # a mess of these three languages, no one can read them :D. I am sorry for that, I did not
 # think about it for some reason, I'll change everything to English.
+# Интересная у вас работа, видимо! Сам учил английский всю жизнь и абсолютно его не знал кроме некоторого словарного
+# запаса... и только когда припекло выучился читать более-менее, статьи по технике и художку читаю.
+
+# зачет!
+
