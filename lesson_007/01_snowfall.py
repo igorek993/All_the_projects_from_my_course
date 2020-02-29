@@ -72,6 +72,7 @@ def add_more_flakes(number_of_flakes_to_add):
     for number in range(number_of_flakes_to_add):
         flakes_to_add.append(Snowflake())
     return flakes_to_add
+# Ok, and are there any diffirences with the get_flakes now?
 
 
 # шаг 2: создать снегопад - список объектов Снежинка в отдельном списке, обработку примерно так:
@@ -92,3 +93,5 @@ while True:
         break
 
 sd.pause()
+
+# зачет!
