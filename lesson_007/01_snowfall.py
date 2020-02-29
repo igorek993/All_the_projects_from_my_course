@@ -44,17 +44,6 @@ class Snowflake:
 #     if sd.user_want_exit():
 #         break
 
-def get_flakes_ugly_version(first_amount, amount_to_add):
-    global flakes
-    if not flakes:
-        for number in range(first_amount):
-            flakes.append(Snowflake())
-        return flakes
-    elif amount_to_add > 0:
-        for number in range(amount_to_add):
-            flakes.append(Snowflake())
-# ToDO Эту функцию не стоило трогать, она уже была совершенной! Сравните с предыдущим вариантом:
-
 
 def get_flakes(amount):
     new_flakes = []
@@ -64,38 +53,36 @@ def get_flakes(amount):
 
 
 def get_fallen_flakes(flakes_list):
-    flakes = flakes_list  # TODO Используйте аргумент функции в коде, не нужно вводить "дубликаты"
     count = 0
-    for flake in flakes:
+    for flake in flakes_list:
         if flake.can_fall():
             count += 1
     return count
 
 
-def del_snowflakes():
-    global flakes  # TODO Статайте использовать по возможности только передачу данных через аргументы, как в предыдущей
-    # функции
+def del_snowflakes(flakes):
     for flake in flakes:
         if flake.y < flake.length:
             flake.clear_previous_picture()
             flakes.remove(flake)
+#
+# def add_more_flakes(number_of_flakes_to_add):
+#     for number in range(number_of_flakes_to_add)
 
 
 # шаг 2: создать снегопад - список объектов Снежинка в отдельном списке, обработку примерно так:
-flakes = []  # создать список снежинок
+flakes = get_flakes(20)  # создать список снежинок
 
 while True:
     sd.start_drawing()
-    get_flakes(20, 0)
     for flake in flakes:
         flake.clear_previous_picture()
         flake.move()
-        flake.draw()
-    fallen_flakes = get_fallen_flakes(flakes)  # подчитать сколько снежинок уже упало
-    if fallen_flakes:
-        get_flakes(1, amount_to_add=fallen_flakes)  # добавить еще сверху
-        #  TODO Добавлять надо к списку flakes с помощью метода .extend()
-        del_snowflakes()
+        flake.draw()  # подчитать сколько снежинок уже упало
+    if get_fallen_flakes(flakes):
+        for number in range(get_fallen_flakes(flakes)):
+            flakes.append(Snowflake())  # добавить еще сверху  #  TODO Добавлять надо к списку flakes с помощью метода .extend()
+    del_snowflakes(flakes)
     sd.finish_drawing()
     sd.sleep(0.1)
     if sd.user_want_exit():
