@@ -65,9 +65,13 @@ def del_snowflakes(flakes):
         if flake.y < flake.length:
             flake.clear_previous_picture()
             flakes.remove(flake)
-#
-# def add_more_flakes(number_of_flakes_to_add):
-#     for number in range(number_of_flakes_to_add)
+
+
+def add_more_flakes(number_of_flakes_to_add):
+    flakes_to_add = []
+    for number in range(number_of_flakes_to_add):
+        flakes_to_add.append(Snowflake())
+    return flakes_to_add
 
 
 # шаг 2: создать снегопад - список объектов Снежинка в отдельном списке, обработку примерно так:
@@ -80,8 +84,7 @@ while True:
         flake.move()
         flake.draw()  # подчитать сколько снежинок уже упало
     if get_fallen_flakes(flakes):
-        for number in range(get_fallen_flakes(flakes)):
-            flakes.append(Snowflake())  # добавить еще сверху  #  TODO Добавлять надо к списку flakes с помощью метода .extend()
+        flakes.extend(add_more_flakes(get_fallen_flakes(flakes)))
     del_snowflakes(flakes)
     sd.finish_drawing()
     sd.sleep(0.1)
