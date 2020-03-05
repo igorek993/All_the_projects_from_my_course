@@ -51,8 +51,9 @@ class House:
         self.dirtiness = 0
 
     def __str__(self):
-        return 'There are {} dollars, {} food left in the house. The dirtiness level is {}'.format(self.money, self.food,
-                                                                                                  self.dirtiness)
+        return 'There are {} dollars, {} food left in the house. The dirtiness level is {}'.format(self.money,
+                                                                                                   self.food,
+                                                                                                   self.dirtiness)
 
     def act(self):
         self.dirtiness += 5
@@ -72,18 +73,21 @@ class People:
         if self.house.food >= 30:
             self.house.food -= 30
             self.fullness += 30
-
+            print('{} has eaten'.format(self.name))
+            return
 
 
 class Husband(People):
 
     def __init__(self, name, house):
         super().__init__()
+        self.money_earned = 0
         self.name = name
         self.house = house
+        self.food_eaten = 0
 
     def __str__(self):
-        if self.fullness <= 0 or self.happiness <= 10 :
+        if self.fullness <= 0 or self.happiness <= 10:
             return '-'
         else:
             return super().__str__()
@@ -92,34 +96,40 @@ class Husband(People):
         if self.fullness <= 0:
             print('{} has passed away because of hunger'.format(self.name))
             return
-        elif self.happiness <= 10 :
+        elif self.happiness <= 10:
             print('{} has passed away because of unhappiness'.format(self.name))
             return
         elif self.house.dirtiness >= 90:
             self.happiness -= 10
             print('why is everything so dirty around here?')
-        if self.fullness <=70:
+        if self.fullness <= 70 and self.house.food >= 30:
+            self.food_eaten += 30
             self.eat()
-            return '{} has eaten'.format(self.name)
-        elif self.house.money < 450 :
+        elif self.house.money < 450:
             self.work()
-
+        else:
+            self.gaming()
 
     def work(self):
         if self.house.food >= 10:
-            self.house.food -= 10
+            self.fullness -= 10
             self.house.money += 150
-            return '{} worked for the whole day'.format(self.name)
+            print('{} worked for the whole day'.format(self.name))
+            self.money_earned += 150
+            return
         else:
-            return 'I am too hungry to work'
+            print('I am too hungry to work')
+            return
 
     def gaming(self):
         if self.house.food >= 10:
-            self.house.food -= 10
+            self.fullness -= 10
             self.happiness += 20
-            return '{} played WoT for the whole day'.format(self.name)
+            print('{} played WoT for the whole day'.format(self.name))
+            return
         else:
-            '{} cant play while hungry'.format(self.name)
+            print('{} cant play while hungry'.format(self.name))
+            return
 
 
 class Wife(People):
@@ -128,41 +138,76 @@ class Wife(People):
         super().__init__()
         self.name = name
         self.house = house
+        self.food_eaten = 0
+        self.coats_bought = 0
 
     def __str__(self):
+        if self.fullness <= 0 or self.happiness <= 10:
+            return '-'
         return super().__str__()
 
     def act(self):
-        pass
+        if self.fullness <= 0:
+            print('{} has passed away because of hunger'.format(self.name))
+            return
+        elif self.happiness <= 10:
+            print('{} has passed away because of unhappiness'.format(self.name))
+            return
+        elif self.house.dirtiness >= 90:
+            self.happiness -= 10
+            print('why is everything so dirty around here?')
+        if self.fullness <= 60 and self.house.food >= 30:
+            self.food_eaten += 30
+            self.eat()
+        elif self.house.food <= 60:
+            self.shopping()
+        elif self.happiness <= 30:
+            self.buy_fur_coat()
+        elif self.house.dirtiness >= 70:
+            self.clean_house()
+        else:
+            print('{} did nothing for the whole day'.format(self.name))
 
     def shopping(self):
         if self.house.money >= 60:
-            self.house.food -= 10
+            self.fullness -= 10
             self.house.money -= 60
             self.house.food += 60
-            return '{} bought some food'.format(self.name)
+            print('{} bought some food'.format(self.name))
+            return
         else:
-            return 'not enough money to buy food'
+            print('not enough money to buy food')
+            return
 
     def buy_fur_coat(self):
         if self.house.food >= 10 and self.house.money >= 350:
-            self.house.food -= 10
+            self.fullness -= 10
             self.house.money -= 350
             self.happiness += 60
-            return '{} bought a new coat'.format(self.name)
+            self.coats_bought += 1
+            print('{} bought a new coat'.format(self.name))
+            return
+        else:
+            if self.house.food >= 10:
+                print('not enough energy to but a new coat')
+                return
+            elif self.house.money >= 350:
+                print('not enough money to but a new coat')
+                return
 
     def clean_house(self):
         if self.house.food >= 10:
-            self.house.food -= 10
+            self.fullness -= 10
             self.house.dirtiness -= 30
-            return '{} cleaned the house'.format(self.name)
+            print('{} cleaned the house'.format(self.name))
         else:
-            return '{} is too hungry to clean'.format(self.name)
+            print('{} is too hungry to clean'.format(self.name))
+            return
 
 
 home = House()
-sergey = Husband(name='Сережа', house=home)
-masha = Wife(name='Маша', house=home)
+sergey = Husband(name='Sergey', house=home)
+masha = Wife(name='Masha', house=home)
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
@@ -172,3 +217,7 @@ for day in range(365):
     cprint(sergey, color='cyan')
     cprint(masha, color='cyan')
     cprint(home, color='cyan')
+print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
+print(('{} ate {} food in total'.format(sergey.name, sergey.food_eaten)))
+print(('{} ate {} food in total'.format(masha.name, masha.food_eaten)))
+print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
