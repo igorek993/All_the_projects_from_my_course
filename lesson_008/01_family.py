@@ -51,7 +51,7 @@ class House:
         self.dirtiness = 0
 
     def __str__(self):
-        return 'There are {} dollars, {} food left in the house. The tidiness level is {}'.format(self.money, self.food,
+        return 'There are {} dollars, {} food left in the house. The dirtiness level is {}'.format(self.money, self.food,
                                                                                                   self.dirtiness)
 
     def act(self):
@@ -60,8 +60,7 @@ class House:
 
 class People:
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
         self.fullness = 30
         self.happiness = 100
         self.house = None
@@ -75,17 +74,36 @@ class People:
             self.fullness += 30
 
 
-class Husband:
+
+class Husband(People):
 
     def __init__(self, name, house):
-        super().__init__(name=name)
+        super().__init__()
+        self.name = name
         self.house = house
 
     def __str__(self):
-        return super().__str__()
+        if self.fullness <= 0 or self.happiness <= 10 :
+            return '-'
+        else:
+            return super().__str__()
 
     def act(self):
-        pass
+        if self.fullness <= 0:
+            print('{} has passed away because of hunger'.format(self.name))
+            return
+        elif self.happiness <= 10 :
+            print('{} has passed away because of unhappiness'.format(self.name))
+            return
+        elif self.house.dirtiness >= 90:
+            self.happiness -= 10
+            print('why is everything so dirty around here?')
+        if self.fullness <=70:
+            self.eat()
+            return '{} has eaten'.format(self.name)
+        elif self.house.money < 450 :
+            self.work()
+
 
     def work(self):
         if self.house.food >= 10:
@@ -93,7 +111,7 @@ class Husband:
             self.house.money += 150
             return '{} worked for the whole day'.format(self.name)
         else:
-            return 'not enough food to be able to get to work'
+            return 'I am too hungry to work'
 
     def gaming(self):
         if self.house.food >= 10:
@@ -104,10 +122,11 @@ class Husband:
             '{} cant play while hungry'.format(self.name)
 
 
-class Wife:
+class Wife(People):
 
     def __init__(self, name, house):
-        super().__init__(name=name)
+        super().__init__()
+        self.name = name
         self.house = house
 
     def __str__(self):
@@ -137,6 +156,8 @@ class Wife:
             self.house.food -= 10
             self.house.dirtiness -= 30
             return '{} cleaned the house'.format(self.name)
+        else:
+            return '{} is too hungry to clean'.format(self.name)
 
 
 home = House()
