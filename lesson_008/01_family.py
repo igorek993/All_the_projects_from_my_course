@@ -50,15 +50,17 @@ class House:
         self.dirtiness = 0
 
     def __str__(self):
-        return 'There are {} dollars, {} food left in the house. The dirtiness level is {}'.format(self.money,
-                                                                                                   self.food,
-                                                                                                   self.dirtiness)
+        return (
+            'There are {} dollars, {} food left in the house. '
+            'The dirtiness level is {}'.format(self.money, self.food, self.dirtiness)
+        )
+        # TODO Отформатировал на своё усмотрение
 
     def act(self):
         self.dirtiness += 5
 
 
-class People:
+class People:  # TODO Люди? Некая группа лиц? Human точнее
 
     def __init__(self):
         self.fullness = 30
@@ -67,13 +69,15 @@ class People:
 
     def __str__(self):
         return 'I am {}, my fullness is {}, my happiness {}'.format(self.name, self.fullness, self.happiness)
+        # TODO Добавьте атрибут имени в __init__ и в его параметры (видите, у вас используется этот атрибут без его
+        #  объявления в классе)
 
     def eat(self):
         if self.house.food >= 30:
             self.house.food -= 30
             self.fullness += 30
             print('{} has eaten'.format(self.name))
-            return
+            return  # TODO тут эта строка избыточна
 
 
 class Husband(People):
@@ -81,9 +85,11 @@ class Husband(People):
     def __init__(self, name, house):
         super().__init__()
         self.money_earned = 0
-        self.name = name
-        self.house = house
-        self.food_eaten = 0
+        self.name = name  # TODO Неужели имя, это уникальная характеристика Мужа? Каждый человек имеет имя, значить это
+        # атрибут базового класса.
+        self.house = house  # TODO Аналогично. (а для бездомных можно оставлять его пустым, если возникло возражение:)
+        self.food_eaten = 0  # TODO Раз нет задачи считать сколько съел каждый персонаж в отельности, то значить это
+                             # общий атрибут для всех в доме, и поэтому лушче перенести его в класс Дом
 
     def __str__(self):
         if self.fullness <= 0 or self.happiness <= 10:
@@ -92,6 +98,11 @@ class Husband(People):
             return super().__str__()
 
     def act(self):
+        # TOdO Внесите элемент случайности в выбор выполняемых действий. Допустим, когда человек сыт и деньги в доме
+        #  есть, то "бросается монетка" которая "выбирает" чем будет заниматься человек - смотреть тв, играть, дарить
+        #  цветы жене... Кстати, муж не "знает" кто его жена, нужен атрибут "супруг" в базовом классе и метод "жениться"
+        #  (в английском кажется есть универсальное название этого действа для обоих полов)
+
         if self.fullness <= 0:
             print('{} has passed away because of hunger'.format(self.name))
             return
@@ -115,7 +126,7 @@ class Husband(People):
             self.house.money += 150
             print('{} worked for the whole day'.format(self.name))
             self.money_earned += 150
-            return
+            return  # TODO строка повторяется в обоих ветках if - какой в ней смысл? И далее по коду поправьте (уберите)
         else:
             print('I am too hungry to work')
             return
@@ -139,8 +150,9 @@ class Wife(People):
         self.house = house
         self.food_eaten = 0
         self.coats_bought = 0
+        # TODO Только последний атрибут уникален для класса Жена
 
-    def __str__(self):
+    def __str__(self):  #TODO Подумайте, возможно есть смысл таким сделать метод базового класса
         if self.fullness <= 0 or self.happiness <= 10:
             return '-'
         return super().__str__()
@@ -216,6 +228,7 @@ for day in range(365):
     cprint(sergey, color='cyan')
     cprint(masha, color='cyan')
     cprint(home, color='cyan')
+
 print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
 print(('{} ate {} food in total'.format(sergey.name, sergey.food_eaten)))
 print(('{} ate {} food in total'.format(masha.name, masha.food_eaten)))
