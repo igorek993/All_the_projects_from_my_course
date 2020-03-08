@@ -229,6 +229,8 @@ print(('{} food was eaten in total'.format(home.food_eaten)))
 print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 
 
+# зачет первой части
+
 ######################################################## Часть вторая
 #
 # После подтверждения учителем первой части надо
