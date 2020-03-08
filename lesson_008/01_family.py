@@ -3,6 +3,7 @@
 from termcolor import cprint
 from random import randint
 
+
 ######################################################## Часть первая
 #
 # Создать модель жизни небольшой семьи.
@@ -48,77 +49,66 @@ class House:
         self.money = 100
         self.food = 50
         self.dirtiness = 0
+        self.food_eaten = 0
 
     def __str__(self):
         return (
             'There are {} dollars, {} food left in the house. '
             'The dirtiness level is {}'.format(self.money, self.food, self.dirtiness)
         )
-        # TODO Отформатировал на своё усмотрение
 
     def act(self):
         self.dirtiness += 5
 
 
-class People:  # TODO Люди? Некая группа лиц? Human точнее
+class Human:
 
-    def __init__(self):
+    def __init__(self, name, house):
         self.fullness = 30
         self.happiness = 100
-        self.house = None
+        self.house = house
+        self.name = name
+        self.spouse = None
 
     def __str__(self):
-        return 'I am {}, my fullness is {}, my happiness {}'.format(self.name, self.fullness, self.happiness)
-        # TODO Добавьте атрибут имени в __init__ и в его параметры (видите, у вас используется этот атрибут без его
-        #  объявления в классе)
+        if self.fullness <= 0:
+            return '{} has passed away because of hunger'.format(self.name)
+        elif self.happiness <= 10:
+            return '{} has passed away because of unhappiness'.format(self.name)
+        else:
+            return 'I am {}, my fullness is {}, my happiness {}'.format(self.name, self.fullness, self.happiness)
 
     def eat(self):
         if self.house.food >= 30:
             self.house.food -= 30
             self.fullness += 30
             print('{} has eaten'.format(self.name))
-            return  # TODO тут эта строка избыточна
+
+    def get_married(self, spouse):
+        self.spouse = spouse
+        spouse.spouse = self
+        print('{} married {}'.format(self.name, spouse.name))
 
 
-class Husband(People):
+class Husband(Human):
 
     def __init__(self, name, house):
-        super().__init__()
+        super().__init__(name, house)
         self.money_earned = 0
-        self.name = name  # TODO Неужели имя, это уникальная характеристика Мужа? Каждый человек имеет имя, значить это
-        # атрибут базового класса.
-        self.house = house  # TODO Аналогично. (а для бездомных можно оставлять его пустым, если возникло возражение:)
-        self.food_eaten = 0  # TODO Раз нет задачи считать сколько съел каждый персонаж в отельности, то значить это
-                             # общий атрибут для всех в доме, и поэтому лушче перенести его в класс Дом
-
-    def __str__(self):
-        if self.fullness <= 0 or self.happiness <= 10:
-            return '-'
-        else:
-            return super().__str__()
 
     def act(self):
-        # TOdO Внесите элемент случайности в выбор выполняемых действий. Допустим, когда человек сыт и деньги в доме
-        #  есть, то "бросается монетка" которая "выбирает" чем будет заниматься человек - смотреть тв, играть, дарить
-        #  цветы жене... Кстати, муж не "знает" кто его жена, нужен атрибут "супруг" в базовом классе и метод "жениться"
-        #  (в английском кажется есть универсальное название этого действа для обоих полов)
-
-        if self.fullness <= 0:
-            print('{} has passed away because of hunger'.format(self.name))
-            return
-        elif self.happiness <= 10:
-            print('{} has passed away because of unhappiness'.format(self.name))
+        if self.fullness <= 0 or self.happiness <= 10:
             return
         elif self.house.dirtiness >= 90:
             self.happiness -= 10
             print('why is everything so dirty around here?')
         if self.fullness <= 70 and self.house.food >= 30:
-            self.food_eaten += 30
+            self.house.food_eaten += 30
             self.eat()
         elif self.house.money < 450:
             self.work()
         else:
-            self.gaming()
+            self.random_action()
 
     def work(self):
         if self.house.food >= 10:
@@ -126,49 +116,41 @@ class Husband(People):
             self.house.money += 150
             print('{} worked for the whole day'.format(self.name))
             self.money_earned += 150
-            return  # TODO строка повторяется в обоих ветках if - какой в ней смысл? И далее по коду поправьте (уберите)
         else:
             print('I am too hungry to work')
-            return
 
-    def gaming(self):
+    def random_action(self):
         if self.house.food >= 10:
+            random_number = randint(0, 3)
             self.fullness -= 10
             self.happiness += 20
-            print('{} played WoT for the whole day'.format(self.name))
-            return
         else:
-            print('{} cant play while hungry'.format(self.name))
+            print('{} cant do anything while hungry'.format(self.name))
             return
+        if random_number == 1:
+            print('{} played WoT for the whole day'.format(self.name))
+        elif random_number == 2:
+            print('{} watched TV for the whole day'.format(self.name))
+        elif random_number == 3:
+            print('{} gave flowers to his wife'.format(self.name))
+            self.spouse.happiness += 20
 
 
-class Wife(People):
+class Wife(Human):
 
     def __init__(self, name, house):
-        super().__init__()
-        self.name = name
-        self.house = house
-        self.food_eaten = 0
+        super().__init__(name, house)
         self.coats_bought = 0
-        # TODO Только последний атрибут уникален для класса Жена
-
-    def __str__(self):  #TODO Подумайте, возможно есть смысл таким сделать метод базового класса
-        if self.fullness <= 0 or self.happiness <= 10:
-            return '-'
-        return super().__str__()
 
     def act(self):
-        if self.fullness <= 0:
-            print('{} has passed away because of hunger'.format(self.name))
-            return
-        elif self.happiness <= 10:
-            print('{} has passed away because of unhappiness'.format(self.name))
+
+        if self.fullness <= 0 or self.happiness <= 10:
             return
         elif self.house.dirtiness >= 90:
             self.happiness -= 10
             print('why is everything so dirty around here?')
         if self.fullness <= 60 and self.house.food >= 30:
-            self.food_eaten += 30
+            self.house.food_eaten += 30
             self.eat()
         elif self.house.food <= 60:
             self.shopping()
@@ -177,7 +159,7 @@ class Wife(People):
         elif self.house.dirtiness >= 70:
             self.clean_house()
         else:
-            print('{} did nothing for the whole day'.format(self.name))
+            self.random_action()
 
     def shopping(self):
         if self.house.money >= 60:
@@ -185,10 +167,9 @@ class Wife(People):
             self.house.money -= 60
             self.house.food += 60
             print('{} bought some food'.format(self.name))
-            return
+
         else:
             print('not enough money to buy food')
-            return
 
     def buy_fur_coat(self):
         if self.house.food >= 10 and self.house.money >= 350:
@@ -197,14 +178,12 @@ class Wife(People):
             self.happiness += 60
             self.coats_bought += 1
             print('{} bought a new coat'.format(self.name))
-            return
+
         else:
             if self.house.food >= 10:
                 print('not enough energy to but a new coat')
-                return
             elif self.house.money >= 350:
                 print('not enough money to but a new coat')
-                return
 
     def clean_house(self):
         if self.house.food >= 10:
@@ -213,12 +192,28 @@ class Wife(People):
             print('{} cleaned the house'.format(self.name))
         else:
             print('{} is too hungry to clean'.format(self.name))
+
+    def random_action(self):
+        if self.house.food >= 10:
+            random_number = randint(0, 3)
+            self.fullness -= 10
+        else:
+            print('{} cant do anything while hungry'.format(self.name))
             return
+        if random_number == 1:
+            print('{} annoyed husband for the whole day'.format(self.name))
+            self.spouse.happiness -= 10
+        elif random_number == 2:
+            print('{} watched TV for the whole day'.format(self.name))
+        elif random_number == 3:
+            print('{} went out for the whole night '.format(self.name))
+            self.house.money -= 20
 
 
 home = House()
 sergey = Husband(name='Sergey', house=home)
 masha = Wife(name='Masha', house=home)
+sergey.get_married(masha)
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
@@ -230,8 +225,7 @@ for day in range(365):
     cprint(home, color='cyan')
 
 print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
-print(('{} ate {} food in total'.format(sergey.name, sergey.food_eaten)))
-print(('{} ate {} food in total'.format(masha.name, masha.food_eaten)))
+print(('{} food was eaten in total'.format(home.food_eaten)))
 print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 
 
@@ -306,7 +300,6 @@ class Child:
     def sleep(self):
         pass
 
-
 # TODO после реализации второй части - отдать на проверку учителем две ветки
 
 
@@ -356,4 +349,3 @@ class Child:
 #       for salary in range(50, 401, 50):
 #           max_cats = life.experiment(salary)
 #           print(f'При зарплате {salary} максимально можно прокормить {max_cats} котов')
-
