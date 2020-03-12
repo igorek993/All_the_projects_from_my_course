@@ -83,6 +83,9 @@ class Human:
             self.house.food -= 30
             self.fullness += 30
             print('{} has eaten'.format(self.name))
+        else:
+            self.fullness -= 10
+            print('not enough food in the house')
 
     def get_married(self, spouse):
         self.spouse = spouse
@@ -121,7 +124,7 @@ class Husband(Human):
 
     def random_action(self):
         if self.house.food >= 10:
-            random_number = randint(0, 3)
+            random_number = randint(1, 3)
             self.fullness -= 10
             self.happiness += 20
         else:
@@ -195,7 +198,7 @@ class Wife(Human):
 
     def random_action(self):
         if self.house.food >= 10:
-            random_number = randint(0, 3)
+            random_number = randint(1, 3)
             self.fullness -= 10
         else:
             print('{} cant do anything while hungry'.format(self.name))
@@ -210,19 +213,54 @@ class Wife(Human):
             self.house.money -= 20
 
 
+class Child(Human):
+
+    def __init__(self, name, house):
+        super().__init__(name, house)
+        self.happiness = 100
+
+    def __str__(self):
+        return super().__str__()
+
+    def act(self):
+        if self.fullness <= 0:
+            return
+        if self.fullness <= 20:
+            self.eat()
+        else:
+            self.sleep()
+
+    def eat(self):
+        if self.house.food >= 20:
+            self.house.food -= 10
+            self.fullness += 10
+            self.house.food_eaten += 10
+            print('{} has eaten'.format(self.name))
+        else:
+            self.fullness -= 10
+            print('not enough food in the house')
+
+    def sleep(self):
+        self.fullness -= 10
+        print('{} slept all day'.format(self.name))
+
+
 home = House()
 sergey = Husband(name='Sergey', house=home)
 masha = Wife(name='Masha', house=home)
 sergey.get_married(masha)
+elena = Child(name='Elena', house=home)
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
     home.act()
     sergey.act()
     masha.act()
+    elena.act()
     cprint(sergey, color='cyan')
     cprint(masha, color='cyan')
     cprint(home, color='cyan')
+    cprint(elena, color='cyan')
 
 print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
 print(('{} food was eaten in total'.format(home.food_eaten)))
@@ -273,7 +311,6 @@ class Cat:
     def soil(self):
         pass
 
-
 ######################################################## Часть вторая бис
 #
 # После реализации первой части надо в ветке мастер продолжить работу над семьей - добавить ребенка
@@ -284,23 +321,6 @@ class Cat:
 #
 # отличия от взрослых - кушает максимум 10 единиц еды,
 # степень счастья  - не меняется, всегда ==100 ;)
-
-class Child:
-
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return super().__str__()
-
-    def act(self):
-        pass
-
-    def eat(self):
-        pass
-
-    def sleep(self):
-        pass
 
 # TODO после реализации второй части - отдать на проверку учителем две ветки
 
