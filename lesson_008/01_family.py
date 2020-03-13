@@ -221,6 +221,7 @@ class Child(Human):
 
     def __str__(self):
         return super().__str__()
+    # TODO Тут нет новой функциональности относительно предка, значить нет надобности в переопределении метода
 
     def act(self):
         if self.fullness <= 0:
@@ -261,7 +262,10 @@ for day in range(365):
     cprint(masha, color='cyan')
     cprint(home, color='cyan')
     cprint(elena, color='cyan')
-
+    # TODO Заметили как разрастается основной цикл? Сделайте в классе Дом атрибут "жители" и заполняйте его в подходящих
+    #  методах классов жителей. У всех объектов унифицированный интерфейс в части методв "вывод статуса" (__str__)
+    #  и "действие", значить можно итерируя по списку жителей вызывать нужные методы. Теперь не потребуется даже
+    #  дорабатывать цикл при появлении новых жильцов
 print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
 print(('{} food was eaten in total'.format(home.food_eaten)))
 print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
