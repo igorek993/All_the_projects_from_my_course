@@ -63,8 +63,9 @@ class House:
     def act(self):
         self.dirtiness += 5
 
-    def add_new_resident(self, resident):
-        self.residents.append(resident)
+    def add_new_resident(self, *args):
+        for object in args:
+            self.residents.append(object)
 
 
 class Human:
@@ -317,10 +318,8 @@ barsik = Cat(name='Barsik', house=home)
 sergey.get_married(masha)
 sergey.adopt_cat(cat=barsik)
 elena = Child(name='Elena', house=home)
-home.add_new_resident(sergey)
-home.add_new_resident(masha)
-home.add_new_resident(elena)
-home.add_new_resident(barsik)
+home.add_new_resident(sergey, masha, barsik, elena)
+
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
     for resident in home.residents:
@@ -329,10 +328,10 @@ for day in range(365):
         cprint(resident, color='cyan')
     home.act()
     cprint(home, color='cyan')
+
 print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
 print(('{} food was eaten in total'.format(home.food_eaten)))
 print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
-
 
 # зачет второй части
 
