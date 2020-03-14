@@ -50,12 +50,14 @@ class House:
         self.food = 50
         self.dirtiness = 0
         self.food_eaten = 0
+        self.cat_food = 30
+        self.cat = None
         self.residents = []
 
     def __str__(self):
         return (
-            'There are {} dollars, {} food left in the house. '
-            'The dirtiness level is {}'.format(self.money, self.food, self.dirtiness)
+            'There are {} dollars, {} food, {} cat food left in the house. '
+            'The dirtiness level is {}'.format(self.money, self.food, self.cat_food, self.dirtiness)
         )
 
     def act(self):
@@ -96,6 +98,16 @@ class Human:
         spouse.spouse = self
         print('{} married {}'.format(self.name, spouse.name))
 
+    def pet_cat(self):
+        if self.house.cat:
+            self.happiness += 5
+            print('{} pet the cat'.format(self.name))
+        else:
+            print('{} there is no cat in the house')
+
+    def adopt_cat(self, cat):
+        self.house.cat = cat
+
 
 class Husband(Human):
 
@@ -128,19 +140,23 @@ class Husband(Human):
 
     def random_action(self):
         if self.house.food >= 10:
-            random_number = randint(1, 3)
+            random_number = randint(1, 4)
             self.fullness -= 10
-            self.happiness += 20
         else:
             print('{} cant do anything while hungry'.format(self.name))
             return
         if random_number == 1:
+            self.happiness += 20
             print('{} played WoT for the whole day'.format(self.name))
         elif random_number == 2:
+            self.happiness += 20
             print('{} watched TV for the whole day'.format(self.name))
         elif random_number == 3:
-            print('{} gave flowers to his wife'.format(self.name))
+            self.happiness += 20
             self.spouse.happiness += 20
+            print('{} gave flowers to his wife'.format(self.name))
+        elif random_number == 4:
+            self.pet_cat()
 
 
 class Wife(Human):
@@ -150,7 +166,6 @@ class Wife(Human):
         self.coats_bought = 0
 
     def act(self):
-
         if self.fullness <= 0 or self.happiness <= 10:
             return
         elif self.house.dirtiness >= 90:
@@ -169,12 +184,17 @@ class Wife(Human):
             self.random_action()
 
     def shopping(self):
-        if self.house.money >= 60:
+        if self.house.money >= 80:
+            self.fullness -= 10
+            self.house.money -= 80
+            self.house.food += 60
+            self.house.cat_food += 20
+            print('{} bought some human and cat food'.format(self.name))
+        elif self.house.money >= 60:
             self.fullness -= 10
             self.house.money -= 60
             self.house.food += 60
             print('{} bought some food'.format(self.name))
-
         else:
             print('not enough money to buy food')
 
@@ -185,7 +205,6 @@ class Wife(Human):
             self.happiness += 60
             self.coats_bought += 1
             print('{} bought a new coat'.format(self.name))
-
         else:
             if self.house.food >= 10:
                 print('not enough energy to but a new coat')
@@ -202,7 +221,7 @@ class Wife(Human):
 
     def random_action(self):
         if self.house.food >= 10:
-            random_number = randint(1, 3)
+            random_number = randint(1, 4)
             self.fullness -= 10
         else:
             print('{} cant do anything while hungry'.format(self.name))
@@ -215,6 +234,51 @@ class Wife(Human):
         elif random_number == 3:
             print('{} went out for the whole night '.format(self.name))
             self.house.money -= 20
+        elif random_number == 4:
+            self.pet_cat()
+
+
+class Cat:
+
+    def __init__(self, name, house):
+        self.fullness = 30
+        self.name = name
+        self.house = house
+
+    def __str__(self):
+        if self.fullness <= 0:
+            return '{} died because of hunger'
+        else:
+            return '{} fullness is {}'.format(self.name, self.fullness)
+
+    def act(self):
+        dice = randint(0, 1)
+        if self.fullness <= 0:
+            return
+        if self.fullness <= 30:
+            self.eat()
+        elif dice == 0:
+            self.sleep()
+        elif dice == 1:
+            self.scratch__wallpapers()
+
+    def eat(self):
+        if self.house.cat_food >= 10:
+            self.fullness += 20
+            self.house.cat_food -= 10
+            print('{} has eaten'.format(self.name))
+        else:
+            self.fullness -= 10
+            print('{} is starving'.format(self.name))
+
+    def sleep(self):
+        self.fullness -= 10
+        print('{} slept around 20 hours'.format(self.name))
+
+    def scratch__wallpapers(self):
+        self.fullness -= 10
+        self.house.dirtiness += 5
+        print('{} scratched the wallpapers'.format(self.name))
 
 
 class Child(Human):
@@ -249,12 +313,14 @@ class Child(Human):
 home = House()
 sergey = Husband(name='Sergey', house=home)
 masha = Wife(name='Masha', house=home)
+barsik = Cat(name='Barsik', house=home)
 sergey.get_married(masha)
+sergey.adopt_cat(cat=barsik)
 elena = Child(name='Elena', house=home)
 home.add_new_resident(sergey)
 home.add_new_resident(masha)
 home.add_new_resident(elena)
-
+home.add_new_resident(barsik)
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
     for resident in home.residents:
@@ -268,7 +334,7 @@ print(('{} food was eaten in total'.format(home.food_eaten)))
 print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 
 
-# зачет первой части
+# зачет второй части
 
 ######################################################## Часть вторая
 #
@@ -294,24 +360,6 @@ print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 #
 # Если кот дерет обои, то грязи становится больше на 5 пунктов
 
-
-class Cat:
-
-    def __init__(self):
-        pass
-
-    def act(self):
-        pass
-
-    def eat(self):
-        pass
-
-    def sleep(self):
-        pass
-
-    def soil(self):
-        pass
-
 ######################################################## Часть вторая бис
 #
 # После реализации первой части надо в ветке мастер продолжить работу над семьей - добавить ребенка
@@ -322,7 +370,6 @@ class Cat:
 #
 # отличия от взрослых - кушает максимум 10 единиц еды,
 # степень счастья  - не меняется, всегда ==100 ;)
-
 
 ######################################################## Часть третья
 #

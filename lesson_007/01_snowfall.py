@@ -67,14 +67,6 @@ def del_snowflakes(flakes):
             flakes.remove(flake)
 
 
-def add_more_flakes(number_of_flakes_to_add):
-    flakes_to_add = []
-    for number in range(number_of_flakes_to_add):
-        flakes_to_add.append(Snowflake())
-    return flakes_to_add
-# Ok, and are there any differences with the get_flakes now?
-
-
 # шаг 2: создать снегопад - список объектов Снежинка в отдельном списке, обработку примерно так:
 flakes = get_flakes(20)  # создать список снежинок
 
@@ -85,7 +77,7 @@ while True:
         flake.move()
         flake.draw()  # подчитать сколько снежинок уже упало
     if get_fallen_flakes(flakes):
-        flakes.extend(add_more_flakes(get_fallen_flakes(flakes)))
+        flakes.extend(get_flakes(get_fallen_flakes(flakes)))
     del_snowflakes(flakes)
     sd.finish_drawing()
     sd.sleep(0.1)
