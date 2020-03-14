@@ -50,6 +50,7 @@ class House:
         self.food = 50
         self.dirtiness = 0
         self.food_eaten = 0
+        self.residents = []
 
     def __str__(self):
         return (
@@ -59,6 +60,9 @@ class House:
 
     def act(self):
         self.dirtiness += 5
+
+    def add_new_resident(self, resident):
+        self.residents.append(resident)
 
 
 class Human:
@@ -219,10 +223,6 @@ class Child(Human):
         super().__init__(name, house)
         self.happiness = 100
 
-    def __str__(self):
-        return super().__str__()
-    # TODO Тут нет новой функциональности относительно предка, значить нет надобности в переопределении метода
-
     def act(self):
         if self.fullness <= 0:
             return
@@ -251,21 +251,18 @@ sergey = Husband(name='Sergey', house=home)
 masha = Wife(name='Masha', house=home)
 sergey.get_married(masha)
 elena = Child(name='Elena', house=home)
+home.add_new_resident(sergey)
+home.add_new_resident(masha)
+home.add_new_resident(elena)
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
+    for resident in home.residents:
+        resident.act()
+    for resident in home.residents:
+        cprint(resident, color='cyan')
     home.act()
-    sergey.act()
-    masha.act()
-    elena.act()
-    cprint(sergey, color='cyan')
-    cprint(masha, color='cyan')
     cprint(home, color='cyan')
-    cprint(elena, color='cyan')
-    # TODO Заметили как разрастается основной цикл? Сделайте в классе Дом атрибут "жители" и заполняйте его в подходящих
-    #  методах классов жителей. У всех объектов унифицированный интерфейс в части методв "вывод статуса" (__str__)
-    #  и "действие", значить можно итерируя по списку жителей вызывать нужные методы. Теперь не потребуется даже
-    #  дорабатывать цикл при появлении новых жильцов
 print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
 print(('{} food was eaten in total'.format(home.food_eaten)))
 print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
