@@ -320,7 +320,7 @@ sergey.adopt_cat(cat=barsik)
 elena = Child(name='Elena', house=home)
 home.add_new_resident(sergey, masha, barsik, elena)
 
-for day in range(365):
+for day in range(1, 366):
     cprint('================== День {} =================='.format(day), color='red')
     for resident in home.residents:
         resident.act()
@@ -333,7 +333,7 @@ print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
 print(('{} food was eaten in total'.format(home.food_eaten)))
 print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 
-# зачет второй части
+# зачет третей части
 
 ######################################################## Часть вторая
 #
