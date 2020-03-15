@@ -90,22 +90,23 @@ class Human:
         if self.house.food >= 30:
             self.house.food -= 30
             self.fullness += 30
-            print('{} has eaten'.format(self.name))
+            #print('{} has eaten'.format(self.name))
         else:
             self.fullness -= 10
-            print('not enough food in the house')
+            #print('not enough food in the house')
 
     def get_married(self, spouse):
         self.spouse = spouse
         spouse.spouse = self
-        print('{} married {}'.format(self.name, spouse.name))
+        #print('{} married {}'.format(self.name, spouse.name))
 
     def pet_cat(self):
         if self.house.cat:
             self.happiness += 5
-            print('{} pet the cat'.format(self.name))
+            #print('{} pet the cat'.format(self.name))
         else:
-            print('{} there is no cat in the house')
+            pass
+            #print('{} there is no cat in the house')
 
     def adopt_cat(self, cat):
         self.house.cat = cat
@@ -123,7 +124,7 @@ class Husband(Human):
             return
         elif self.house.dirtiness >= 90:
             self.happiness -= 10
-            print('why is everything so dirty around here?')
+            #print('why is everything so dirty around here?')
         if self.fullness <= 70 and self.house.food >= 30:
             self.house.food_eaten += 30
             self.eat()
@@ -136,28 +137,29 @@ class Husband(Human):
         if self.house.food >= 10:
             self.fullness -= 10
             self.house.money += self.salary
-            print('{} worked for the whole day'.format(self.name))
+            #print('{} worked for the whole day'.format(self.name))
             self.money_earned += 150
         else:
-            print('I am too hungry to work')
+            pass
+            #print('I am too hungry to work')
 
     def random_action(self):
         if self.house.food >= 10:
             random_number = randint(1, 4)
             self.fullness -= 10
         else:
-            print('{} cant do anything while hungry'.format(self.name))
+            #print('{} cant do anything while hungry'.format(self.name))
             return
         if random_number == 1:
             self.happiness += 20
-            print('{} played WoT for the whole day'.format(self.name))
+            #print('{} played WoT for the whole day'.format(self.name))
         elif random_number == 2:
             self.happiness += 20
-            print('{} watched TV for the whole day'.format(self.name))
+            #print('{} watched TV for the whole day'.format(self.name))
         elif random_number == 3:
             self.happiness += 20
             self.spouse.happiness += 20
-            print('{} gave flowers to his wife'.format(self.name))
+            #print('{} gave flowers to his wife'.format(self.name))
         elif random_number == 4:
             self.pet_cat()
 
@@ -173,7 +175,7 @@ class Wife(Human):
             return
         elif self.house.dirtiness >= 90:
             self.happiness -= 10
-            print('why is everything so dirty around here?')
+            #print('why is everything so dirty around here?')
         if self.fullness <= 60 and self.house.food >= 30:
             self.house.food_eaten += 30
             self.eat()
@@ -192,14 +194,15 @@ class Wife(Human):
             self.house.money -= 80
             self.house.food += 80
             self.house.cat_food += 60
-            print('{} bought some human and cat food'.format(self.name))
+            #print('{} bought some human and cat food'.format(self.name))
         # elif self.house.money >= 60:
         #     self.fullness -= 10
         #     self.house.money -= 60
         #     self.house.food += 60
         #     print('{} bought some food'.format(self.name))
         else:
-            print('not enough money to buy food')
+            pass
+            #print('not enough money to buy food')
 
     def buy_fur_coat(self):
         if self.house.food >= 10 and self.house.money >= 350:
@@ -207,35 +210,39 @@ class Wife(Human):
             self.house.money -= 350
             self.happiness += 60
             self.coats_bought += 1
-            print('{} bought a new coat'.format(self.name))
+            #print('{} bought a new coat'.format(self.name))
         else:
             if self.house.food >= 10:
-                print('not enough energy to but a new coat')
+                pass
+                #print('not enough energy to but a new coat')
             elif self.house.money >= 350:
-                print('not enough money to but a new coat')
+                pass
+                #print('not enough money to but a new coat')
 
     def clean_house(self):
         if self.house.food >= 10:
             self.fullness -= 10
             self.house.dirtiness -= 30
-            print('{} cleaned the house'.format(self.name))
+            #print('{} cleaned the house'.format(self.name))
         else:
-            print('{} is too hungry to clean'.format(self.name))
+            pass
+            #print('{} is too hungry to clean'.format(self.name))
 
     def random_action(self):
         if self.house.food >= 10:
             random_number = randint(1, 4)
             self.fullness -= 10
         else:
-            print('{} cant do anything while hungry'.format(self.name))
+            #print('{} cant do anything while hungry'.format(self.name))
             return
         if random_number == 1:
-            print('{} annoyed husband for the whole day'.format(self.name))
+            #print('{} annoyed husband for the whole day'.format(self.name))
             self.spouse.happiness -= 10
         elif random_number == 2:
-            print('{} watched TV for the whole day'.format(self.name))
+            pass
+            #print('{} watched TV for the whole day'.format(self.name))
         elif random_number == 3:
-            print('{} went out for the whole night '.format(self.name))
+            #print('{} went out for the whole night '.format(self.name))
             self.house.money -= 20
         elif random_number == 4:
             self.pet_cat()
@@ -270,19 +277,19 @@ class Cat:
             self.fullness += 20
             self.house.cat_food -= 10
             self.house.cat_food_eaten += 10
-            print('{} has eaten'.format(self.name))
+            #print('{} has eaten'.format(self.name))
         else:
             self.fullness -= 10
-            print('{} is starving'.format(self.name))
+            #print('{} is starving'.format(self.name))
 
     def sleep(self):
         self.fullness -= 10
-        print('{} slept around 20 hours'.format(self.name))
+        #print('{} slept around 20 hours'.format(self.name))
 
     def scratch__wallpapers(self):
         self.fullness -= 10
         self.house.dirtiness += 5
-        print('{} scratched the wallpapers'.format(self.name))
+        #print('{} scratched the wallpapers'.format(self.name))
 
 
 class Child(Human):
@@ -304,14 +311,14 @@ class Child(Human):
             self.house.food -= 10
             self.fullness += 10
             self.house.food_eaten += 10
-            print('{} has eaten'.format(self.name))
+            #print('{} has eaten'.format(self.name))
         else:
             self.fullness -= 10
-            print('not enough food in the house')
+            #print('not enough food in the house')
 
     def sleep(self):
         self.fullness -= 10
-        print('{} slept all day'.format(self.name))
+        #print('{} slept all day'.format(self.name))
 
 
 #
@@ -437,7 +444,7 @@ class Simulation:
         sergey.get_married(masha)
         elena = Child(name='Elena', house=home)
         home.add_new_resident(sergey, masha, elena)
-        for number_of_cats in range(20):
+        for number_of_cats in range(1):
             cat = Cat(name='Barsik', house=home)
             sergey.adopt_cat(cat=cat)
             home.add_new_resident(cat)
@@ -470,4 +477,4 @@ for food_accidents in range(1):
     for money_accidents in range(1):
         life = Simulation(money_accidents, food_accidents)
         for salary in range(50, 401, 50):
-            print(life.experiment(salary))
+            cprint(life.experiment(salary), color='cyan')
