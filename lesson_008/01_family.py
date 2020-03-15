@@ -438,51 +438,7 @@ class Simulation:
         self.food_accidents = food_accidents
 
     def experiment(self, salary):
-        home = House()
-        sergey = Husband(name='Sergey', house=home, salary=salary)
-        masha = Wife(name='Masha', house=home)
-        sergey.get_married(masha)
-        elena = Child(name='Elena', house=home)
-        home.add_new_resident(sergey, masha, elena)
-        for number_of_cats in range(3):
-            cat = Cat(name='Barsik', house=home)
-            sergey.adopt_cat(cat=cat)
-            home.add_new_resident(cat)
-            for run in range(1,2):
-                cats_alive = 0
-                people_alive = 0
-                for day in range(1, 366):
-                    for resident in home.residents:
-                        resident.act()
-                    home.act()
-                    if self.money_accidents > 0:
-                        if randint(0, 100) <= 5:
-                            sergey.house.money = sergey.house.money / 2
-                            self.money_accidents -= 1
-                    if self.food_accidents > 0:
-                        if randint(0, 100) <= 5:
-                            sergey.house.food = sergey.house.food / 2
-                            sergey.house.cat_food = sergey.house.cat_food / 2
-                            self.food_accidents -= 1
-                for resident in home.residents:
-                    if isinstance(resident, Human) and resident.fullness > 0:
-                        people_alive += 1
-                    elif isinstance(resident, Cat) and resident.fullness > 0:
-                        cats_alive += 1
-                # if people_alive < 3:
-                #     cprint('one of the humans has passed away', color='cyan')
-                # elif cats_alive < number_of_cats:
-                #     cprint('one of the cats has passed away', color='cyan')
-                # print('Run number {}, amount of cats survived {}, people survived {}'.format(run, cats_alive,
-                #                                                                              people_alive))
 
-        cprint('При зарплате {} максимально можно прокормить {} котов'.format(salary, cats_alive),color='cyan')
-        for resident in home.residents:
-            print(resident)
-        print(home)
 
-for food_accidents in range(1):
-    for money_accidents in range(1):
-        life = Simulation(money_accidents, food_accidents)
-        for salary in range(50, 401, 50):
-            life.experiment(salary)
+for salary in range(50, 401, 50):
+    life.experiment(salary)
