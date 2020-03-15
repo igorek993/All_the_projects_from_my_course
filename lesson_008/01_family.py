@@ -444,11 +444,11 @@ class Simulation:
         sergey.get_married(masha)
         elena = Child(name='Elena', house=home)
         home.add_new_resident(sergey, masha, elena)
-        for number_of_cats in range(5):
+        for number_of_cats in range(3):
             cat = Cat(name='Barsik', house=home)
             sergey.adopt_cat(cat=cat)
             home.add_new_resident(cat)
-            for run in range(1, 4):
+            for run in range(1,2):
                 cats_alive = 0
                 people_alive = 0
                 for day in range(1, 366):
@@ -469,14 +469,17 @@ class Simulation:
                         people_alive += 1
                     elif isinstance(resident, Cat) and resident.fullness > 0:
                         cats_alive += 1
-                if people_alive < 3:
-                    cprint('one of the humans has passed away', color='cyan')
-                elif cats_alive < number_of_cats:
-                    cprint('one of the cats has passed away', color='cyan')
-                print('Run number {}, amount of cats survived {}, people survived {}'.format(run, cats_alive,
-                                                                                             people_alive))
+                # if people_alive < 3:
+                #     cprint('one of the humans has passed away', color='cyan')
+                # elif cats_alive < number_of_cats:
+                #     cprint('one of the cats has passed away', color='cyan')
+                # print('Run number {}, amount of cats survived {}, people survived {}'.format(run, cats_alive,
+                #                                                                              people_alive))
 
         cprint('При зарплате {} максимально можно прокормить {} котов'.format(salary, cats_alive),color='cyan')
+        for resident in home.residents:
+            print(resident)
+        print(home)
 
 for food_accidents in range(1):
     for money_accidents in range(1):
