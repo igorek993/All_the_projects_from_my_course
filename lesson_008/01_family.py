@@ -113,9 +113,10 @@ class Human:
 
 class Husband(Human):
 
-    def __init__(self, name, house):
+    def __init__(self, name, house, salary):
         super().__init__(name, house)
         self.money_earned = 0
+        self.salary = salary
 
     def act(self):
         if self.fullness <= 0 or self.happiness <= 10:
@@ -134,7 +135,7 @@ class Husband(Human):
     def work(self):
         if self.house.food >= 10:
             self.fullness -= 10
-            self.house.money += 150
+            self.house.money += self.salary
             print('{} worked for the whole day'.format(self.name))
             self.money_earned += 150
         else:
@@ -423,40 +424,51 @@ class Child(Human):
 
 class Simulation:
 
-    def __init__(self):
-        pass
+    def __init__(self, money_accidents, food_accidents):
+        self.money_accidents = money_accidents
+        self.food_accidents = food_accidents
 
-    def experiment(self, cats_amount, ):
+    def experiment(self, salary):
+        people_alive = 0
+        cats_alive = 0
         home = House()
-        sergey = Husband(name='Sergey', house=home)
+        sergey = Husband(name='Sergey', house=home, salary=salary)
         masha = Wife(name='Masha', house=home)
-        for _ in range(cats_amount):
-            cat = Cat(name='Barsik', house=home)
-            sergey.adopt_cat(cat=cat)
-            home.add_new_resident(cat)
         sergey.get_married(masha)
         elena = Child(name='Elena', house=home)
         home.add_new_resident(sergey, masha, elena)
-        for day in range(1, 366):
-            for resident in home.residents:
-                resident.act()
-            home.act()
-        cprint('{} earned {} in total'.format(sergey.name, sergey.money_earned), color='cyan')
-        cprint(('{} human food and {} of cat food was eaten in total'.format(home.food_eaten, home.cat_food_eaten)),
-               color='cyan')
-        cprint(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)), color='cyan')
-        cprint(home, color='cyan')
-        people_alive = 0
-        cats_alive = 0
-        for resident in home.residents:
-            if isinstance(resident, Human) and resident.fullness >0:
-                people_alive +=1
-            elif isinstance(resident, Cat) and resident.fullness >0:
-                cats_alive +=1
-        cprint('{} people and {} cats survived'.format(people_alive, cats_alive), color='cyan')
+        for number_of_cats in range(20):
+            cat = Cat(name='Barsik', house=home)
+            sergey.adopt_cat(cat=cat)
+            home.add_new_resident(cat)
+            for day in range(1, 366):
+                for resident in home.residents:
+                    resident.act()
+                    if self.money_accidents > 0:
+                        if randint(0, 100) <= 5:
+                            sergey.house.money = sergey.house.money / 2
+                            self.money_accidents -= 1
+                    if self.food_accidents > 0:
+                        if randint(0, 100) <= 5:
+                            sergey.house.food = sergey.house.food / 2
+                            sergey.house.cat_food = sergey.house.cat_food / 2
+                            self.food_accidents -= 1
+                home.act()
+                for resident in home.residents:
+                    if isinstance(resident, Human) and resident.fullness > 0:
+                        people_alive += 1
+                    elif isinstance(resident, Cat) and resident.fullness > 0:
+                        cats_alive += 1
+                if people_alive < 3:
+                    cprint('one of the humans has passed away', color='cyan')
+                elif cats_alive < number_of_cats:
+                    cprint('one of the cats has passed away', color='cyan')
 
 
 
-life = Simulation()
-
-print(life.experiment(1))
+for food_accidents in range(6):
+    for money_accidents in range(6):
+        life = Simulation(money_accidents, food_accidents)
+        for salary in range(50, 401, 50):
+            max_cats = life.experiment(salary)
+            print('При зарплате {salary} максимально можно прокормить {max_cats} котов')
