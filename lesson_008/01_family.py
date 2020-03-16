@@ -128,7 +128,7 @@ class Husband(Human):
         if self.fullness <= 70 and self.house.food >= 30:
             self.house.food_eaten += 30
             self.eat()
-        elif self.house.money < 450:
+        elif self.house.money < 300:
             self.work()
         else:
             self.random_action()
@@ -224,7 +224,7 @@ class Wife(Human):
     def clean_house(self):
         if self.house.food >= 10:
             self.fullness -= 10
-            self.house.dirtiness -= 30
+            self.house.dirtiness -= 100
             # print('{} cleaned the house'.format(self.name))
         else:
             pass
@@ -323,9 +323,9 @@ class Child(Human):
         # print('{} slept all day'.format(self.name))
 
 
-#
+# #
 # home = House()
-# sergey = Husband(name='Sergey', house=home)
+# sergey = Husband(name='Sergey', house=home , salary=1)
 # masha = Wife(name='Masha', house=home)
 # barsik = Cat(name='Barsik', house=home)
 # sergey.get_married(masha)
@@ -334,17 +334,17 @@ class Child(Human):
 # home.add_new_resident(sergey, masha, barsik, elena)
 #
 # for day in range(1, 366):
-#     cprint('================== День {} =================='.format(day), color='red')
+#     cprint('================== Day {} =================='.format(day), color='red')
 #     for resident in home.residents:
 #         resident.act()
 #     for resident in home.residents:
 #         cprint(resident, color='cyan')
 #     home.act()
 #     cprint(home, color='cyan')
-#
-# # print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
-# # print(('{} food was eaten in total'.format(home.food_eaten)))
-# # print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
+
+# print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
+# print(('{} food was eaten in total'.format(home.food_eaten)))
+# print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 
 # зачет третей части
 
@@ -431,55 +431,64 @@ class Child(Human):
 #           # print('При зарплате {salary} максимально можно прокормить {max_cats} котов')
 
 
-def who_survived(house):
-    people_alive = 0
-    cats_alive = 0
-    for resident in house.residents:
-        if isinstance(resident, Human) and resident.fullness > 0:
-            people_alive += 1
-        elif isinstance(resident, Cat) and resident.fullness > 0:
-            cats_alive += 1
-    return [cats_alive, people_alive]
-
-
 class Simulation:
 
-    def simulate(self, runs, max_amount_of_cats, salary):
-        cats_survived = []
-        for run in range(0, runs):
-            home = House()
-            sergey = Husband(name='Sergey', house=home, salary=salary)
-            masha = Wife(name='Masha', house=home)
-            for _ in range(max_amount_of_cats):
-                barsik = Cat(name='Barsik', house=home)
-                sergey.adopt_cat(cat=barsik)
-                home.add_new_resident(barsik)
-            sergey.get_married(masha)
-            elena = Child(name='Elena', house=home)
-            home.add_new_resident(sergey, masha, elena)
-            for day in range(1, 366):
-                for resident in home.residents:
-                    resident.act()
-                home.act()
-        cats_survived += []
+    def who_survived(self, house):
+        people_alive = 0
+        cats_alive = 0
+        for resident in house.residents:
+            if isinstance(resident, Human) and resident.fullness > 0:
+                people_alive += 1
+            elif isinstance(resident, Cat) and resident.fullness > 0:
+                cats_alive += 1
+        return [cats_alive, people_alive]
 
+    def simulate(self, amount_of_cats, salary):
+        home = House()
+        sergey = Husband(name='Sergey', house=home, salary=salary)
+        masha = Wife(name='Masha', house=home)
+        for _ in range(amount_of_cats):
+            barsik = Cat(name='Barsik', house=home)
+            masha.adopt_cat(cat=barsik)
+            home.add_new_resident(barsik)
+        sergey.get_married(masha)
+        elena = Child(name='Elena', house=home)
+        home.add_new_resident(sergey, masha, elena)
+        for day in range(1, 366):
+            for resident in home.residents:
+                resident.act()
+            home.act()
+        return home
 
+    def check_the_result(self, result, amount_of_cats):
+        negative = 0
+        positive = 0
+        for run in range(3):
+            if result[run] == [amount_of_cats, 3]:
+                positive += 1
+            else:
+                negative += 1
+        if positive > negative:
+            return True
+        else:
+            return False
 
     def experiment(self, salary):
-        positive = 0
-        negative = 0
-        self.simulate(runs=3, max_amount_of_cats=7 , salary=salary)
-        if who_survived(home) == [cats_amount, 3]:
-            positive += 1
-        else:
-            negative_amount =
-            negative += 1
-    if positive > negative:
-        return '{} cats can live in this family if the salary is {} '.format(cats_amount, salary)
-    else:
-        return '{} cats can live in this family if the salary is {} '.format(------, salary)
+        for amount_of_cats in range(1,10):
+            result = []
+            for run in range(1, 4):
+                result.append(self.who_survived(self.simulate(amount_of_cats=amount_of_cats, salary=salary)))
+            if self.check_the_result(result, amount_of_cats):
+                continue
+            else:
+                if amount_of_cats > 1:
+                    return '{} cats can live in this family if the salary is {} '.format(amount_of_cats - 1, salary)
+                if amount_of_cats == 0:
+                    return '{} cats can live in this family if the salary is {} '.format(amount_of_cats, salary)
 
 
 life = Simulation()
-# for salary in range(50, 401, 50):
-print(life.experiment(200))
+#for salary in range(50, 401, 50):
+print(life.experiment(100))
+
+# I have to get maxim amount of cats possible
