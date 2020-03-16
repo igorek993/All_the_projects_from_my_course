@@ -50,7 +50,7 @@ class House:
         self.food = 50
         self.dirtiness = 0
         self.food_eaten = 0
-        self.cat_food = 60
+        self.cat_food = 30
         self.cat = None
         self.residents = []
         self.cat_food_eaten = 0
@@ -457,7 +457,6 @@ class Simulation:
             for resident in home.residents:
                 resident.act()
             home.act()
-            # print(home)
         return home
 
     def check_the_result(self, result, amount_of_cats):
@@ -490,3 +489,8 @@ class Simulation:
 life = Simulation()
 for salary in range(50, 401, 50):
     print(life.experiment(salary))
+
+
+#TODO Hello Alex, I have been working on this task for the las couple of days, but I cant understand why
+# the result is so strange. I've been trying to find a mistake but I could not... Would you be able
+# to point me in the right direction, please?
