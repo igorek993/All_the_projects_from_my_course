@@ -50,7 +50,7 @@ class House:
         self.food = 50
         self.dirtiness = 0
         self.food_eaten = 0
-        self.cat_food = 30
+        self.cat_food = 60
         self.cat = None
         self.residents = []
         self.cat_food_eaten = 0
@@ -200,8 +200,7 @@ class Wife(Human):
             self.house.money -= 80
             self.house.food += 60
             self.house.cat_food += 20
-
-        #     # print('{} bought some food'.format(self.name))
+            # print('{} bought some food'.format(self.name))
         else:
             pass
             # print('not enough money to buy food')
@@ -342,9 +341,9 @@ class Child(Human):
 #     home.act()
 #     cprint(home, color='cyan')
 
-# print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
-# print(('{} food was eaten in total'.format(home.food_eaten)))
-# print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
+# # print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
+# # print(('{} food was eaten in total'.format(home.food_eaten)))
+# # print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 
 # зачет третей части
 
@@ -458,6 +457,7 @@ class Simulation:
             for resident in home.residents:
                 resident.act()
             home.act()
+            # print(home)
         return home
 
     def check_the_result(self, result, amount_of_cats):
@@ -474,21 +474,19 @@ class Simulation:
             return False
 
     def experiment(self, salary):
-        for amount_of_cats in range(1,10):
+        for amount_of_cats in range(1, 10):
             result = []
             for run in range(1, 4):
                 result.append(self.who_survived(self.simulate(amount_of_cats=amount_of_cats, salary=salary)))
             if self.check_the_result(result, amount_of_cats):
                 continue
             else:
-                if amount_of_cats > 1:
+                if amount_of_cats >= 1:
                     return '{} cats can live in this family if the salary is {} '.format(amount_of_cats - 1, salary)
                 if amount_of_cats == 0:
                     return '{} cats can live in this family if the salary is {} '.format(amount_of_cats, salary)
 
 
 life = Simulation()
-#for salary in range(50, 401, 50):
-print(life.experiment(100))
-
-# I have to get maxim amount of cats possible
+for salary in range(50, 401, 50):
+    print(life.experiment(salary))
