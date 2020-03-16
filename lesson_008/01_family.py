@@ -138,7 +138,7 @@ class Husband(Human):
             self.fullness -= 10
             self.house.money += self.salary
             # print('{} worked for the whole day'.format(self.name))
-            self.money_earned += 150
+            self.money_earned += 150  # TODO Тут не поправили 150 на self.salary?
         else:
             pass
             # print('I am too hungry to work')
@@ -464,10 +464,10 @@ class Simulation:
         positive = 0
         for run in range(3):
             if result[run] == [amount_of_cats, 3]:
-                positive += 1
+                positive += 1  # TODO Нужно 2 положительных из 3х, а отрицательные просто дублируют информацию
             else:
                 negative += 1
-        if positive > negative:
+        if positive > negative:  # TODO Просто поставить условие прямо в return
             return True
         else:
             return False
@@ -491,6 +491,7 @@ for salary in range(50, 401, 50):
     print(life.experiment(salary))
 
 
-#TODO Hello Alex, I have been working on this task for the las couple of days, but I cant understand why
+# Hello Alex, I have been working on this task for the las couple of days, but I cant understand why
 # the result is so strange. I've been trying to find a mistake but I could not... Would you be able
 # to point me in the right direction, please?
+# TODO Потестил код, в принципе всё верно, видимо "балланс" модели таков, что выживает только 5 котов
