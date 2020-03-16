@@ -191,17 +191,17 @@ class Wife(Human):
     def shopping(self):
         if self.house.money >= 140:
             self.fullness -= 10
-            self.house.money -= 80
+            self.house.money -= 140
             self.house.food += 80
             self.house.cat_food += 60
             # print('{} bought some human and cat food'.format(self.name))
         elif self.house.money >= 80:
             self.fullness -= 10
-            self.house.money -= 60
+            self.house.money -= 80
             self.house.food += 60
             self.house.cat_food += 20
 
-        #     print('{} bought some food'.format(self.name))
+        #     # print('{} bought some food'.format(self.name))
         else:
             pass
             # print('not enough money to buy food')
@@ -342,9 +342,9 @@ class Child(Human):
 #     home.act()
 #     cprint(home, color='cyan')
 #
-# print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
-# print(('{} food was eaten in total'.format(home.food_eaten)))
-# print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
+# # print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
+# # print(('{} food was eaten in total'.format(home.food_eaten)))
+# # print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 
 # зачет третей части
 
@@ -428,17 +428,58 @@ class Child(Human):
 #       life = Simulation(money_accidents, food_accidents)
 #       for salary in range(50, 401, 50):
 #           max_cats = life.experiment(salary)
-#           print('При зарплате {salary} максимально можно прокормить {max_cats} котов')
+#           # print('При зарплате {salary} максимально можно прокормить {max_cats} котов')
+
+
+def who_survived(house):
+    people_alive = 0
+    cats_alive = 0
+    for resident in house.residents:
+        if isinstance(resident, Human) and resident.fullness > 0:
+            people_alive += 1
+        elif isinstance(resident, Cat) and resident.fullness > 0:
+            cats_alive += 1
+    return [cats_alive, people_alive]
 
 
 class Simulation:
 
-    def __init__(self, money_accidents, food_accidents):
-        self.money_accidents = money_accidents
-        self.food_accidents = food_accidents
+    def simulate(self, runs, max_amount_of_cats, salary):
+        cats_survived = []
+        for run in range(0, runs):
+            home = House()
+            sergey = Husband(name='Sergey', house=home, salary=salary)
+            masha = Wife(name='Masha', house=home)
+            for _ in range(max_amount_of_cats):
+                barsik = Cat(name='Barsik', house=home)
+                sergey.adopt_cat(cat=barsik)
+                home.add_new_resident(barsik)
+            sergey.get_married(masha)
+            elena = Child(name='Elena', house=home)
+            home.add_new_resident(sergey, masha, elena)
+            for day in range(1, 366):
+                for resident in home.residents:
+                    resident.act()
+                home.act()
+        cats_survived += []
+
+
 
     def experiment(self, salary):
+        positive = 0
+        negative = 0
+        self.simulate(runs=3, max_amount_of_cats=7 , salary=salary)
+        if who_survived(home) == [cats_amount, 3]:
+            positive += 1
+        else:
+            negative_amount =
+            negative += 1
+    if positive > negative:
+        return '{} cats can live in this family if the salary is {} '.format(cats_amount, salary)
+    else:
+        return '{} cats can live in this family if the salary is {} '.format(------, salary)
 
 
-for salary in range(50, 401, 50):
-    life.experiment(salary)
+life = Simulation()
+# for salary in range(50, 401, 50):
+print(life.experiment(200))
