@@ -112,7 +112,7 @@ class Human:
 
 class Husband(Human):
 
-    def __init__(self, name, house , salary):
+    def __init__(self, name, house, salary):
         super().__init__(name, house)
         self.money_earned = 0
         self.salary = salary
@@ -200,7 +200,7 @@ class Wife(Human):
 
             # print('{} bought some food'.format(self.name))
         else:
-            #print('not enough money to buy food')
+            # print('not enough money to buy food')
             pass
 
     def buy_fur_coat(self):
@@ -212,10 +212,10 @@ class Wife(Human):
             # print('{} bought a new coat'.format(self.name))
         else:
             if self.house.food >= 10:
-                #print('not enough energy to but a new coat')
+                # print('not enough energy to but a new coat')
                 pass
             elif self.house.money >= 350:
-                #print('not enough money to but a new coat')
+                # print('not enough money to but a new coat')
                 pass
 
     def clean_house(self):
@@ -237,7 +237,7 @@ class Wife(Human):
             # print('{} annoyed husband for the whole day'.format(self.name))
             self.spouse.happiness -= 10
         elif random_number == 2:
-            #print('{} watched TV for the whole day'.format(self.name))
+            # print('{} watched TV for the whole day'.format(self.name))
             pass
         elif random_number == 3:
             # print('{} went out for the whole night '.format(self.name))
