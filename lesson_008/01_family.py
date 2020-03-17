@@ -53,7 +53,6 @@ class House:
         self.cat_food = 30
         self.cat = None
         self.residents = []
-        self.cat_food_eaten = 0
 
     def __str__(self):
         return (
@@ -105,8 +104,7 @@ class Human:
             self.happiness += 5
             # print('{} pet the cat'.format(self.name))
         else:
-            pass
-            # print('{} there is no cat in the house')
+            print('{} there is no cat in the house')
 
     def adopt_cat(self, cat):
         self.house.cat = cat
@@ -114,7 +112,7 @@ class Human:
 
 class Husband(Human):
 
-    def __init__(self, name, house, salary):
+    def __init__(self, name, house , salary):
         super().__init__(name, house)
         self.money_earned = 0
         self.salary = salary
@@ -128,7 +126,7 @@ class Husband(Human):
         if self.fullness <= 70 and self.house.food >= 30:
             self.house.food_eaten += 30
             self.eat()
-        elif self.house.money < 300:
+        elif self.house.money < 450:
             self.work()
         else:
             self.random_action()
@@ -138,10 +136,9 @@ class Husband(Human):
             self.fullness -= 10
             self.house.money += self.salary
             # print('{} worked for the whole day'.format(self.name))
-            self.money_earned += 150  # TODO Тут не поправили 150 на self.salary?
+            self.money_earned += self.salary
         else:
-            pass
-            # print('I am too hungry to work')
+            print('I am too hungry to work')
 
     def random_action(self):
         if self.house.food >= 10:
@@ -179,7 +176,7 @@ class Wife(Human):
         if self.fullness <= 60 and self.house.food >= 30:
             self.house.food_eaten += 30
             self.eat()
-        elif self.house.food <= 60 or self.house.cat_food < 60:
+        elif self.house.food <= 60:
             self.shopping()
         elif self.happiness <= 30:
             self.buy_fur_coat()
@@ -197,13 +194,14 @@ class Wife(Human):
             # print('{} bought some human and cat food'.format(self.name))
         elif self.house.money >= 80:
             self.fullness -= 10
-            self.house.money -= 80
+            self.house.money -= 60
             self.house.food += 60
             self.house.cat_food += 20
+
             # print('{} bought some food'.format(self.name))
         else:
+            #print('not enough money to buy food')
             pass
-            # print('not enough money to buy food')
 
     def buy_fur_coat(self):
         if self.house.food >= 10 and self.house.money >= 350:
@@ -214,20 +212,19 @@ class Wife(Human):
             # print('{} bought a new coat'.format(self.name))
         else:
             if self.house.food >= 10:
+                #print('not enough energy to but a new coat')
                 pass
-                # print('not enough energy to but a new coat')
             elif self.house.money >= 350:
+                #print('not enough money to but a new coat')
                 pass
-                # print('not enough money to but a new coat')
 
     def clean_house(self):
         if self.house.food >= 10:
             self.fullness -= 10
-            self.house.dirtiness -= 100
+            self.house.dirtiness -= 30
             # print('{} cleaned the house'.format(self.name))
         else:
-            pass
-            # print('{} is too hungry to clean'.format(self.name))
+            print('{} is too hungry to clean'.format(self.name))
 
     def random_action(self):
         if self.house.food >= 10:
@@ -240,8 +237,8 @@ class Wife(Human):
             # print('{} annoyed husband for the whole day'.format(self.name))
             self.spouse.happiness -= 10
         elif random_number == 2:
+            #print('{} watched TV for the whole day'.format(self.name))
             pass
-            # print('{} watched TV for the whole day'.format(self.name))
         elif random_number == 3:
             # print('{} went out for the whole night '.format(self.name))
             self.house.money -= 20
@@ -277,7 +274,6 @@ class Cat:
         if self.house.cat_food >= 10:
             self.fullness += 20
             self.house.cat_food -= 10
-            self.house.cat_food_eaten += 10
             # print('{} has eaten'.format(self.name))
         else:
             self.fullness -= 10
@@ -341,9 +337,9 @@ class Child(Human):
 #     home.act()
 #     cprint(home, color='cyan')
 
-# # print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
-# # print(('{} food was eaten in total'.format(home.food_eaten)))
-# # print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
+# # # print('{} earned {} in total'.format(sergey.name, sergey.money_earned))
+# # # print(('{} food was eaten in total'.format(home.food_eaten)))
+# # # print(('{} bought {} coats in total'.format(masha.name, masha.coats_bought)))
 
 # зачет третей части
 
@@ -427,7 +423,7 @@ class Child(Human):
 #       life = Simulation(money_accidents, food_accidents)
 #       for salary in range(50, 401, 50):
 #           max_cats = life.experiment(salary)
-#           # print('При зарплате {salary} максимально можно прокормить {max_cats} котов')
+#           # # print('При зарплате {salary} максимально можно прокормить {max_cats} котов')
 
 
 class Simulation:
@@ -460,20 +456,14 @@ class Simulation:
         return home
 
     def check_the_result(self, result, amount_of_cats):
-        negative = 0
         positive = 0
         for run in range(3):
             if result[run] == [amount_of_cats, 3]:
-                positive += 1  # TODO Нужно 2 положительных из 3х, а отрицательные просто дублируют информацию
-            else:
-                negative += 1
-        if positive > negative:  # TODO Просто поставить условие прямо в return
-            return True
-        else:
-            return False
+                positive += 1
+        return positive > 2
 
     def experiment(self, salary):
-        for amount_of_cats in range(1, 10):
+        for amount_of_cats in range(1, 99):
             result = []
             for run in range(1, 4):
                 result.append(self.who_survived(self.simulate(amount_of_cats=amount_of_cats, salary=salary)))
@@ -489,9 +479,3 @@ class Simulation:
 life = Simulation()
 for salary in range(50, 401, 50):
     print(life.experiment(salary))
-
-
-# Hello Alex, I have been working on this task for the las couple of days, but I cant understand why
-# the result is so strange. I've been trying to find a mistake but I could not... Would you be able
-# to point me in the right direction, please?
-# TODO Потестил код, в принципе всё верно, видимо "балланс" модели таков, что выживает только 5 котов
