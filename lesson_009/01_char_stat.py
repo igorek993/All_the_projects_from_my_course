@@ -21,10 +21,43 @@
 # Упорядочивание по частоте - по убыванию. Ширину таблицы подберите по своему вкусу
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-# TODO здесь ваш код
+import os
+import zipfile as zp
+from pprint import pprint
+
+file_name = 'voyna-i-mir.txt'
+
+
+class StatisticCount:
+
+    def count_letters(self, file_name):
+        stat = {}
+        letters_total = 0
+        with open(file_name, 'r', encoding='cp1251') as file:
+            for line in file:
+                for letter in line:
+                    if letter.isalpha():
+                        if letter in stat:
+                            stat[letter] += 1
+                        else:
+                            stat[letter] = 1
+        print('+---------+----------+\n'
+              '|  буква  | частота  |\n'
+              '+---------+----------+')
+        for key, value in stat.items():
+            print('|{:^9}|{:^10}|'.format(key, value))
+            letters_total += value
+        print('+ --------+----------+\n'
+              '|  итого  |{:^10}|\n'
+              '+---------+----------+\n'.format(letters_total))
+
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
 #  - по алфавиту по возрастанию
 #  - по алфавиту по убыванию
 # Для этого пригодится шаблон проектирование "Шаблонный метод" см https://goo.gl/Vz4828
+
+a = StatisticCount()
+
+a.count_letters(file_name)

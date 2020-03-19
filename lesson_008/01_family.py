@@ -138,6 +138,7 @@ class Husband(Human):
             # print('{} worked for the whole day'.format(self.name))
             self.money_earned += self.salary
         else:
+            self.fullness -= 10
             print('I am too hungry to work')
 
     def random_action(self):
