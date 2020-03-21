@@ -45,19 +45,19 @@ class StatisticCount:
               '|  буква  | частота  |\n'
               '+---------+----------+')
         for key, value in stat.items():
-            print('|{:^9}|{:^10}|'.format(key, value))
+            print(f'|{key:^9}|{value:^10}|')
             letters_total += value
         print('+ --------+----------+\n'
               '|  итого  |{:^10}|\n'
               '+---------+----------+\n'.format(letters_total))
 
 
+a = StatisticCount()
+
+a.count_letters(file_name)
+
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
 #  - по алфавиту по возрастанию
 #  - по алфавиту по убыванию
 # Для этого пригодится шаблон проектирование "Шаблонный метод" см https://goo.gl/Vz4828
-
-a = StatisticCount()
-
-a.count_letters(file_name)
