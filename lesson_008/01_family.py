@@ -477,6 +477,14 @@ class Simulation:
                     return '{} cats can live in this family if the salary is {} '.format(amount_of_cats, salary)
 
 
-life = Simulation()
+life = Simulation()  # TODO Чтобы исключить влияние предыдущего эксперимента на текущий, объект life следует создавать
+# при каждом новом эксперименте (для каждого начального условия).
 for salary in range(50, 401, 50):
     print(life.experiment(salary))
+# TOdO Также можно привнести в эксперимент влияние хаоса - см. задание, цитата:
+#   for food_accidents in range(6):
+#     for money_accidents in range(6):
+#         life = Simulation(money_accidents, food_accidents)
+#         for salary in range(50, 401, 50):
+#             max_cats = life.experiment(salary)
+#             # # print('При зарплате {salary} максимально можно прокормить {max_cats} котов')
