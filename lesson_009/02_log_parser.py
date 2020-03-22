@@ -33,9 +33,7 @@ class ReadFile:
                     if previous_time:
                         if previous_time == line[0:17] and line[29:32] == 'NOK':
                             count += 1
-                        elif previous_time == line[0:17]:
-                            continue
-                        else:
+                        elif previous_time != line[0:17]:
                             result.write(f'{previous_time}] {count} \n')
                             count = 0
                             allow = True
