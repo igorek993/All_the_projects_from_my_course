@@ -57,7 +57,9 @@ class PhotosSorter:
 
 
 icons_folder = os.path.normpath('C:/Users/igorek/PycharmProjects/python_base/lesson_009/icons')
+# TODO В windows разве такие слеши в пути?
 final_folder = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009')
+# TOdO Константы
 
 a = PhotosSorter()
 a.sort_files(icons_folder, final_folder)

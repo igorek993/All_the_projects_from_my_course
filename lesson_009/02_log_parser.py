@@ -20,7 +20,7 @@
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
 # the length of a line is 32 , up to minutes is 17, the last letters [29:32], minute digit is [16]
-
+# TODO Две пустых строки до и после определения класса!
 class ReadFile:
 
     def give_a_result(self, file_to_read, result):
@@ -42,7 +42,7 @@ class ReadFile:
                         count += 1
                         previous_time = line[0:17]
                         allow = False
-
+        # TODO Попытайтесь сделать это в соответствии с паттерном "Шаблонный метод"
 
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
@@ -53,7 +53,7 @@ class ReadFile:
 
 file_to_read = 'events.txt'
 result = 'result.txt'
-
+# TOdO Константы в начало файла (имена большими буквами!)
 a = ReadFile()
 
 a.give_a_result(file_to_read=file_to_read, result=result)
