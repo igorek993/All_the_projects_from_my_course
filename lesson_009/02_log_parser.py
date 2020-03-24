@@ -19,41 +19,86 @@
 # Входные параметры: файл для анализа, файл результата
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-# the length of a line is 32 , up to minutes is 17, the last letters [29:32], minute digit is [16]
-# TODO Две пустых строки до и после определения класса!
+# the length of a line is 32, up to minutes is 17, up to hours is  the last letters [29:32], minute digit is [16]
+
+FILE_TO_READ = 'events.txt'
+RESULT = 'result.txt'
+
+
 class ReadFile:
 
-    def give_a_result(self, file_to_read, result):
-        with open(file_to_read, 'r') as file:
-            with open(result, 'w') as result:
-                count = 0
-                previous_time = []
-                allow = True
-                for line in file:
-                    if previous_time:
-                        if previous_time == line[0:17] and line[29:32] == 'NOK':
-                            count += 1
-                        elif previous_time != line[0:17]:
-                            result.write(f'{previous_time}] {count} \n')
-                            count = 0
-                            allow = True
-                            previous_time = []
-                    if line[29:32] == 'NOK' and allow:
-                        count += 1
-                        previous_time = line[0:17]
-                        allow = False
-        # TODO Попытайтесь сделать это в соответствии с паттерном "Шаблонный метод"
+    def __init__(self, file_to_read, result):
+        self.file_to_read = file_to_read
+        self.result = result
+        self.count = 0
+        self.previous_time = []
+        self.allow = True
+        self.line_slice = slice(0, 17)
+
+    def get_data(self):
+        with open(self.file_to_read, 'r') as file:
+            return file.readlines()
+
+    def give_result(self):
+        with open(self.result, 'w') as result:
+            for line in self.get_data():
+                if self.previous_time:
+                    if self.previous_time == line[self.line_slice] and line[29:32] == 'NOK':
+                        self.count += 1
+                    elif self.previous_time != line[self.line_slice]:
+                        result.write(f'{self.previous_time}] {self.count} \n')
+                        self.count = 0
+                        self.allow = True
+                        self.previous_time = []
+                self.check_if_nok(line)
+
+    def check_if_nok(self, line):
+        if line[29:32] == 'NOK' and self.allow:
+            self.count += 1
+            self.previous_time = line[self.line_slice]
+            self.allow = False
+
+
+class ReadFileHours(ReadFile):
+
+    def __init__(self, file_to_read, result):
+        super().__init__(file_to_read, result)
+        self.line_slice = slice(0, 14)
+
+
+class ReadFileMonth(ReadFile):
+
+    def __init__(self, file_to_read, result):
+        super().__init__(file_to_read, result)
+        self.line_slice = slice(0, 8)
+
+    def give_result(self):
+        with open(self.result, 'w') as result:
+            for line in self.get_data():
+                if self.previous_time:
+                    if self.previous_time == line[self.line_slice] and line[29:32] == 'NOK':
+                        self.count += 1
+                    elif self.previous_time != line[self.line_slice]:
+                        result.write(f'{self.previous_time}] {self.count} \n')
+                        self.count = 0
+                        self.allow = True
+                        self.previous_time = []
+                self.check_if_nok(line)
+            result.write(f'{self.previous_time}] {self.count} \n')
+
+
+class ReadFileYear(ReadFileMonth):
+
+    def __init__(self, file_to_read, result):
+        super().__init__(file_to_read, result)
+        self.line_slice = slice(0, 5)
+
+
+a = ReadFileYear(FILE_TO_READ, RESULT)
+a.give_result()
 
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
 #  - по месяцу
 #  - по году
 # Для этого пригодится шаблон проектирование "Шаблонный метод" см https://goo.gl/Vz4828
-
-
-file_to_read = 'events.txt'
-result = 'result.txt'
-# TOdO Константы в начало файла (имена большими буквами!)
-a = ReadFile()
-
-a.give_a_result(file_to_read=file_to_read, result=result)

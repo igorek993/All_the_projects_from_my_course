@@ -74,8 +74,6 @@ class BookStat(StatisticCount):
         super().__init__(filename)
 
     def print_stat(self):
-        self.get_data()
-        self.get_stat()
         self.count_total()
         self.print()
 
@@ -96,8 +94,6 @@ class BookStatAlphabetic(StatisticCount):
               '+---------+----------+\n'.format(self.count_total()))
 
     def print_stat(self):
-        self.get_data()
-        self.get_stat()
         self.count_total()
         self.print()
 
@@ -118,8 +114,6 @@ class BookStatAlphabeticReverse(StatisticCount):
               '+---------+----------+\n'.format(self.count_total()))
 
     def print_stat(self):
-        self.get_data()
-        self.get_stat()
         self.count_total()
         self.print()
 
@@ -143,8 +137,6 @@ class BookStatFrequency(StatisticCount):
               '+---------+----------+\n'.format(self.count_total()))
 
     def print_stat(self):
-        self.get_data()
-        self.get_stat()
         self.count_total()
         self.print()
 
