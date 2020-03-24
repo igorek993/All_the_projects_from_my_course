@@ -25,47 +25,133 @@ import os
 import zipfile as zp
 from pprint import pprint
 
-file_name = 'voyna-i-mir.txt'
-# TODO Имена констант пишутся большими буквами
-
-# TODO Относительно новый материал Вадима по шаблонному методу
-#  https://gitlab.skillbox.ru/vadim_shandrinov/python_base_snippets/snippets/4
-#  где он показывает, что паттерн "шаблонный метод" можно реализовать и в более практичном виде, без абстрактных
-#  классов и методов, где базовый класс тоже рабочий и т.д.
+FILE_NAME = 'voyna-i-mir.txt'
 
 
 class StatisticCount:
 
-    def count_letters(self, file_name):
+    def __init__(self, filename):
+        self.filename = filename
+
+    def get_data(self):
+        # open the file and return it ready to be read
+        with open(self.filename, 'r', encoding='cp1251') as file:
+            return file.read()
+
+    def get_stat(self):
+        # collect the letters statistic
         stat = {}
+        for line in self.get_data():
+            for letter in line:
+                if letter.isalpha():
+                    if letter in stat:
+                        stat[letter] += 1
+                    else:
+                        stat[letter] = 1
+        return stat
+
+    def count_total(self):
+        # counts total amount of letters
         letters_total = 0
-        with open(file_name, 'r', encoding='cp1251') as file:
-            for line in file:
-                for letter in line:
-                    if letter.isalpha():
-                        if letter in stat:
-                            stat[letter] += 1
-                        else:
-                            stat[letter] = 1
+        for key, value in self.get_stat().items():
+            letters_total += value
+        return letters_total
+
+    def print(self):
         print('+---------+----------+\n'
               '|  буква  | частота  |\n'
               '+---------+----------+')
-        for key, value in stat.items():
+        for key, value in self.get_stat().items():
             print(f'|{key:^9}|{value:^10}|')
-            letters_total += value
         print('+ --------+----------+\n'
               '|  итого  |{:^10}|\n'
-              '+---------+----------+\n'.format(letters_total))
-    # TODO Для реализации паттерна необходимо разбить всю выполняемую задачу на отдельные шаги:
-    #  1) получение данных, 2) подсчёт частоты использования букв, 3) сортировка, 4) вывод в консоль таблицы.
-    #  Также потребуется сам "шаблонный метод", где последовательно вызываются все методы подряд.
-    #  В чем смысл? А в том, что если потребуется другая функциональность, то в наследнике можно переопределить только
-    #  нужные шаги, допустим только сортировку - в этом профит.
+              '+---------+----------+\n'.format(self.count_total()))
 
 
-a = StatisticCount()
+class BookStat(StatisticCount):
 
-a.count_letters(file_name)
+    def __init__(self, filename):
+        super().__init__(filename)
+
+    def print_stat(self):
+        self.get_data()
+        self.get_stat()
+        self.count_total()
+        self.print()
+
+
+class BookStatAlphabetic(StatisticCount):
+
+    def __init__(self, filename):
+        super().__init__(filename)
+
+    def print(self):
+        print('+---------+----------+\n'
+              '|  буква  | частота  |\n'
+              '+---------+----------+')
+        for key, value in sorted(self.get_stat().items()):
+            print(f'|{key:^9}|{value:^10}|')
+        print('+ --------+----------+\n'
+              '|  итого  |{:^10}|\n'
+              '+---------+----------+\n'.format(self.count_total()))
+
+    def print_stat(self):
+        self.get_data()
+        self.get_stat()
+        self.count_total()
+        self.print()
+
+
+class BookStatAlphabeticReverse(StatisticCount):
+
+    def __init__(self, filename):
+        super().__init__(filename)
+
+    def print(self):
+        print('+---------+----------+\n'
+              '|  буква  | частота  |\n'
+              '+---------+----------+')
+        for key, value in sorted(self.get_stat().items(), reverse=True):
+            print(f'|{key:^9}|{value:^10}|')
+        print('+ --------+----------+\n'
+              '|  итого  |{:^10}|\n'
+              '+---------+----------+\n'.format(self.count_total()))
+
+    def print_stat(self):
+        self.get_data()
+        self.get_stat()
+        self.count_total()
+        self.print()
+
+
+class BookStatFrequency(StatisticCount):
+
+    def __init__(self, filename):
+        super().__init__(filename)
+
+    def print(self):
+        print('+---------+----------+\n'
+              '|  буква  | частота  |\n'
+              '+---------+----------+')
+
+        stat = sorted(self.get_stat().items(), key=lambda x: x[1], reverse=True)  # todo I do not completely understand
+        # todo how it works, but it does...
+        for key, value in stat:
+            print(f'|{key:^9}|{value:^10}|')
+        print('+ --------+----------+\n'
+              '|  итого  |{:^10}|\n'
+              '+---------+----------+\n'.format(self.count_total()))
+
+    def print_stat(self):
+        self.get_data()
+        self.get_stat()
+        self.count_total()
+        self.print()
+
+
+stat_counter = BookStatFrequency(FILE_NAME)
+
+stat_counter.print_stat()
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
