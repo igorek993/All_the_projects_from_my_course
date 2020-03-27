@@ -35,9 +35,9 @@ import zipfile as zp
 # Чтение документации/гугла по функциям - приветствуется. Как и поиск альтернативных вариантов :)
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-ICONS_FOLDER = os.path.normpath('icons.zip')
+ICONS_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons.zip')
 
-FINAL_FOLDER = os.path.normpath('.')
+FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009')
 
 
 class PhotosSorter:
