@@ -59,6 +59,8 @@ class ReadFile:
             self.previous_time = line[self.line_slice]
             self.allow = False
 
+    # TODO Cоздайте четкие "однозадачные" шаги и перечислите их в шаблонном методе с именем "запустить"
+
 
 class ReadFileHours(ReadFile):
 
