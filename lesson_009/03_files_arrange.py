@@ -35,9 +35,9 @@ import zipfile as zp
 # Чтение документации/гугла по функциям - приветствуется. Как и поиск альтернативных вариантов :)
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-ICONS_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons.zip')
+ICONS_FOLDER = os.path.normpath('icons.zip')
 
-FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009')
+FINAL_FOLDER = os.path.normpath('.')
 
 
 class PhotosSorter:
@@ -53,6 +53,9 @@ class PhotosSorter:
     def create_end_folder(self):
         if not os.path.isdir(os.path.join(self.scanned_files_dir, 'icons_by_year')):
             os.makedirs(os.path.join(self.scanned_files_dir, 'icons_by_year'))
+            # TODO Дублируете код - джойните дважды один и тот же путь. Создайте атрибут для полного пути к папке один
+            #  и раз соберите путь и используйте далее сколько угодно раз (в разных местах ниже встречается ещё не раз).
+            #  Кстати, имя папки это глобальная константа
 
     def sort_files(self):
         for dirpath, dirnames, filenames in os.walk(self.dir_to_scan):
@@ -103,7 +106,7 @@ class PhotosSorterZip(PhotosSorter):
                                          str(date[0]), str(date[1]))
                 self.check_folder_existence(final_dir)
                 self.extract_image(filename, final_dir)
-                break
+                break  # TODO Cкопировали один файл и на отдых? :) Чем обосновано?
 
     def sort(self):
         self.create_end_folder()

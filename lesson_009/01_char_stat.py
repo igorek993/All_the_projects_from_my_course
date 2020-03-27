@@ -66,11 +66,17 @@ class StatisticCount:
         print('+ --------+----------+\n'
               '|  итого  |{:^10}|\n'
               '+---------+----------+\n'.format(self.count_total()))
+    # TODO Ещё раз: каждый метод должен выполнять что-то одно: один читает файл, другой собирает статистику,
+    #  третий сортирует, четвертый печатает. Отдельно стоит метод "шаблонный", он определяет последовательность
+    #  выполнения задачи: вызывает последовательно все эти "шаги". А сейчас все методы взаимосвязаны, все друг друга
+    #  вызывают, метод печати ещё иногда (!) занимается сортировкой (!), что трудно для понимания, а паттерны придумали
+    #  как раз для упрощения сложных программ.
 
 
 class BookStat(StatisticCount):
 
-    def __init__(self, filename):
+    def __init__(self, filename):  # TODO Не требуется переопределять какой-либо метод базового класса, раз не
+                                   #  добавляется новой/изменяется функциональности
         super().__init__(filename)
 
     def print_stat(self):
@@ -80,7 +86,7 @@ class BookStat(StatisticCount):
 
 class BookStatAlphabetic(StatisticCount):
 
-    def __init__(self, filename):
+    def __init__(self, filename):  # TODO убираем
         super().__init__(filename)
 
     def print(self):
@@ -100,7 +106,7 @@ class BookStatAlphabetic(StatisticCount):
 
 class BookStatAlphabeticReverse(StatisticCount):
 
-    def __init__(self, filename):
+    def __init__(self, filename):  # TODO убираем
         super().__init__(filename)
 
     def print(self):
@@ -120,7 +126,7 @@ class BookStatAlphabeticReverse(StatisticCount):
 
 class BookStatFrequency(StatisticCount):
 
-    def __init__(self, filename):
+    def __init__(self, filename):    # TODO убираем
         super().__init__(filename)
 
     def print(self):

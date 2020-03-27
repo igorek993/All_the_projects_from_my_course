@@ -33,7 +33,8 @@ class ReadFile:
         self.count = 0
         self.previous_time = []
         self.allow = True
-        self.line_slice = slice(0, 17)
+        self.line_slice = slice(0, 17)  # TODO Сделайте присвоение значения атрибуту в отдельном методе, а в наследниках
+        # переопределяйте этот метод - будет намного лаконичнее, чем через конструктор
 
     def get_data(self):
         with open(self.file_to_read, 'r') as file:
@@ -85,6 +86,7 @@ class ReadFileMonth(ReadFile):
                         self.previous_time = []
                 self.check_if_nok(line)
             result.write(f'{self.previous_time}] {self.count} \n')
+            # TODO Алгоритм этого метод содержит ошибку - исправьте её и переопределять метод не понадобится
 
 
 class ReadFileYear(ReadFileMonth):
@@ -94,7 +96,7 @@ class ReadFileYear(ReadFileMonth):
         self.line_slice = slice(0, 5)
 
 
-a = ReadFileYear(FILE_TO_READ, RESULT)
+a = ReadFile(FILE_TO_READ, RESULT)
 a.give_result()
 
 # После выполнения первого этапа нужно сделать группировку событий
