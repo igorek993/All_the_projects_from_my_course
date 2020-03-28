@@ -27,39 +27,46 @@ RESULT = 'result.txt'
 
 class ReadFile:
 
-    def __init__(self, file_to_read, result):
-        self.file_to_read = file_to_read
-        self.result = result
-        self.count = 0
-        self.previous_time = []
-        self.allow = True
-        self.line_slice = slice(0, 17)  # TODO Сделайте присвоение значения атрибуту в отдельном методе, а в наследниках
-        # переопределяйте этот метод - будет намного лаконичнее, чем через конструктор
 
-    def get_data(self):
-        with open(self.file_to_read, 'r') as file:
+    def open_file_read(self, file_to_read):
+        with open(file_to_read, 'r') as file:
             return file.readlines()
 
-    def give_result(self):
-        with open(self.result, 'w') as result:
-            for line in self.get_data():
-                if self.previous_time:
-                    if self.previous_time == line[self.line_slice] and line[29:32] == 'NOK':
-                        self.count += 1
-                    elif self.previous_time != line[self.line_slice]:
-                        result.write(f'{self.previous_time}] {self.count} \n')
-                        self.count = 0
-                        self.allow = True
-                        self.previous_time = []
-                self.check_if_nok(line)
+    def sort(self, previous_time, count, file_to_read):
+        for line in file_to_read:
+            if previous_time:
+                if previous_time == line[slice(0, 17)] and line[29:32] == 'NOK':
+                    count += 1
+                elif previous_time != line[slice(0, 17)]:
+                    return previous_time, line
+            return previous_time, line
 
-    def check_if_nok(self, line):
-        if line[29:32] == 'NOK' and self.allow:
-            self.count += 1
-            self.previous_time = line[self.line_slice]
-            self.allow = False
+    def write_result(self, previous_time, count ,result_file):
+        with open(result_file, 'w') as result:
+            result.write(f'{previous_time}] {count} \n')
+            count = 0
+            allow = True
+            previous_time = []
+
+    def check_if_nok(self, line, count):
+        if line[29:32] == 'NOK' and allow:
+            count += 1
+            previous_time = line[slice(0, 17)]
+            allow = False
 
     # TODO Cоздайте четкие "однозадачные" шаги и перечислите их в шаблонном методе с именем "запустить"
+
+    def start(self, read_file):
+        file_to_read = self.open_file_read(read_file)
+        count = 0
+        previous_time = False
+        self.sort(previous_time, count, file_to_read)
+
+
+
+
+
+
 
 
 class ReadFileHours(ReadFile):
@@ -77,7 +84,7 @@ class ReadFileMonth(ReadFile):
 
     def give_result(self):
         with open(self.result, 'w') as result:
-            for line in self.get_data():
+            for line in self.open_file():
                 if self.previous_time:
                     if self.previous_time == line[self.line_slice] and line[29:32] == 'NOK':
                         self.count += 1
