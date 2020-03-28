@@ -43,26 +43,23 @@ FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\le
 class PhotosSorter:
 
     def __init__(self, scanned_files_dir, dir_to_scan):
-        self.scanned_files_dir = scanned_files_dir
         self.dir_to_scan = dir_to_scan
+        self.end_folder = os.path.join(scanned_files_dir, 'ICONS_BY_YEAR')
 
     def unzip_files(self, file):
         with zp.ZipFile(file, 'r') as file_z:
             file_z.extractall()
 
     def create_end_folder(self):
-        if not os.path.isdir(os.path.join(self.scanned_files_dir, 'icons_by_year')):
-            os.makedirs(os.path.join(self.scanned_files_dir, 'icons_by_year'))
-            # TODO Дублируете код - джойните дважды один и тот же путь. Создайте атрибут для полного пути к папке один
-            #  и раз соберите путь и используйте далее сколько угодно раз (в разных местах ниже встречается ещё не раз).
-            #  Кстати, имя папки это глобальная константа
+        if not os.path.isdir(self.end_folder):
+            os.makedirs(self.end_folder)
 
     def sort_files(self):
         for dirpath, dirnames, filenames in os.walk(self.dir_to_scan):
             for img in filenames:
                 img_path = os.path.join(dirpath, img)
                 time_of_creation = time.gmtime(os.path.getmtime(img_path))[0:2]
-                final_dir = os.path.join(self.scanned_files_dir, 'icons_by_year', str(time_of_creation[0]),
+                final_dir = os.path.join(self.end_folder, str(time_of_creation[0]),
                                          str(time_of_creation[1]))
                 if not os.path.isdir(final_dir):
                     os.makedirs(final_dir)
@@ -102,11 +99,10 @@ class PhotosSorterZip(PhotosSorter):
         for filename in self.zip_namelist():
             if filename[-3:] == 'png':
                 date = self.get_date(filename)
-                final_dir = os.path.join(self.scanned_files_dir, 'icons_by_year',
+                final_dir = os.path.join(self.end_folder,
                                          str(date[0]), str(date[1]))
                 self.check_folder_existence(final_dir)
                 self.extract_image(filename, final_dir)
-                break  # TODO Cкопировали один файл и на отдых? :) Чем обосновано?
 
     def sort(self):
         self.create_end_folder()
