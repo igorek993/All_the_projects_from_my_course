@@ -30,18 +30,15 @@ FILE_NAME = 'voyna-i-mir.txt'
 
 class StatisticCount:
 
-    def __init__(self, filename):
-        self.filename = filename
-
-    def get_data(self):
-        # open the file and return it ready to be read
-        with open(self.filename, 'r', encoding='cp1251') as file:
+    def open_file(self, filename):
+        # opens a file and returns it ready to be read
+        with open(filename, 'r', encoding='cp1251') as file:
             return file.read()
 
-    def get_stat(self):
-        # collect the letters statistic
+    def get_stat(self, stat_file):
+        # collects the letters statistic and returns it
         stat = {}
-        for line in self.get_data():
+        for line in stat_file:
             for letter in line:
                 if letter.isalpha():
                     if letter in stat:
@@ -50,108 +47,77 @@ class StatisticCount:
                         stat[letter] = 1
         return stat
 
-    def count_total(self):
+    def count_total(self, stat_file):
         # counts total amount of letters
         letters_total = 0
-        for key, value in self.get_stat().items():
+        for key, value in stat_file.items():
             letters_total += value
         return letters_total
 
-    def print(self):
+    def print(self, stat_file, total_letters):
         print('+---------+----------+\n'
               '|  буква  | частота  |\n'
               '+---------+----------+')
-        for key, value in self.get_stat().items():
+        for key, value in stat_file.items():
             print(f'|{key:^9}|{value:^10}|')
         print('+ --------+----------+\n'
               '|  итого  |{:^10}|\n'
-              '+---------+----------+\n'.format(self.count_total()))
-    # TODO Ещё раз: каждый метод должен выполнять что-то одно: один читает файл, другой собирает статистику,
-    #  третий сортирует, четвертый печатает. Отдельно стоит метод "шаблонный", он определяет последовательность
-    #  выполнения задачи: вызывает последовательно все эти "шаги". А сейчас все методы взаимосвязаны, все друг друга
-    #  вызывают, метод печати ещё иногда (!) занимается сортировкой (!), что трудно для понимания, а паттерны придумали
-    #  как раз для упрощения сложных программ.
-    #  Отдельно ещё раз: имя шаблонного метода должно быть кратким "выполнить", "запустить"
-
+              '+---------+----------+\n'.format(total_letters))
 
 
 class BookStat(StatisticCount):
 
-    def __init__(self, filename):  # TODO Не требуется переопределять какой-либо метод базового класса, раз не
-                                   #  добавляется новой/изменяется функциональности
-        super().__init__(filename)
-
-    def print_stat(self):
-        self.count_total()
-        self.print()
+    def start(self, file):
+        initial_file = self.open_file(file)
+        stat_file = self.get_stat(initial_file)
+        total_count = self.count_total(stat_file)
+        self.print(stat_file, total_count)
 
 
 class BookStatAlphabetic(StatisticCount):
 
-    def __init__(self, filename):  # TODO убираем
-        super().__init__(filename)
+    def sort_out(self, start_file):
+        # sorts out a start file in an alphabetic order
+        sorted_file = sorted(start_file.items())
+        return sorted_file
 
-    def print(self):
+    def print(self, stat_file, total_letters):
         print('+---------+----------+\n'
               '|  буква  | частота  |\n'
               '+---------+----------+')
-        for key, value in sorted(self.get_stat().items()):
+        for key, value in stat_file:
             print(f'|{key:^9}|{value:^10}|')
         print('+ --------+----------+\n'
               '|  итого  |{:^10}|\n'
-              '+---------+----------+\n'.format(self.count_total()))
+              '+---------+----------+\n'.format(total_letters))
 
-    def print_stat(self):
-        self.count_total()
-        self.print()
-
-
-class BookStatAlphabeticReverse(StatisticCount):
-
-    def __init__(self, filename):  # TODO убираем
-        super().__init__(filename)
-
-    def print(self):
-        print('+---------+----------+\n'
-              '|  буква  | частота  |\n'
-              '+---------+----------+')
-        for key, value in sorted(self.get_stat().items(), reverse=True):
-            print(f'|{key:^9}|{value:^10}|')
-        print('+ --------+----------+\n'
-              '|  итого  |{:^10}|\n'
-              '+---------+----------+\n'.format(self.count_total()))
-
-    def print_stat(self):
-        self.count_total()
-        self.print()
+    def start(self, file):
+        initial_file = self.open_file(file)
+        stat_file = self.get_stat(initial_file)
+        sorted_start_file = self.sort_out(stat_file)
+        total_count = self.count_total(stat_file)
+        self.print(sorted_start_file, total_count)
 
 
-class BookStatFrequency(StatisticCount):
+class BookStatAlphabeticReverse(BookStatAlphabetic):
 
-    def __init__(self, filename):    # TODO убираем
-        super().__init__(filename)
-
-    def print(self):
-        print('+---------+----------+\n'
-              '|  буква  | частота  |\n'
-              '+---------+----------+')
-
-        stat = sorted(self.get_stat().items(), key=lambda x: x[1], reverse=True)  # todo I do not completely understand
-        # todo how it works, but it does...
-        for key, value in stat:
-            print(f'|{key:^9}|{value:^10}|')
-        print('+ --------+----------+\n'
-              '|  итого  |{:^10}|\n'
-              '+---------+----------+\n'.format(self.count_total()))
-
-    def print_stat(self):
-        self.count_total()
-        self.print()
+    def sort_out(self, start_file):
+        # sorts out a start file in an alphabetic order
+        sorted_file = sorted(start_file.items(), reverse=True)
+        return sorted_file
 
 
-stat_counter = BookStatFrequency(FILE_NAME)
+class BookStatFrequency(BookStatAlphabetic):
 
-stat_counter.print_stat()
+    def sort_out(self, start_file):
+        # sorts out a start file in an alphabetic order
+        sorted_file = sorted(start_file.items(), key=lambda x: x[1], reverse=True)
+        return sorted_file
+
+
+stat_counter = BookStatFrequency()
+
+stat_counter.start(FILE_NAME)
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
