@@ -49,7 +49,7 @@ class ReadFile:
             self.check_if_nok(line, slice)
 
     def write_result(self, previous_time, result_file, count):
-        with open(result_file, 'w') as result:
+        with open(result_file, 'a+') as result:
             result.write(f'{previous_time}] {count} \n')
 
     def check_if_nok(self, line, slice):
@@ -59,6 +59,10 @@ class ReadFile:
             self.allow = False
 
     # TODO Cоздайте четкие "однозадачные" шаги и перечислите их в шаблонном методе с именем "запустить"
+
+    # TODO I tried to modify this class in some different ways, this is the best what I could come up with...
+    #  may I ask you to help me a little bit, you can take a look at the version control, I saved one
+    #  more variant in there, may be I was closer to the right decision there, I am not sure. Thank you!
 
     def start(self, read_file, result_file):
         file_to_read = self.open_file_read(read_file)
