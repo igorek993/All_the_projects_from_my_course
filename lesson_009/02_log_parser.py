@@ -27,46 +27,42 @@ RESULT = 'result.txt'
 
 class ReadFile:
 
+    def __init__(self):
+        self.count = 0
+        self.allow = True
+        self.previous_time = []
 
     def open_file_read(self, file_to_read):
         with open(file_to_read, 'r') as file:
             return file.readlines()
 
-    def sort(self, previous_time, count, file_to_read):
+    def sort(self, file_to_read, result_file, slice):
         for line in file_to_read:
-            if previous_time:
-                if previous_time == line[slice(0, 17)] and line[29:32] == 'NOK':
-                    count += 1
-                elif previous_time != line[slice(0, 17)]:
-                    return previous_time, line
-            return previous_time, line
+            if self.previous_time:
+                if self.previous_time == line[slice] and line[29:32] == 'NOK':
+                    self.count += 1
+                elif self.previous_time != line[slice]:
+                    self.write_result(self.previous_time, result_file, self.count)
+                    self.count = 0
+                    self.allow = True
+                    self.previous_time = []
+            self.check_if_nok(line, slice)
 
-    def write_result(self, previous_time, count ,result_file):
+    def write_result(self, previous_time, result_file, count):
         with open(result_file, 'w') as result:
             result.write(f'{previous_time}] {count} \n')
-            count = 0
-            allow = True
-            previous_time = []
 
-    def check_if_nok(self, line, count):
-        if line[29:32] == 'NOK' and allow:
-            count += 1
-            previous_time = line[slice(0, 17)]
-            allow = False
+    def check_if_nok(self, line, slice):
+        if line[29:32] == 'NOK' and self.allow:
+            self.count += 1
+            self.previous_time = line[slice]
+            self.allow = False
 
     # TODO Cоздайте четкие "однозадачные" шаги и перечислите их в шаблонном методе с именем "запустить"
 
-    def start(self, read_file):
+    def start(self, read_file, result_file):
         file_to_read = self.open_file_read(read_file)
-        count = 0
-        previous_time = False
-        self.sort(previous_time, count, file_to_read)
-
-
-
-
-
-
+        self.sort(file_to_read, result_file, slice(0, 17))
 
 
 class ReadFileHours(ReadFile):
@@ -105,8 +101,8 @@ class ReadFileYear(ReadFileMonth):
         self.line_slice = slice(0, 5)
 
 
-a = ReadFile(FILE_TO_READ, RESULT)
-a.give_result()
+a = ReadFile()
+a.start(FILE_TO_READ, RESULT)
 
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
