@@ -36,6 +36,7 @@ import zipfile as zp
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
 ICONS_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons.zip')
+# TODO Это полный путь к архивному файлу, не папка
 
 FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009')
 
@@ -43,8 +44,8 @@ FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\le
 class PhotosSorter:
 
     def __init__(self, scanned_files_dir, dir_to_scan):
-        self.dir_to_scan = dir_to_scan
-        self.end_folder = os.path.join(scanned_files_dir, 'ICONS_BY_YEAR')
+        self.dir_to_scan = dir_to_scan  # TODO это архивный файл
+        self.end_folder = scanned_files_dir
 
     def unzip_files(self, file):
         with zp.ZipFile(file, 'r') as file_z:
@@ -94,6 +95,11 @@ class PhotosSorterZip(PhotosSorter):
     def extract_image(self, filename, final_dir):
         with zp.ZipFile(self.dir_to_scan, 'r') as myzip:
             return myzip.extract(member=filename, path=final_dir)
+            # TODO 1) Возвращать ничего не надо - убираем return
+            #  2) вместо extract будем просто копировать файл:
+            #    а) "открываем" нужный файл with myzip.open(filename) as source:
+            #    б) "открываем" файл куда будем копировать:  with open(new_path_with_name, "wb") as target:
+            #    в) копируем  shutil.copyfileobj(source, target)
 
     def sort_files(self):
         for filename in self.zip_namelist():

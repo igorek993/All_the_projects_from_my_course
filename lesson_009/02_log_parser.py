@@ -53,20 +53,24 @@ class ReadFile:
             result.write(f'{previous_time}] {count} \n')
 
     def check_if_nok(self, line, slice):
-        if line[29:32] == 'NOK' and self.allow:
+        if line[29:32] == 'NOK' and self.allow:  # TODO Простого поиска подстроки достаточно: if substr in str...
             self.count += 1
             self.previous_time = line[slice]
             self.allow = False
 
-    # TODO Cоздайте четкие "однозадачные" шаги и перечислите их в шаблонном методе с именем "запустить"
+    # Cоздайте четкие "однозадачные" шаги и перечислите их в шаблонном методе с именем "запустить"
 
     # TODO I tried to modify this class in some different ways, this is the best what I could come up with...
     #  may I ask you to help me a little bit, you can take a look at the version control, I saved one
     #  more variant in there, may be I was closer to the right decision there, I am not sure. Thank you!
-
-    def start(self, read_file, result_file):
+    # TODO Достаточно отделит сортировку от записи в файл, для этого сохраните сортированные данные в отдельный атрибут.
+    #  Кроме того, повторно: создайте в базовом классе атрибут с длиной слайса, установите его значение равным 17
+    #  в отдельном же методе, и переопределяйте именно этот метод в наследниках - будет проще чем с __init__
+    def start(self, read_file, result_file):  # TODO Oк, стартовали, а финишировать надо? :) run, execute лучше
+        # TODO Тут добавьте вызов метода установки длины слайса
         file_to_read = self.open_file_read(read_file)
         self.sort(file_to_read, result_file, slice(0, 17))
+        # TODO Тут должен быть вызов метода записи
 
 
 class ReadFileHours(ReadFile):

@@ -29,6 +29,7 @@ FILE_NAME = 'voyna-i-mir.txt'
 
 
 class StatisticCount:
+    # TODO Создайте метод __init__ где укажите атрибуты используемые классом
 
     def open_file(self, filename):
         # opens a file and returns it ready to be read
@@ -66,21 +67,27 @@ class StatisticCount:
 
 
 class BookStat(StatisticCount):
-
+# TODO Усложнили структуру наследования - этот шаблонный метод нужно поместить в базовый класс
     def start(self, file):
         initial_file = self.open_file(file)
         stat_file = self.get_stat(initial_file)
+
+        # TODO Тут должне быть вызов сортировки
+
         total_count = self.count_total(stat_file)
         self.print(stat_file, total_count)
 
 
 class BookStatAlphabetic(StatisticCount):
-
+    # TODO Аналогично, этот метод обязан быть в базовом классе хотя бы как абстрактный, но на практике часто
+    #  и базовый класс "рабочий"
     def sort_out(self, start_file):
         # sorts out a start file in an alphabetic order
         sorted_file = sorted(start_file.items())
         return sorted_file
 
+# TOdO Это почти полный дубликат из базового класса, приведите атрибут stat_file обоих классов к одному типу, чтобы не
+#  множить из-за мелочи варианты реализации методов
     def print(self, stat_file, total_letters):
         print('+---------+----------+\n'
               '|  буква  | частота  |\n'
@@ -97,6 +104,7 @@ class BookStatAlphabetic(StatisticCount):
         sorted_start_file = self.sort_out(stat_file)
         total_count = self.count_total(stat_file)
         self.print(sorted_start_file, total_count)
+    # TODO Постарайте использовать шаблонный метод базового класса
 
 
 class BookStatAlphabeticReverse(BookStatAlphabetic):
@@ -115,7 +123,8 @@ class BookStatFrequency(BookStatAlphabetic):
         return sorted_file
 
 
-stat_counter = BookStatFrequency()
+# stat_counter = BookStatFrequency()
+stat_counter = BookStatAlphabetic()
 
 stat_counter.start(FILE_NAME)
 
