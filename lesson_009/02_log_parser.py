@@ -31,86 +31,80 @@ class ReadFile:
         self.count = 0
         self.allow = True
         self.previous_time = []
+        self.previous_time_data = []
+        self.count_data = []
+        self.slice = slice(0, 0)
+
+    def slice_size(self, size):
+        self.slice = slice(0, size)
 
     def open_file_read(self, file_to_read):
         with open(file_to_read, 'r') as file:
             return file.readlines()
 
-    def sort(self, file_to_read, result_file, slice):
+    def sort(self, file_to_read):
         for line in file_to_read:
             if self.previous_time:
-                if self.previous_time == line[slice] and line[29:32] == 'NOK':
+                if 'NOK' in line and self.previous_time == line[self.slice]:
                     self.count += 1
-                elif self.previous_time != line[slice]:
-                    self.write_result(self.previous_time, result_file, self.count)
+                elif self.previous_time != line[self.slice]:
+                    self.previous_time_data.append(self.previous_time)
+                    self.count_data.append(self.count)
                     self.count = 0
                     self.allow = True
                     self.previous_time = []
-            self.check_if_nok(line, slice)
+            self.check_if_nok(line)
 
-    def write_result(self, previous_time, result_file, count):
-        with open(result_file, 'a+') as result:
-            result.write(f'{previous_time}] {count} \n')
+    def write_result(self, result_file):
+        if self.count:
+            self.previous_time_data.append(self.previous_time)
+            self.count_data.append(self.count)
+        with open(result_file, 'w+') as result:
+            for i in range(len(self.previous_time_data)):
+                result.write(f'{self.previous_time_data[i]}] {self.count_data[i]} \n')
 
-    def check_if_nok(self, line, slice):
-        if line[29:32] == 'NOK' and self.allow:  # TODO Простого поиска подстроки достаточно: if substr in str...
+    def check_if_nok(self, line):
+        if 'NOK' in line and self.allow:
             self.count += 1
-            self.previous_time = line[slice]
+            self.previous_time = line[self.slice]
             self.allow = False
 
-    # Cоздайте четкие "однозадачные" шаги и перечислите их в шаблонном методе с именем "запустить"
-
-    # TODO I tried to modify this class in some different ways, this is the best what I could come up with...
-    #  may I ask you to help me a little bit, you can take a look at the version control, I saved one
-    #  more variant in there, may be I was closer to the right decision there, I am not sure. Thank you!
-    # TODO Достаточно отделит сортировку от записи в файл, для этого сохраните сортированные данные в отдельный атрибут.
-    #  Кроме того, повторно: создайте в базовом классе атрибут с длиной слайса, установите его значение равным 17
-    #  в отдельном же методе, и переопределяйте именно этот метод в наследниках - будет проще чем с __init__
-    def start(self, read_file, result_file):  # TODO Oк, стартовали, а финишировать надо? :) run, execute лучше
-        # TODO Тут добавьте вызов метода установки длины слайса
+    def run(self, read_file, result_file):
+        self.slice_size(17)
         file_to_read = self.open_file_read(read_file)
-        self.sort(file_to_read, result_file, slice(0, 17))
-        # TODO Тут должен быть вызов метода записи
+        self.sort(file_to_read)
+        self.write_result(result_file)
 
 
 class ReadFileHours(ReadFile):
 
-    def __init__(self, file_to_read, result):
-        super().__init__(file_to_read, result)
-        self.line_slice = slice(0, 14)
+    def run(self, read_file, result_file):
+        self.slice_size(14)
+        file_to_read = self.open_file_read(read_file)
+        self.sort(file_to_read)
+        self.write_result(result_file)
 
 
 class ReadFileMonth(ReadFile):
 
-    def __init__(self, file_to_read, result):
-        super().__init__(file_to_read, result)
-        self.line_slice = slice(0, 8)
-
-    def give_result(self):
-        with open(self.result, 'w') as result:
-            for line in self.open_file():
-                if self.previous_time:
-                    if self.previous_time == line[self.line_slice] and line[29:32] == 'NOK':
-                        self.count += 1
-                    elif self.previous_time != line[self.line_slice]:
-                        result.write(f'{self.previous_time}] {self.count} \n')
-                        self.count = 0
-                        self.allow = True
-                        self.previous_time = []
-                self.check_if_nok(line)
-            result.write(f'{self.previous_time}] {self.count} \n')
-            # TODO Алгоритм этого метод содержит ошибку - исправьте её и переопределять метод не понадобится
+    def run(self, read_file, result_file):
+        self.slice_size(8)
+        file_to_read = self.open_file_read(read_file)
+        self.sort(file_to_read)
+        self.write_result(result_file)
 
 
 class ReadFileYear(ReadFileMonth):
 
-    def __init__(self, file_to_read, result):
-        super().__init__(file_to_read, result)
-        self.line_slice = slice(0, 5)
+    def run(self, read_file, result_file):
+        self.slice_size(5)
+        file_to_read = self.open_file_read(read_file)
+        self.sort(file_to_read)
+        self.write_result(result_file)
 
 
-a = ReadFile()
-a.start(FILE_TO_READ, RESULT)
+a = ReadFileYear()
+a.run(FILE_TO_READ, RESULT)
 
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
