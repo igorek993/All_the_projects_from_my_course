@@ -29,104 +29,93 @@ FILE_NAME = 'voyna-i-mir.txt'
 
 
 class StatisticCount:
-    # TODO Создайте метод __init__ где укажите атрибуты используемые классом
 
-    def open_file(self, filename):
+    def __init__(self, filename):
+        self.filename = filename
+        self.stat_file = None
+        self.letters_total = 0
+        self.sorted_file = None
+        self.file_to_read = None
+        self.stat_file_sorted = None
+
+    def open_file(self):
         # opens a file and returns it ready to be read
-        with open(filename, 'r', encoding='cp1251') as file:
-            return file.read()
+        with open(self.filename, 'r', encoding='cp1251') as file:
+            self.file_to_read = file.read()
 
-    def get_stat(self, stat_file):
+    def get_stat(self):
         # collects the letters statistic and returns it
         stat = {}
-        for line in stat_file:
+        for line in self.file_to_read:
             for letter in line:
                 if letter.isalpha():
                     if letter in stat:
                         stat[letter] += 1
                     else:
                         stat[letter] = 1
-        return stat
+        self.stat_file = stat
 
-    def count_total(self, stat_file):
+    def count_total(self):
         # counts total amount of letters
         letters_total = 0
-        for key, value in stat_file.items():
+        for key, value in self.stat_file.items():
             letters_total += value
-        return letters_total
+        self.letters_total = letters_total
 
-    def print(self, stat_file, total_letters):
+    def sort_out(self, reverse):
+        # sorts out a start file in an alphabetic order
+        self.stat_file_sorted = sorted(self.stat_file.items(), reverse=reverse)
+
+    def print(self):
         print('+---------+----------+\n'
               '|  буква  | частота  |\n'
               '+---------+----------+')
-        for key, value in stat_file.items():
-            print(f'|{key:^9}|{value:^10}|')
+        if self.stat_file_sorted:
+            for key, value in self.stat_file_sorted:
+                print(f'|{key:^9}|{value:^10}|')
+        else:
+            for key, value in self.stat_file.items():
+                print(f'|{key:^9}|{value:^10}|')
         print('+ --------+----------+\n'
               '|  итого  |{:^10}|\n'
-              '+---------+----------+\n'.format(total_letters))
+              '+---------+----------+\n'.format(self.letters_total))
 
-
-class BookStat(StatisticCount):
-# TODO Усложнили структуру наследования - этот шаблонный метод нужно поместить в базовый класс
-    def start(self, file):
-        initial_file = self.open_file(file)
-        stat_file = self.get_stat(initial_file)
-
-        # TODO Тут должне быть вызов сортировки
-
-        total_count = self.count_total(stat_file)
-        self.print(stat_file, total_count)
+    def run(self):
+        self.open_file()
+        self.get_stat()
+        self.count_total()
+        self.print()
 
 
 class BookStatAlphabetic(StatisticCount):
-    # TODO Аналогично, этот метод обязан быть в базовом классе хотя бы как абстрактный, но на практике часто
-    #  и базовый класс "рабочий"
-    def sort_out(self, start_file):
-        # sorts out a start file in an alphabetic order
-        sorted_file = sorted(start_file.items())
-        return sorted_file
 
-# TOdO Это почти полный дубликат из базового класса, приведите атрибут stat_file обоих классов к одному типу, чтобы не
-#  множить из-за мелочи варианты реализации методов
-    def print(self, stat_file, total_letters):
-        print('+---------+----------+\n'
-              '|  буква  | частота  |\n'
-              '+---------+----------+')
-        for key, value in stat_file:
-            print(f'|{key:^9}|{value:^10}|')
-        print('+ --------+----------+\n'
-              '|  итого  |{:^10}|\n'
-              '+---------+----------+\n'.format(total_letters))
-
-    def start(self, file):
-        initial_file = self.open_file(file)
-        stat_file = self.get_stat(initial_file)
-        sorted_start_file = self.sort_out(stat_file)
-        total_count = self.count_total(stat_file)
-        self.print(sorted_start_file, total_count)
-    # TODO Постарайте использовать шаблонный метод базового класса
+    def run(self):
+        self.open_file()
+        self.get_stat()
+        self.count_total()
+        self.sort_out(reverse=False)
+        self.print()
 
 
 class BookStatAlphabeticReverse(BookStatAlphabetic):
 
-    def sort_out(self, start_file):
-        # sorts out a start file in an alphabetic order
-        sorted_file = sorted(start_file.items(), reverse=True)
-        return sorted_file
+    def run(self):
+        self.open_file()
+        self.get_stat()
+        self.count_total()
+        self.sort_out(reverse=True)
+        self.print()
 
 
 class BookStatFrequency(BookStatAlphabetic):
 
-    def sort_out(self, start_file):
-        # sorts out a start file in an alphabetic order
-        sorted_file = sorted(start_file.items(), key=lambda x: x[1], reverse=True)
-        return sorted_file
+    def sort_out(self, reverse):
+        self.stat_file_sorted = sorted(self.stat_file.items(), key=lambda x: x[1], reverse=True)
 
 
 # stat_counter = BookStatFrequency()
-stat_counter = BookStatAlphabetic()
-
-stat_counter.start(FILE_NAME)
+stat_counter = BookStatFrequency(FILE_NAME)
+stat_counter.run()
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
