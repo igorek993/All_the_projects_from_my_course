@@ -94,7 +94,9 @@ class PhotosSorterZip(PhotosSorter):
                 with open(final_dir, 'wb') as target:
                     shutil.copyfileobj(source, target)
 
-    # TODO I keep getting the same mistake for some reason... I tried to fix it before, but it  keeps telling me this
+    #  I keep getting the same mistake for some reason... I tried to fix it before, but it  keeps telling me this
+    # TODO Вы пытаетесь открыть папку на чтение, а надо открывать файл: добавьте к папке имя копируемого файла.
+    #  Кстати, вы потеряли имя подпапки icons, так как файлы нужно складывать в lesson_009/icons/..
     # C:\Python38-32\python.exe C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py
     # Traceback (most recent call last):
     #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 115, in <module>

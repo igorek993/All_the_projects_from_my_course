@@ -88,7 +88,8 @@ class StatisticCount:
 
 
 class BookStatAlphabetic(StatisticCount):
-
+    # TODO Обычно "шаблонный метод" не переопределяется, переопределите метод sort_out  - именно в нём заключено
+    #  изменение функционала потомка
     def run(self):
         self.open_file()
         self.get_stat()
