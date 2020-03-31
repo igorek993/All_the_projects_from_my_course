@@ -35,16 +35,15 @@ import zipfile as zp
 # Чтение документации/гугла по функциям - приветствуется. Как и поиск альтернативных вариантов :)
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-ICONS_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons.zip')
-# TODO Это полный путь к архивному файлу, не папка
+ICONS_ZIP = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons.zip')
 
 FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009')
 
 
 class PhotosSorter:
 
-    def __init__(self, scanned_files_dir, dir_to_scan):
-        self.dir_to_scan = dir_to_scan  # TODO это архивный файл
+    def __init__(self, scanned_files_dir, zip_to_scan):
+        self.zip_to_scan = zip_to_scan
         self.end_folder = scanned_files_dir
 
     def unzip_files(self, file):
@@ -56,7 +55,7 @@ class PhotosSorter:
             os.makedirs(self.end_folder)
 
     def sort_files(self):
-        for dirpath, dirnames, filenames in os.walk(self.dir_to_scan):
+        for dirpath, dirnames, filenames in os.walk(self.zip_to_scan):
             for img in filenames:
                 img_path = os.path.join(dirpath, img)
                 time_of_creation = time.gmtime(os.path.getmtime(img_path))[0:2]
@@ -73,19 +72,16 @@ class PhotosSorter:
 
 class PhotosSorterZip(PhotosSorter):
 
-    def __init__(self, scanned_files_dir, dir_to_scan):
-        super().__init__(scanned_files_dir, dir_to_scan)
-
     def zip_namelist(self):
-        with zp.ZipFile(self.dir_to_scan, 'r') as myzip:
+        with zp.ZipFile(self.zip_to_scan, 'r') as myzip:
             return myzip.namelist()
 
     def get_date(self, file_name):
-        with zp.ZipFile(self.dir_to_scan, 'r') as myzip:
+        with zp.ZipFile(self.zip_to_scan, 'r') as myzip:
             return myzip.getinfo(file_name).date_time
 
     def get_obj_info(self, file_name):
-        with zp.ZipFile(self.dir_to_scan, 'r') as myzip:
+        with zp.ZipFile(self.zip_to_scan, 'r') as myzip:
             return myzip.getinfo(file_name)
 
     def check_folder_existence(self, final_dir):
@@ -93,17 +89,25 @@ class PhotosSorterZip(PhotosSorter):
             os.makedirs(final_dir)
 
     def extract_image(self, filename, final_dir):
-        with zp.ZipFile(self.dir_to_scan, 'r') as myzip:
-            return myzip.extract(member=filename, path=final_dir)
-            # TODO 1) Возвращать ничего не надо - убираем return
-            #  2) вместо extract будем просто копировать файл:
-            #    а) "открываем" нужный файл with myzip.open(filename) as source:
-            #    б) "открываем" файл куда будем копировать:  with open(new_path_with_name, "wb") as target:
-            #    в) копируем  shutil.copyfileobj(source, target)
+        with zp.ZipFile(self.zip_to_scan, 'r') as myzip:
+            with myzip.open(filename) as source:
+                with open(final_dir, 'wb') as target:
+                    shutil.copyfileobj(source, target)
+
+    # TODO I keep getting the same mistake for some reason... I tried to fix it before, but it  keeps telling me this
+    # C:\Python38-32\python.exe C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py
+    # Traceback (most recent call last):
+    #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 115, in <module>
+    #     a.sort_files()
+    #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 107, in sort_files
+    #     self.extract_image(filename, final_dir)
+    #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 93, in extract_image
+    #     with open(final_dir, 'wb') as target:
+    # PermissionError: [Errno 13] Permission denied: 'C:\\Users\\igorek\\PycharmProjects\\python_base\\lesson_009\\2017\\9'
 
     def sort_files(self):
         for filename in self.zip_namelist():
-            if filename[-3:] == 'png':
+            if 'png' in filename:
                 date = self.get_date(filename)
                 final_dir = os.path.join(self.end_folder,
                                          str(date[0]), str(date[1]))
@@ -115,7 +119,7 @@ class PhotosSorterZip(PhotosSorter):
         self.sort_files()
 
 
-a = PhotosSorterZip(FINAL_FOLDER, ICONS_FOLDER)
+a = PhotosSorterZip(FINAL_FOLDER, ICONS_ZIP)
 a.sort_files()
 
 # Усложненное задание (делать по желанию)
