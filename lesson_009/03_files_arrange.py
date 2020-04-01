@@ -37,7 +37,7 @@ import zipfile as zp
 
 ICONS_ZIP = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons.zip')
 
-FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009')
+FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons')
 
 
 class PhotosSorter:
@@ -91,12 +91,25 @@ class PhotosSorterZip(PhotosSorter):
     def extract_image(self, filename, final_dir):
         with zp.ZipFile(self.zip_to_scan, 'r') as myzip:
             with myzip.open(filename) as source:
-                with open(final_dir, 'wb') as target:
+                with open(os.path.normpath(os.path.join(final_dir, filename)), 'wb') as target:
                     shutil.copyfileobj(source, target)
+
+    # TODO Вы пытаетесь открыть папку на чтение, а надо открывать файл: добавьте к папке имя копируемого файла.
+
+    # TODO Maybe I am blind or stupid, but I tried to do these two options:
+    # with open(os.path.normpath(os.path.join(final_dir, filename)), 'wb') as target:
+    # and
+    # with zp.ZipFile(os.path.normpath(os.path.join(self.zip_to_scan, filename)) 'r') as myzip:
+    # TODO none of them works for me...
+    # TODO Would you please, explain to me one thing. How come that we have to add a name of a file to a directory
+    #  if we have to copy a certain FILE to this FOLDER. Shouldn't we have a file as a source(in this case) and
+    #  the name of a folder as a target??? Please, explain it to me like if I were in the 1st grade,
+    #  cause I am really confused. I am sorry for making you look at it over and over again.
+
+
 
     #  I keep getting the same mistake for some reason... I tried to fix it before, but it  keeps telling me this
     # TODO Вы пытаетесь открыть папку на чтение, а надо открывать файл: добавьте к папке имя копируемого файла.
-    #  Кстати, вы потеряли имя подпапки icons, так как файлы нужно складывать в lesson_009/icons/..
     # C:\Python38-32\python.exe C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py
     # Traceback (most recent call last):
     #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 115, in <module>

@@ -62,9 +62,8 @@ class StatisticCount:
             letters_total += value
         self.letters_total = letters_total
 
-    def sort_out(self, reverse):
-        # sorts out a start file in an alphabetic order
-        self.stat_file_sorted = sorted(self.stat_file.items(), reverse=reverse)
+    def sort_out(self):
+        pass  # TODO I can only think of this way of including this function in the first class... is it correct?
 
     def print(self):
         print('+---------+----------+\n'
@@ -84,38 +83,32 @@ class StatisticCount:
         self.open_file()
         self.get_stat()
         self.count_total()
+        self.sort_out()
         self.print()
 
 
 class BookStatAlphabetic(StatisticCount):
-    # TODO Обычно "шаблонный метод" не переопределяется, переопределите метод sort_out  - именно в нём заключено
-    #  изменение функционала потомка
-    def run(self):
-        self.open_file()
-        self.get_stat()
-        self.count_total()
-        self.sort_out(reverse=False)
-        self.print()
+
+    def sort_out(self):
+        # sorts out a start file in an alphabetic order
+        self.stat_file_sorted = sorted(self.stat_file.items(), reverse=False)
 
 
 class BookStatAlphabeticReverse(BookStatAlphabetic):
 
-    def run(self):
-        self.open_file()
-        self.get_stat()
-        self.count_total()
-        self.sort_out(reverse=True)
-        self.print()
+    def sort_out(self):
+        # sorts out a start file in an alphabetic order
+        self.stat_file_sorted = sorted(self.stat_file.items(), reverse=True)
 
 
 class BookStatFrequency(BookStatAlphabetic):
 
-    def sort_out(self, reverse):
+    def sort_out(self):
         self.stat_file_sorted = sorted(self.stat_file.items(), key=lambda x: x[1], reverse=True)
 
 
 # stat_counter = BookStatFrequency()
-stat_counter = BookStatFrequency(FILE_NAME)
+stat_counter = BookStatAlphabeticReverse(FILE_NAME)
 stat_counter.run()
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики

@@ -35,8 +35,8 @@ class ReadFile:
         self.count_data = []
         self.slice = slice(0, 0)
 
-    def slice_size(self, size):  # TODO Убираем параметр
-        self.slice = slice(0, size)  # TODO тут вместо size пишем 17
+    def slice_size(self):
+        self.slice = slice(0, 17)
 
     def open_file_read(self, file_to_read):
         with open(file_to_read, 'r') as file:
@@ -70,41 +70,31 @@ class ReadFile:
             self.allow = False
 
     def run(self, read_file, result_file):
-        self.slice_size(17)  # TODO Уберите параметр
+        self.slice_size()
         file_to_read = self.open_file_read(read_file)
         self.sort(file_to_read)
         self.write_result(result_file)
 
 
 class ReadFileHours(ReadFile):
-    # TODO Вместо self.run переопределяем self.slice_size(), в котором указываем 14 (и далее по остальным потомкам
-    #  аналогично, но с другим значением слайса)
-    def run(self, read_file, result_file):
-        self.slice_size(14)
-        file_to_read = self.open_file_read(read_file)
-        self.sort(file_to_read)
-        self.write_result(result_file)
+
+    def slice_size(self):
+        self.slice = slice(0, 14)
 
 
 class ReadFileMonth(ReadFile):
 
-    def run(self, read_file, result_file):
-        self.slice_size(8)
-        file_to_read = self.open_file_read(read_file)
-        self.sort(file_to_read)
-        self.write_result(result_file)
+    def slice_size(self):
+        self.slice = slice(0, 8)
 
 
 class ReadFileYear(ReadFileMonth):
 
-    def run(self, read_file, result_file):
-        self.slice_size(5)
-        file_to_read = self.open_file_read(read_file)
-        self.sort(file_to_read)
-        self.write_result(result_file)
+    def slice_size(self):
+        self.slice = slice(0, 5)
 
 
-a = ReadFileYear()
+a = ReadFileMonth()
 a.run(FILE_TO_READ, RESULT)
 
 # После выполнения первого этапа нужно сделать группировку событий
