@@ -35,9 +35,9 @@ import zipfile as zp
 # Чтение документации/гугла по функциям - приветствуется. Как и поиск альтернативных вариантов :)
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-ICONS_ZIP = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons.zip')
+ICONS_ZIP = os.path.normpath('icons.zip')
 
-FINAL_FOLDER = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_009\icons')
+FINAL_FOLDER = os.path.normpath('icons_by_year')
 
 
 class PhotosSorter:
@@ -94,22 +94,26 @@ class PhotosSorterZip(PhotosSorter):
                 with open(os.path.normpath(os.path.join(final_dir, filename)), 'wb') as target:
                     shutil.copyfileobj(source, target)
 
-    # TODO Вы пытаетесь открыть папку на чтение, а надо открывать файл: добавьте к папке имя копируемого файла.
+    #  Вы пытаетесь открыть папку на запись, а надо открывать файл: добавьте к папке имя копируемого файла.
 
-    # TODO Maybe I am blind or stupid, but I tried to do these two options:
+    #  Maybe I am blind or stupid, but I tried to do these two options:
     # with open(os.path.normpath(os.path.join(final_dir, filename)), 'wb') as target:
     # and
     # with zp.ZipFile(os.path.normpath(os.path.join(self.zip_to_scan, filename)) 'r') as myzip:
-    # TODO none of them works for me...
-    # TODO Would you please, explain to me one thing. How come that we have to add a name of a file to a directory
+    #  none of them works for me...
+    #  Would you please, explain to me one thing. How come that we have to add a name of a file to a directory
     #  if we have to copy a certain FILE to this FOLDER. Shouldn't we have a file as a source(in this case) and
     #  the name of a folder as a target??? Please, explain it to me like if I were in the 1st grade,
     #  cause I am really confused. I am sorry for making you look at it over and over again.
+    # TODO 1) Функция copyfileobj ожидает два файла, файл-источник и файл-приемник, так она устроена. Возможно другие
+    #  функции имеют другой интерфейс.
+    #  2) вы используете filename который содержит и папки указанные в архиве-источнике, а вам нужен "очищенное" от
+    #  папок имя файла, используйте os.path.basename чтобы его получить
 
 
 
     #  I keep getting the same mistake for some reason... I tried to fix it before, but it  keeps telling me this
-    # TODO Вы пытаетесь открыть папку на чтение, а надо открывать файл: добавьте к папке имя копируемого файла.
+    # TODO Вы пытаетесь открыть папку на запись, а надо открывать файл: добавьте к папке имя копируемого файла.
     # C:\Python38-32\python.exe C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py
     # Traceback (most recent call last):
     #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 115, in <module>
