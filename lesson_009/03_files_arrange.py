@@ -91,38 +91,8 @@ class PhotosSorterZip(PhotosSorter):
     def extract_image(self, filename, final_dir):
         with zp.ZipFile(self.zip_to_scan, 'r') as myzip:
             with myzip.open(filename) as source:
-                with open(os.path.normpath(os.path.join(final_dir, filename)), 'wb') as target:
+                with open(os.path.normpath(os.path.join(final_dir, (os.path.basename(filename)))), 'wb') as target:
                     shutil.copyfileobj(source, target)
-
-    #  Вы пытаетесь открыть папку на запись, а надо открывать файл: добавьте к папке имя копируемого файла.
-
-    #  Maybe I am blind or stupid, but I tried to do these two options:
-    # with open(os.path.normpath(os.path.join(final_dir, filename)), 'wb') as target:
-    # and
-    # with zp.ZipFile(os.path.normpath(os.path.join(self.zip_to_scan, filename)) 'r') as myzip:
-    #  none of them works for me...
-    #  Would you please, explain to me one thing. How come that we have to add a name of a file to a directory
-    #  if we have to copy a certain FILE to this FOLDER. Shouldn't we have a file as a source(in this case) and
-    #  the name of a folder as a target??? Please, explain it to me like if I were in the 1st grade,
-    #  cause I am really confused. I am sorry for making you look at it over and over again.
-    # TODO 1) Функция copyfileobj ожидает два файла, файл-источник и файл-приемник, так она устроена. Возможно другие
-    #  функции имеют другой интерфейс.
-    #  2) вы используете filename который содержит и папки указанные в архиве-источнике, а вам нужен "очищенное" от
-    #  папок имя файла, используйте os.path.basename чтобы его получить
-
-
-
-    #  I keep getting the same mistake for some reason... I tried to fix it before, but it  keeps telling me this
-    # TODO Вы пытаетесь открыть папку на запись, а надо открывать файл: добавьте к папке имя копируемого файла.
-    # C:\Python38-32\python.exe C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py
-    # Traceback (most recent call last):
-    #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 115, in <module>
-    #     a.sort_files()
-    #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 107, in sort_files
-    #     self.extract_image(filename, final_dir)
-    #   File "C:/Users/igorek/PycharmProjects/python_base/lesson_009/03_files_arrange.py", line 93, in extract_image
-    #     with open(final_dir, 'wb') as target:
-    # PermissionError: [Errno 13] Permission denied: 'C:\\Users\\igorek\\PycharmProjects\\python_base\\lesson_009\\2017\\9'
 
     def sort_files(self):
         for filename in self.zip_namelist():
