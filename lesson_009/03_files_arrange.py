@@ -91,7 +91,7 @@ class PhotosSorterZip(PhotosSorter):
     def extract_image(self, filename, final_dir):
         with zp.ZipFile(self.zip_to_scan, 'r') as myzip:
             with myzip.open(filename) as source:
-                with open(os.path.normpath(os.path.join(final_dir, (os.path.basename(filename)))), 'wb') as target:
+                with open(os.path.normpath(os.path.join(final_dir, os.path.basename(filename))), 'wb') as target:
                     shutil.copyfileobj(source, target)
 
     def sort_files(self):
@@ -117,3 +117,5 @@ a.sort_files()
 # получения данных (читаем os.walk() или zip.namelist и т.д.)
 # Документация по zipfile: API https://docs.python.org/3/library/zipfile.html
 # Для этого пригодится шаблон проектирование "Шаблонный метод" см https://goo.gl/Vz4828
+
+# зачет!
