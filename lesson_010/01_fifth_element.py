@@ -25,3 +25,5 @@ except IndexError:
     print('выход за границы списка')
 except BaseException as exp:
     print(f'что то пошло не так{exp}')
+
+# зачет!

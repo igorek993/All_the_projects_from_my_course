@@ -96,3 +96,5 @@ while carma_level < ENLIGHTENMENT_CARMA_LEVEL:
         print(f'day {day}, carma level {carma_level}')
     except (IamGodError, DrunkError, CarCrashError, GluttonyError, DepressionError, SuicideError) as exp:
         cprint(exp, color='yellow')
+
+# зачет!

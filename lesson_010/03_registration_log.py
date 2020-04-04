@@ -83,7 +83,7 @@ class Filter:
             raise NotNameError
 
     def write_results(self):
-        with open('registrations_good.txt', 'w+') as good_log:
+        with open('registrations_good.txt', 'w+') as good_log:  # TODO Filename - it's a constant!
             for line in self.registrations_good:
                 good_log.write(line)
         with open('registrations_bad.txt', 'w+') as bad_log:
@@ -96,4 +96,5 @@ class Filter:
 
 
 a = Filter('registrations.txt')
+# TODO What does it mean "a"? And now again - where should be filenames? Have you already forgot about constants?
 a.run()
