@@ -100,3 +100,5 @@ class Filter:
 
 log_reader = Filter(REG_LOG)
 log_reader.run()
+
+# зачет!
