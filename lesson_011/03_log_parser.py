@@ -14,4 +14,29 @@
 #
 # [2018-05-17 01:57] 1234
 
-# TODO здесь ваш код
+FILE_TO_READ = 'events.txt'
+
+
+def log_reader(file_to_read):
+    with open(file_to_read, 'r') as file:
+        count = 0
+        previous_time = []
+        allow = True
+        for line in file:
+            if previous_time:
+                if previous_time == line[0:17] and 'NOK' in line:
+                    count += 1
+                elif previous_time != line[0:17]:
+                    yield previous_time, count
+                    count = 0
+                    allow = True
+                    previous_time = []
+            if 'NOK' in line and allow:
+                count += 1
+                previous_time = line[0:17]
+                allow = False
+
+
+grouped_events = log_reader(FILE_TO_READ)
+for group_time, event_count in grouped_events:
+    print(f'[{group_time}] {event_count}')
