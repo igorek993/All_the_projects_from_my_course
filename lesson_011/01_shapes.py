@@ -31,3 +31,5 @@ draw_pentagon = get_polygon(n=5)
 draw_pentagon(start_point=sd.get_point(200, 200), angle=13, length=150)
 
 sd.pause()
+
+# зачет!

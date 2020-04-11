@@ -24,14 +24,17 @@ def get_prime_numbers(n):
 class PrimeNumbers:
 
     def __init__(self, n):
-        self.n = n
+        self.n = n  # TODO Назовите атрибут более ясно: "предел", "максимальное значение"... или т.п.
 
     def __iter__(self):
         self.prime_numbers = []
+        # TODO Объявите так же этот аттрибут и в __init__
         return self
 
     def __next__(self):
         for number in range(2, self.n + 1):
+            # TODO Есть возможность оптимизировать код: можно запоминать текущее значение числа и итерировать начиная
+            #  не с начала (от 2) а от следующего от текущего. Понадобится атрибут для этого
             for prime in self.prime_numbers:
                 if number >= self.n:
                     raise StopIteration()

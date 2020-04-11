@@ -41,3 +41,5 @@ def log_reader(file_to_read):
 grouped_events = log_reader(FILE_TO_READ)
 for group_time, event_count in grouped_events:
     print(f'[{group_time}] {event_count}')
+
+# зачет!

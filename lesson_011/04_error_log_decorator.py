@@ -9,8 +9,13 @@ from termcolor import colored
 # Формат лога: <имя функции> <параметры вызова> <тип ошибки> <текст ошибки>
 # Лог файл открывать каждый раз при ошибке в режиме 'a'
 
-# TODO Question!!! is it possible to make the log file colored? So (Function name,parameters, exception type)
+# Question!!! is it possible to make the log file colored? So (Function name,parameters, exception type)
 #  would have green color?
+# TODO Лог-файлы это файлы самого простого текстового формата. Они "хранят в себе" только символы которые вы видите и
+#  совсем немного не видимых символов типа пробел, перенос строки и т.п. Чтобы хранить в файле цвет, нужно информацию о
+#  цвете отдельно сохранить в файле. Файлы Word - это практически обычный html (точнее xml, но это более общий стандарт,
+#  так что почти одно и тоже), в нём есть масса скрытых команд для хранения всевозможных видов форматирования. Но за это
+#  расплата - сложная структура файла, большой объём не относящихся основной информации данных.
 
 def log_errors(func):
     def surrogate(*args, **kwargs):
@@ -63,3 +68,5 @@ perky(42)
 # @log_errors('function_errors.log')
 # def func():
 #     pass
+
+# зачет!
