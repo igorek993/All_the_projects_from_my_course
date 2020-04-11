@@ -23,17 +23,18 @@ def log_reader(file_to_read):
         previous_time = []
         allow = True
         for line in file:
+            current_slice = line[0:17]
             if previous_time:
-                if previous_time == line[0:17] and 'NOK' in line:
+                if previous_time == current_slice and 'NOK' in line:
                     count += 1
-                elif previous_time != line[0:17]:
+                elif previous_time != current_slice:
                     yield previous_time, count
                     count = 0
                     allow = True
                     previous_time = []
             if 'NOK' in line and allow:
                 count += 1
-                previous_time = line[0:17]
+                previous_time = current_slice
                 allow = False
 
 

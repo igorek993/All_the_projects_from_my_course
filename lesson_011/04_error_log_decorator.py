@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from termcolor import colored
+
 
 # Написать декоратор, который будет логировать (записывать в лог файл)
 # ошибки из декорируемой функции и выбрасывать их дальше.
@@ -7,13 +9,23 @@
 # Формат лога: <имя функции> <параметры вызова> <тип ошибки> <текст ошибки>
 # Лог файл открывать каждый раз при ошибке в режиме 'a'
 
+# TODO Question!!! is it possible to make the log file colored? So (Function name,parameters, exception type)
+#  would have green color?
 
 def log_errors(func):
-    pass
-    # TODO здесь ваш код
+    def surrogate(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as exception:
+            with open('function_errors.log', 'a') as log:
+                log.write(f'\nFunction name: {str(func)}, parameters: {str(*args, **kwargs)}, '
+                          f'exception type: {type(exception).__name__} exception message: {exception.args}')
+                raise exception
+    return surrogate
 
 
 # Проверить работу на следующих функциях
+
 @log_errors
 def perky(param):
     return param / 0
@@ -25,9 +37,9 @@ def check_line(line):
     if not name.isalpha():
         raise ValueError("it's not a name")
     if '@' not in email or '.' not in email:
-        raise ValueError("it's not a email")
+        raise ValueError("it's not an email")
     if not 10 <= int(age) <= 99:
-        raise ValueError('Age not in 10..99 range')
+        raise ValueError('Age is not in 10 to 99 range')
 
 
 lines = [
@@ -43,8 +55,7 @@ for line in lines:
         check_line(line)
     except Exception as exc:
         print(f'Invalid format: {exc}')
-perky(param=42)
-
+perky(42)
 
 # Усложненное задание (делать по желанию).
 # Написать декоратор с параметром - именем файла
@@ -52,4 +63,3 @@ perky(param=42)
 # @log_errors('function_errors.log')
 # def func():
 #     pass
-
