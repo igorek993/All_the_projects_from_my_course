@@ -23,32 +23,31 @@ def get_prime_numbers(n):
 
 class PrimeNumbers:
 
-    def __init__(self, n):
-        self.n = n  # TODO Назовите атрибут более ясно: "предел", "максимальное значение"... или т.п.
+    def __init__(self, limit):
+        self.limit = limit
+        self.prime_numbers = []
+        self.start_point = 2
 
     def __iter__(self):
         self.prime_numbers = []
-        # TODO Объявите так же этот аттрибут и в __init__
         return self
 
     def __next__(self):
-        for number in range(2, self.n + 1):
-            # TODO Есть возможность оптимизировать код: можно запоминать текущее значение числа и итерировать начиная
-            #  не с начала (от 2) а от следующего от текущего. Понадобится атрибут для этого
+        for number in range(self.start_point, self.limit + 1):
             for prime in self.prime_numbers:
-                if number >= self.n:
+                if number >= self.limit:
                     raise StopIteration()
                 if number % prime == 0:
                     break
             else:
                 self.prime_numbers.append(number)
+                self.start_point = number + 1
                 return number
 
 
-prime_number_iterator = PrimeNumbers(n=10000)
-for number in prime_number_iterator:
-    print(number)
-
+# prime_number_iterator = PrimeNumbers(limit=10000)
+# for number in prime_number_iterator:
+#     print(number)
 
 # Часть 2
 # Теперь нужно создать генератор, который выдает последовательность простых чисел до n
@@ -56,8 +55,8 @@ for number in prime_number_iterator:
 
 
 def prime_numbers_generator(n):
-    pass
-    # TODO здесь ваш код
+    for number in PrimeNumbers(n):
+        yield number
 
 
 for number in prime_numbers_generator(n=10000):
