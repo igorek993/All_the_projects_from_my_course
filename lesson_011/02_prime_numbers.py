@@ -54,13 +54,13 @@ class PrimeNumbers:
 # Распечатать все простые числа до 10000 в столбик
 
 
-def prime_numbers_generator(n):
-    for number in PrimeNumbers(n):
-        yield number
-
-
-for number in prime_numbers_generator(n=10000):
-    print(number)
+# def prime_numbers_generator(n):
+#     for number in PrimeNumbers(n):
+#         yield number
+#
+#
+# for number in prime_numbers_generator(n=10000):
+#     print(number)
 
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
@@ -69,7 +69,18 @@ for number in prime_numbers_generator(n=10000):
 #       то для вычисления "счастливости" брать равное количество цифр с начала и конца:
 #           727 -> 7(2)7 -> 7 == 7 -> True
 #           92083 -> 92(0)83 -> 9+2 == 8+3 -> True
+
+def lucky_number(number):
+    amount_of_digits = len(str(number))
+    left_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2)])]
+    right_even_numbers = [int(x) for x in (str(number)[-(amount_of_digits // 2):])]
+    return True if sum(left_even_numbers) == sum(right_even_numbers) else False
+
+
 # 2) "палиндромное" - одинаково читающееся в обоих направлениях. Например 723327 и 101
+
+
+
 # 3) придумать свою (https://clck.ru/GB5Fc в помощь)
 #
 # Подумать, как можно применить функции-фильтры к полученной последовательности простых чисел
