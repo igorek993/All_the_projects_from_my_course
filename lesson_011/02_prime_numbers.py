@@ -54,13 +54,14 @@ class PrimeNumbers:
 # Распечатать все простые числа до 10000 в столбик
 
 
-# def prime_numbers_generator(n):
-#     for number in PrimeNumbers(n):
-#         yield number
-#
-#
-# for number in prime_numbers_generator(n=10000):
-#     print(number)
+def prime_numbers_generator(n):
+    for number in PrimeNumbers(n):
+        yield number
+
+
+for number in prime_numbers_generator(n=10000):
+    print(number)
+
 
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
@@ -83,7 +84,7 @@ def palindromic_number(number):
     amount_of_digits = len(str(number))
     left_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2)])]
     if not amount_of_digits % 2:
-        reversed_right_even_numbers = [int(x) for x in (str(number)[:((amount_of_digits // 2)-1):-1])]
+        reversed_right_even_numbers = [int(x) for x in (str(number)[:((amount_of_digits // 2) - 1):-1])]
     else:
         reversed_right_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2):-1])]
     return True if reversed_right_even_numbers == left_even_numbers else False
@@ -96,3 +97,11 @@ def palindromic_number(number):
 # простых счастливых палиндромных чисел и так далее. Придумать не менее 2х способов.
 #
 # Подсказка: возможно, нужно будет добавить параметр в итератор/генератор.
+
+
+for number in prime_numbers_generator(n=10000):
+    if lucky_number(number):
+        print(number)
+
+for number in prime_numbers_generator(n=10000):
+    print(number) if palindromic_number(number) else None
