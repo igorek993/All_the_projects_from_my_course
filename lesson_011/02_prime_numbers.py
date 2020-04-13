@@ -54,7 +54,8 @@ class PrimeNumbers:
 # Распечатать все простые числа до 10000 в столбик
 
 
-def prime_numbers_generator(n):
+def prime_numbers_generator(n): # TODO Находчиво!:) Но это слишком легкий вариант, нужно создать генератор из исходной
+                                #  функции вверху текущего файла
     for number in PrimeNumbers(n):
         yield number
 
@@ -88,7 +89,7 @@ def palindromic_number(number):
     else:
         reversed_right_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2):-1])]
     return True if reversed_right_even_numbers == left_even_numbers else False
-
+    # TODO Одной такой строки: return str(number) == str(number)[::-1] хватило бы :)
 
 # 3) придумать свою (https://clck.ru/GB5Fc в помощь)
 #
