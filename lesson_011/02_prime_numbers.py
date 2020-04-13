@@ -79,6 +79,14 @@ def lucky_number(number):
 
 # 2) "палиндромное" - одинаково читающееся в обоих направлениях. Например 723327 и 101
 
+def palindromic_number(number):
+    amount_of_digits = len(str(number))
+    left_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2)])]
+    if not amount_of_digits % 2:
+        reversed_right_even_numbers = [int(x) for x in (str(number)[:((amount_of_digits // 2)-1):-1])]
+    else:
+        reversed_right_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2):-1])]
+    return True if reversed_right_even_numbers == left_even_numbers else False
 
 
 # 3) придумать свою (https://clck.ru/GB5Fc в помощь)
