@@ -67,7 +67,7 @@ def prime_numbers_generator(n):
 for number in prime_numbers_generator(n=1000):
     print(number)
 
-
+# зачет второй части
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
 # 1) "счастливое" в обыденном пониманиии - сумма первых цифр равна сумме последних
@@ -76,11 +76,13 @@ for number in prime_numbers_generator(n=1000):
 #           727 -> 7(2)7 -> 7 == 7 -> True
 #           92083 -> 92(0)83 -> 9+2 == 8+3 -> True
 
+
 def lucky_number(number):
     amount_of_digits = len(str(number))
     left_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2)])]
     right_even_numbers = [int(x) for x in (str(number)[-(amount_of_digits // 2):])]
     return True if sum(left_even_numbers) == sum(right_even_numbers) else False
+
 
 # 2) "палиндромное" - одинаково читающееся в обоих направлениях. Например 723327 и 101
 
@@ -97,7 +99,7 @@ def lucky_number(number):
 # def palindromic_number_2(number):
 #     return str(number) == str(number)[::-1]
 
-# TODO This was super funny... I was trying to get rid of the middle digit in odd numbers... it took me like 2
+# This was super funny... I was trying to get rid of the middle digit in odd numbers... it took me like 2
 #  hours to figure it out... omg :) Can't believe it was that easy...
 
 
@@ -116,3 +118,6 @@ def lucky_number(number):
 #
 # for number in prime_numbers_generator(n=10000):
 #     print(number) if palindromic_number(number) else None
+
+# TODO Это два  идентичных варианта.
+#  Cделайте через добавление параметра "filtering" в генератор или через декоратор
