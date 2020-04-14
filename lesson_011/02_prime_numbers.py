@@ -53,14 +53,18 @@ class PrimeNumbers:
 # Теперь нужно создать генератор, который выдает последовательность простых чисел до n
 # Распечатать все простые числа до 10000 в столбик
 
+def prime_numbers_generator(n):
+    prime_numbers = []
+    for number in range(2, n + 1):
+        for prime in prime_numbers:
+            if number % prime == 0:
+                break
+        else:
+            prime_numbers.append(number)
+            yield number
 
-def prime_numbers_generator(n): # TODO Находчиво!:) Но это слишком легкий вариант, нужно создать генератор из исходной
-                                #  функции вверху текущего файла
-    for number in PrimeNumbers(n):
-        yield number
 
-
-for number in prime_numbers_generator(n=10000):
+for number in prime_numbers_generator(n=1000):
     print(number)
 
 
@@ -78,18 +82,24 @@ def lucky_number(number):
     right_even_numbers = [int(x) for x in (str(number)[-(amount_of_digits // 2):])]
     return True if sum(left_even_numbers) == sum(right_even_numbers) else False
 
-
 # 2) "палиндромное" - одинаково читающееся в обоих направлениях. Например 723327 и 101
 
-def palindromic_number(number):
-    amount_of_digits = len(str(number))
-    left_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2)])]
-    if not amount_of_digits % 2:
-        reversed_right_even_numbers = [int(x) for x in (str(number)[:((amount_of_digits // 2) - 1):-1])]
-    else:
-        reversed_right_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2):-1])]
-    return True if reversed_right_even_numbers == left_even_numbers else False
-    # TODO Одной такой строки: return str(number) == str(number)[::-1] хватило бы :)
+# def palindromic_number(number):
+#     amount_of_digits = len(str(number))
+#     left_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2)])]
+#     if not amount_of_digits % 2:
+#         reversed_right_even_numbers = [int(x) for x in (str(number)[:((amount_of_digits // 2) - 1):-1])]
+#     else:
+#         reversed_right_even_numbers = [int(x) for x in (str(number)[:(amount_of_digits // 2):-1])]
+#     return True if reversed_right_even_numbers == left_even_numbers else False
+#
+#
+# def palindromic_number_2(number):
+#     return str(number) == str(number)[::-1]
+
+# TODO This was super funny... I was trying to get rid of the middle digit in odd numbers... it took me like 2
+#  hours to figure it out... omg :) Can't believe it was that easy...
+
 
 # 3) придумать свою (https://clck.ru/GB5Fc в помощь)
 #
@@ -100,9 +110,9 @@ def palindromic_number(number):
 # Подсказка: возможно, нужно будет добавить параметр в итератор/генератор.
 
 
-for number in prime_numbers_generator(n=10000):
-    if lucky_number(number):
-        print(number)
-
-for number in prime_numbers_generator(n=10000):
-    print(number) if palindromic_number(number) else None
+# for number in prime_numbers_generator(n=10000):
+#     if lucky_number(number):
+#         print(number)
+#
+# for number in prime_numbers_generator(n=10000):
+#     print(number) if palindromic_number(number) else None
