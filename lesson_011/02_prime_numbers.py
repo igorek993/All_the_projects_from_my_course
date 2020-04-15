@@ -112,29 +112,32 @@ def lucky_number(number):
 
 # NEW CODE BELOW!!!
 
-lucky_prime_numbers_gen = [number for number in filter(lucky_number, (get_prime_numbers(1000)))]
+# lucky_prime_numbers_gen = [number for number in filter(lucky_number, (get_prime_numbers(1000)))]
+#
+# print(lucky_prime_numbers_gen)
 
-print(lucky_prime_numbers_gen)
 
-# def lucky_number_dec(func):
-#     def surrogate(*args, **kwargs):
-#         lucky_prime_numbers = filter(lucky_number, func(*args, **kwargs))
-#         return lucky_prime_numbers
-#
-#     return surrogate
-#
-#
-# @lucky_number_dec
-# def get_prime_numbers(n):
-#     prime_numbers = []
-#     for number in range(2, n + 1):
-#         for prime in prime_numbers:
-#             if number % prime == 0:
-#                 break
-#         else:
-#             prime_numbers.append(number)
-#     return prime_numbers
-#
-#
-# for number in get_prime_numbers(1000):
-#     print(number)
+def lucky_number_dec(func):
+    def surrogate(*args, **kwargs):
+        lucky_prime_numbers = filter(lucky_number, func(*args, **kwargs))
+        return lucky_prime_numbers
+
+    return surrogate
+
+
+@lucky_number_dec
+def get_prime_numbers(n):
+    prime_numbers = []
+    for number in range(2, n + 1):
+        for prime in prime_numbers:
+            if number % prime == 0:
+                break
+        else:
+            prime_numbers.append(number)
+    return prime_numbers
+
+
+for number in get_prime_numbers(1000):
+    print(number)
+
+# зачет!
