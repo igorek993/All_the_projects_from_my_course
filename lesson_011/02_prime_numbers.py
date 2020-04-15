@@ -53,19 +53,9 @@ class PrimeNumbers:
 # Теперь нужно создать генератор, который выдает последовательность простых чисел до n
 # Распечатать все простые числа до 10000 в столбик
 
-def prime_numbers_generator(n):
-    prime_numbers = []
-    for number in range(2, n + 1):
-        for prime in prime_numbers:
-            if number % prime == 0:
-                break
-        else:
-            prime_numbers.append(number)
-            yield number
 
-
-for number in prime_numbers_generator(n=1000):
-    print(number)
+# for number in prime_numbers_generator(n=1000):
+#     print(number)
 
 # зачет второй части
 # Часть 3
@@ -119,5 +109,32 @@ def lucky_number(number):
 # for number in prime_numbers_generator(n=10000):
 #     print(number) if palindromic_number(number) else None
 
-# TODO Это два  идентичных варианта.
-#  Cделайте через добавление параметра "filtering" в генератор или через декоратор
+
+# NEW CODE BELOW!!!
+
+lucky_prime_numbers_gen = [number for number in filter(lucky_number, (get_prime_numbers(1000)))]
+
+print(lucky_prime_numbers_gen)
+
+# def lucky_number_dec(func):
+#     def surrogate(*args, **kwargs):
+#         lucky_prime_numbers = filter(lucky_number, func(*args, **kwargs))
+#         return lucky_prime_numbers
+#
+#     return surrogate
+#
+#
+# @lucky_number_dec
+# def get_prime_numbers(n):
+#     prime_numbers = []
+#     for number in range(2, n + 1):
+#         for prime in prime_numbers:
+#             if number % prime == 0:
+#                 break
+#         else:
+#             prime_numbers.append(number)
+#     return prime_numbers
+#
+#
+# for number in get_prime_numbers(1000):
+#     print(number)
