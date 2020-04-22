@@ -67,7 +67,7 @@
 import os
 from collections import defaultdict
 
-FILES_DIRECTORY = os.path.normpath('trades')
+FILES_DIRECTORY = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_012\\trades')
 
 
 class StockAnalyst:
