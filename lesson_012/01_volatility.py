@@ -67,7 +67,7 @@
 import os
 from collections import defaultdict
 
-FILES_DIRECTORY = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_012\\trades')
+FILES_DIRECTORY = os.path.normpath('trades')
 
 
 class StockAnalyst:
@@ -83,11 +83,16 @@ class StockAnalyst:
         self.volatility_dict = defaultdict(int)
 
     def run(self):
+        # TODO Для того, чтобы по-максимуму использовать код этой задачи в задачах 2 и 3 нужно, чтобы объект класса
+        #  StockAnalyst обрабатывал ровно один файл. Данные можно сбрасывать либо в переменную в глобальной области
+        #  видимости (которую надо будет передавать через параметр при создании объекта), либо собирать из атрибутов
+        #  объектов после обработки всех файлов. Цикл по файлам должен быть вовне класса, как и функции вывода
+        #  результата
         for file in os.listdir(self.files_directory):
             self.get_stock_info(file)
             self.find_min_max_price()
             self.calculate_volatility_average_price()
-            self.volatility_dict[self.current_secid] += round(self.current_volatility, 1)
+            self.volatility_dict[self.current_secid] += round(self.current_volatility, 1)  # TODO Округлите до 2 знаков
         self.print_report()
 
     def print_report(self):
