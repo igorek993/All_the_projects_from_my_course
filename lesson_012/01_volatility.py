@@ -65,9 +65,21 @@
 # Для плавного перехода к мультипоточности, код оформить в обьектном стиле, используя следующий каркас
 
 import os
-from collections import defaultdict
+import time
 
 FILES_DIRECTORY = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_012\\trades')
+
+
+def time_track(func):
+    def surrogate(*args, **kwargs):
+        started_at = time.time()
+        result = func(*args, **kwargs)
+        ended_at = time.time()
+        elapsed = round(ended_at - started_at, 4)
+        print(f'Функция работала {elapsed} секунд(ы)')
+        return result
+
+    return surrogate
 
 
 def print_report(volatility_dict):
@@ -129,7 +141,12 @@ volatility_dict = dict()
 
 test = StockAnalyst(FILES_DIRECTORY)
 
-for file in os.listdir(FILES_DIRECTORY):
-    volatility_dict.update(test.run(file))
 
-print_report(volatility_dict)
+@time_track
+def analyze_stocks():
+    for file in os.listdir(FILES_DIRECTORY):
+        volatility_dict.update(test.run(file))
+    print_report(volatility_dict)
+
+
+analyze_stocks()
