@@ -150,3 +150,5 @@ def analyze_stocks():
 
 
 analyze_stocks()
+
+# зачет!
