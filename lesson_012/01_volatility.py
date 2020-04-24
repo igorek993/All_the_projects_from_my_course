@@ -70,52 +70,45 @@ from collections import defaultdict
 FILES_DIRECTORY = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_012\\trades')
 
 
+def print_report(volatility_dict):
+    zero_volatility = list()
+    sorted_volatility_dict = sorted(volatility_dict.items(), key=lambda x: x[1], reverse=True)
+    for stock in reversed(sorted_volatility_dict):
+        if stock[1] == 0.0:
+            zero_volatility.append(stock[0])
+            sorted_volatility_dict.remove(stock)
+        zero_volatility.sort()
+    print(f"    Maximum volatility:\n"
+          f"{sorted_volatility_dict[0][0]:>11} - {sorted_volatility_dict[0][1]:}%\n"
+          f"{sorted_volatility_dict[1][0]:>11} - {sorted_volatility_dict[1][1]:}%\n"
+          f"{sorted_volatility_dict[2][0]:>11} - {sorted_volatility_dict[2][1]:}%\n"
+          f"    Minimum volatility:\n"
+          f"{sorted_volatility_dict[-1][0]:>11} - {sorted_volatility_dict[-1][1]:}%\n"
+          f"{sorted_volatility_dict[-2][0]:>11} - {sorted_volatility_dict[-2][1]:}%\n"
+          f"{sorted_volatility_dict[-3][0]:>11} - {sorted_volatility_dict[-3][1]:}%\n"
+          f"     Zero volatility:\n"
+          f"       {','.join(zero_volatility):}")
+
+
 class StockAnalyst:
 
-    def __init__(self, files_directory):
-        self.files_directory = files_directory
+    def __init__(self, file_dir):
+        self.file_dir = file_dir
         self.current_stock_info_list = list()
         self.current_secid = None
         self.current_min_price = 0
         self.current_max_price = 0
         self.current_average_price = 0
         self.current_volatility = 0
-        self.volatility_dict = defaultdict(int)
 
-    def run(self):
-        # TODO Для того, чтобы по-максимуму использовать код этой задачи в задачах 2 и 3 нужно, чтобы объект класса
-        #  StockAnalyst обрабатывал ровно один файл. Данные можно сбрасывать либо в переменную в глобальной области
-        #  видимости (которую надо будет передавать через параметр при создании объекта), либо собирать из атрибутов
-        #  объектов после обработки всех файлов. Цикл по файлам должен быть вовне класса, как и функции вывода
-        #  результата
-        for file in os.listdir(self.files_directory):
-            self.get_stock_info(file)
-            self.find_min_max_price()
-            self.calculate_volatility_average_price()
-            self.volatility_dict[self.current_secid] += round(self.current_volatility, 1)  # TODO Округлите до 2 знаков
-        self.print_report()
-
-    def print_report(self):
-        zero_volatility = list()
-        sorted_volatility_dict = sorted(self.volatility_dict.items(), key=lambda x: x[1], reverse=True)
-        for stock in reversed(sorted_volatility_dict):
-            if stock[1] == 0.0:
-                zero_volatility.append(stock[0])
-                sorted_volatility_dict.remove(stock)
-            zero_volatility.sort()
-        print(f"    Maximum volatility:\n"
-              f"{sorted_volatility_dict[0][0]:>11} - {sorted_volatility_dict[0][1]:}%\n"
-              f"{sorted_volatility_dict[1][0]:>11} - {sorted_volatility_dict[1][1]:}%\n"
-              f"{sorted_volatility_dict[2][0]:>11} - {sorted_volatility_dict[2][1]:}%\n"
-              f"    Minimum volatility:\n"
-              f"{sorted_volatility_dict[-1][0]:>11} - {sorted_volatility_dict[-1][1]:}%\n"
-              f"{sorted_volatility_dict[-2][0]:>11} - {sorted_volatility_dict[-2][1]:}%\n"
-              f"{sorted_volatility_dict[-3][0]:>11} - {sorted_volatility_dict[-3][1]:}%\n"
-              f"     Zero volatility:\n"
-              f"       {','.join(zero_volatility):}")
+    def run(self, file):
+        self.get_stock_info(file)
+        self.find_min_max_price()
+        self.calculate_volatility_average_price()
+        return {self.current_secid: round(self.current_volatility, 2)}
 
     def get_stock_info(self, file):
-        with open(os.path.join(self.files_directory, file), 'r') as stock_xl:
+        with open(os.path.join(self.file_dir, file), 'r') as stock_xl:
             self.current_stock_info_list = stock_xl.read().splitlines()[1:]
 
     def calculate_volatility_average_price(self):
@@ -132,6 +125,11 @@ class StockAnalyst:
         self.current_max_price = price_list[-1]
 
 
+volatility_dict = dict()
+
 test = StockAnalyst(FILES_DIRECTORY)
 
-test.run()
+for file in os.listdir(FILES_DIRECTORY):
+    volatility_dict.update(test.run(file))
+
+print_report(volatility_dict)
