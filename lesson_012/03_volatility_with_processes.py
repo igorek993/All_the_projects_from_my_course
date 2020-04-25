@@ -40,6 +40,7 @@
 import os
 import time
 from multiprocessing import Process, Pipe, Queue
+from queue import Empty
 
 FILES_DIRECTORY = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_012\\trades')
 
@@ -78,7 +79,7 @@ def print_report(volatility_dict):
 
 class StockAnalyst(Process):
 
-    def __init__(self, file_dir, file, volatility_dict, conn):
+    def __init__(self, file_dir, file, volatility_dict, receiver):
         super().__init__()
         self.volatility_dict = volatility_dict
         self.file = file
@@ -89,14 +90,13 @@ class StockAnalyst(Process):
         self.current_max_price = 0
         self.current_average_price = 0
         self.current_volatility = 0
-        self.conn = conn
+        self.receiver = receiver
 
     def run(self):
         self.get_stock_info(self.file)
         self.find_min_max_price()
         self.calculate_volatility_average_price()
-        self.conn.send({self.current_secid: round(self.current_volatility, 2)})
-        self.conn.close()
+        self.receiver.put({self.current_secid: round(self.current_volatility, 2)})
 
     def get_stock_info(self, file):
         with open(os.path.join(self.file_dir, file), 'r') as stock_xl:
@@ -120,23 +120,23 @@ if __name__ == '__main__':
 
     volatility_dict = dict()
     analysts, pipes = [], []
+    receiver = Queue(maxsize=2)
 
     for file in os.listdir(FILES_DIRECTORY):
-        parent_conn, child_conn = Pipe()
-        analysts.append(StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility_dict, conn=child_conn))
-        pipes.append(parent_conn)
+        analysts.append(StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility_dict, receiver=receiver))
 
-
-    # stock_analysts = [StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility_dict) for file in
-    #                   os.listdir(FILES_DIRECTORY)]
 
     @time_track
     def analyze_stocks():
         for analyst in analysts:
             analyst.start()
-        for conn in pipes:
-            data = conn.recv()
-            volatility_dict.update(data)
+        while True:
+            try:
+                data = receiver.get(timeout=0.1)
+                volatility_dict.update(data)
+            except Empty:
+                if not any(analyst.is_alive() for analyst in analysts):
+                    break
         for analyst in analysts:
             analyst.join()
         print_report(volatility_dict)
