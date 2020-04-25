@@ -22,6 +22,7 @@ import queue
 import threading
 import time
 from threading import Thread
+from queue import Empty
 
 FILES_DIRECTORY = os.path.normpath('C:\\Users\igorek\PycharmProjects\python_base\lesson_012\\trades')
 
@@ -62,7 +63,7 @@ class StockAnalyst(Thread):
 
     def __init__(self, file_dir, file, volatility_dict, _queue):
         super().__init__()
-        self.queue = queue.Queue(maxsize=2)
+        self.queue = _queue
         self.volatility_dict = volatility_dict
         self.file = file
         self.file_dir = file_dir
@@ -78,10 +79,6 @@ class StockAnalyst(Thread):
         self.find_min_max_price()
         self.calculate_volatility_average_price()
         self.queue.put({self.current_secid: round(self.current_volatility, 2)})
-        try:
-            self.volatility_dict.update(self.queue.get(timeout=1))
-        except queue.Empty:
-            print('the queue was empty for a while')
 
     def get_stock_info(self, file):
         with open(os.path.join(self.file_dir, file), 'r') as stock_xl:
@@ -103,7 +100,7 @@ class StockAnalyst(Thread):
 
 volatility_dict = dict()
 volatility_dict = volatility_dict
-_queue = queue.Queue(maxsize=2)
+_queue = queue.Queue(maxsize=20)
 stock_analysts = [StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility_dict, _queue=_queue) for file in
                   os.listdir(FILES_DIRECTORY)]
 
@@ -112,6 +109,9 @@ stock_analysts = [StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility
 def analyze_stocks():
     for analyst in stock_analysts:
         analyst.start()
+        data = _queue.get()
+        print(data)
+        volatility_dict.update(data)
     for analyst in stock_analysts:
         analyst.join()
     print_report(volatility_dict)
