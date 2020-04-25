@@ -18,6 +18,7 @@
 # Волатильности указывать в порядке убывания. Тикеры с нулевой волатильностью упорядочить по имени.
 #
 import os
+import threading
 import time
 from threading import Thread
 
@@ -58,7 +59,7 @@ def print_report(volatility_dict):
 
 class StockAnalyst(Thread):
 
-    def __init__(self, file_dir, file, volatility_dict):
+    def __init__(self, file_dir, file, volatility_dict, lock):
         super().__init__()
         self.volatility_dict = volatility_dict
         self.file = file
@@ -69,13 +70,15 @@ class StockAnalyst(Thread):
         self.current_max_price = 0
         self.current_average_price = 0
         self.current_volatility = 0
+        self.lock = lock
 
     def run(self):
         global done
         self.get_stock_info(self.file)
         self.find_min_max_price()
         self.calculate_volatility_average_price()
-        self.volatility_dict.update({self.current_secid: round(self.current_volatility, 2)})
+        with self.lock:
+            self.volatility_dict.update({self.current_secid: round(self.current_volatility, 2)})
 
     def get_stock_info(self, file):
         with open(os.path.join(self.file_dir, file), 'r') as stock_xl:
@@ -96,8 +99,9 @@ class StockAnalyst(Thread):
 
 
 volatility_dict = dict()
+lock = threading.Lock()
 
-stock_analysts = [StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility_dict) for file in
+stock_analysts = [StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility_dict, lock=lock) for file in
                   os.listdir(FILES_DIRECTORY)]
 
 
