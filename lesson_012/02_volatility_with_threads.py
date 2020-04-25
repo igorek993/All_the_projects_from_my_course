@@ -18,6 +18,7 @@
 # Волатильности указывать в порядке убывания. Тикеры с нулевой волатильностью упорядочить по имени.
 #
 import os
+import queue
 import threading
 import time
 from threading import Thread
@@ -59,8 +60,9 @@ def print_report(volatility_dict):
 
 class StockAnalyst(Thread):
 
-    def __init__(self, file_dir, file, volatility_dict, lock):
+    def __init__(self, file_dir, file, volatility_dict, _queue):
         super().__init__()
+        self.queue = queue.Queue(maxsize=2)
         self.volatility_dict = volatility_dict
         self.file = file
         self.file_dir = file_dir
@@ -70,15 +72,16 @@ class StockAnalyst(Thread):
         self.current_max_price = 0
         self.current_average_price = 0
         self.current_volatility = 0
-        self.lock = lock
 
     def run(self):
-        global done
         self.get_stock_info(self.file)
         self.find_min_max_price()
         self.calculate_volatility_average_price()
-        with self.lock:
-            self.volatility_dict.update({self.current_secid: round(self.current_volatility, 2)})
+        self.queue.put({self.current_secid: round(self.current_volatility, 2)})
+        try:
+            self.volatility_dict.update(self.queue.get(timeout=1))
+        except queue.Empty:
+            print('the queue was empty for a while')
 
     def get_stock_info(self, file):
         with open(os.path.join(self.file_dir, file), 'r') as stock_xl:
@@ -99,9 +102,9 @@ class StockAnalyst(Thread):
 
 
 volatility_dict = dict()
-lock = threading.Lock()
-
-stock_analysts = [StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility_dict, lock=lock) for file in
+volatility_dict = volatility_dict
+_queue = queue.Queue(maxsize=2)
+stock_analysts = [StockAnalyst(FILES_DIRECTORY, file, volatility_dict=volatility_dict, _queue=_queue) for file in
                   os.listdir(FILES_DIRECTORY)]
 
 
