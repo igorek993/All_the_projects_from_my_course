@@ -41,32 +41,32 @@ import argparse
 #   --save_to - необязательный, путь для сохранения заполненнего билета.
 # и заполнять билет.
 
-
-parser = argparse.ArgumentParser(description="Ticket filler")
-parser.add_argument("-fio", "--name_surname", required=True)
-parser.add_argument("-from_", "--country_of_origin", required=True)
-parser.add_argument("-t", "--destination", required=True)
-parser.add_argument("-d", "--date", required=True)
-parser.add_argument("-p", "--path", help='save to')
-args = parser.parse_args()
+FONT_PATH = os.path.join("python_snippets\\fonts", "OpenSans-Regular.ttf")
+TEMPLATE_PATH = 'images/ticket_template.png'
+SAVE_PATH = 'probe.png'
 
 
-# TODO Опреледения функций должны идти до основного кода
 def make_ticket(fio, from_, to, date, path=None):
-    font_path = os.path.join("python_snippets\\fonts", "OpenSans-Regular.ttf")
-    ticket = Image.open('images/ticket_template.png')
-    # TODO Все ресурсы (названия, пути к ним) должны быть в виде констант
-    font = ImageFont.truetype(font_path, size=16)
+    ticket = Image.open(TEMPLATE_PATH)
+    font = ImageFont.truetype(FONT_PATH, size=16)
     draw = ImageDraw.Draw(ticket)
+    coordinates = [((45, 117), fio), ((45, 187), from_), ((45, 253), to), ((285, 253), date)]
+    for coordinate, info in coordinates:
+        draw.text(coordinate, info, font=font, fill=ImageColor.colormap['black'])
+    ticket.save(path) if path else ticket.save(SAVE_PATH)
 
-    draw.text((45, 117), fio, font=font, fill=ImageColor.colormap['black'])
-    draw.text((45, 187), from_, font=font, fill=ImageColor.colormap['black'])
-    draw.text((45, 253), to, font=font, fill=ImageColor.colormap['black'])
-    draw.text((285, 253), date, font=font, fill=ImageColor.colormap['black'])
-    # TODO чтобы не дублировать код: создайте структуру данных с координатами текста и самим текстом (переменными) и
-    #  в цикле итерируя по ней рисуйте текст
-    ticket.save(path) if path else ticket.save('probe.png')  # TODO Аналогично
 
+#
+# parser = argparse.ArgumentParser(description="Ticket filler")
+# parser.add_argument("-fio", "--name_surname", required=True)
+# parser.add_argument("-from_", "--country_of_origin", required=True)
+# parser.add_argument("-t", "--destination", required=True)
+# parser.add_argument("-d", "--date", required=True)
+# parser.add_argument("-p", "--path", help='save to')
+# args = parser.parse_args()
+# #
+# if __name__ == "__main__":
+#     make_ticket(args.name_surname, args.country_of_origin, args.destination, args.date, args.path)
 
 if __name__ == "__main__":
-    make_ticket(args.name_surname, args.country_of_origin, args.destination, args.date, args.path)
+    make_ticket('Igor', 'Australia', 'Nowhere', 'Now')
