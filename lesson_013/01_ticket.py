@@ -44,15 +44,15 @@ import argparse
 FONT_PATH = os.path.join("python_snippets\\fonts", "OpenSans-Regular.ttf")
 TEMPLATE_PATH = 'images/ticket_template.png'
 SAVE_PATH = 'probe.png'
+FONT = ImageFont.truetype(FONT_PATH, size=16)
 
 
 def make_ticket(fio, from_, to, date, path=None):
     ticket = Image.open(TEMPLATE_PATH)
-    font = ImageFont.truetype(FONT_PATH, size=16)
     draw = ImageDraw.Draw(ticket)
     coordinates = [((45, 117), fio), ((45, 187), from_), ((45, 253), to), ((285, 253), date)]
     for coordinate, info in coordinates:
-        draw.text(coordinate, info, font=font, fill=ImageColor.colormap['black'])
+        draw.text(coordinate, info, font=FONT, fill=ImageColor.colormap['black'])
     ticket.save(path) if path else ticket.save(SAVE_PATH)
 
 
