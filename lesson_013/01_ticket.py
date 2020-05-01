@@ -51,9 +51,11 @@ parser.add_argument("-p", "--path", help='save to')
 args = parser.parse_args()
 
 
+# TODO Опреледения функций должны идти до основного кода
 def make_ticket(fio, from_, to, date, path=None):
     font_path = os.path.join("python_snippets\\fonts", "OpenSans-Regular.ttf")
     ticket = Image.open('images/ticket_template.png')
+    # TODO Все ресурсы (названия, пути к ним) должны быть в виде констант
     font = ImageFont.truetype(font_path, size=16)
     draw = ImageDraw.Draw(ticket)
 
@@ -61,7 +63,9 @@ def make_ticket(fio, from_, to, date, path=None):
     draw.text((45, 187), from_, font=font, fill=ImageColor.colormap['black'])
     draw.text((45, 253), to, font=font, fill=ImageColor.colormap['black'])
     draw.text((285, 253), date, font=font, fill=ImageColor.colormap['black'])
-    ticket.save(path) if path else ticket.save('probe.png')
+    # TODO чтобы не дублировать код: создайте структуру данных с координатами текста и самим текстом (переменными) и
+    #  в цикле итерируя по ней рисуйте текст
+    ticket.save(path) if path else ticket.save('probe.png')  # TODO Аналогично
 
 
 if __name__ == "__main__":
