@@ -70,3 +70,5 @@ def make_ticket(fio, from_, to, date, path=None):
 
 if __name__ == "__main__":
     make_ticket('Igor', 'Australia', 'Nowhere', 'Now')
+
+# зачет!
