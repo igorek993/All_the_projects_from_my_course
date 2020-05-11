@@ -2,12 +2,14 @@
 # coding=utf8
 import logging
 
-from chatbot.my_token import token
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 import random
 
-group_id = 194838302
+try:
+    import chatbot.settings as settings
+except ImportError:
+    exit('Do cp settings.py.default settings.py and set token!')
 
 log = logging.getLogger('bot')
 
@@ -26,7 +28,16 @@ def configure_logging():
 
 
 class Bot:
+    """
+    Echo bot for vk.com
+    Use python 3.7
+    """
+
     def __init__(self, group_id, token):
+        """
+        :param group_id: group id from vk group
+        :param token: secret token
+        """
         self.group_id = group_id
         self.token = token
         self.vk = vk_api.VkApi(token=token)
@@ -34,6 +45,9 @@ class Bot:
         self.api = self.vk.get_api()
 
     def run(self):
+        """
+        Start the bot
+        """
         for event in self.long_poller.listen():
             try:
                 self.on_event(event)
@@ -41,6 +55,11 @@ class Bot:
                 log.exception('error while processing the event')
 
     def on_event(self, event):
+        """
+        sends a text message back to the user
+        :param event: VkBotMessageEvent object
+        :return: None
+        """
         if event.type == VkBotEventType.MESSAGE_NEW:
             log.debug('sending a message')
             self.api.messages.send(message=(event.object['message']['text']),
@@ -52,5 +71,5 @@ class Bot:
 
 if __name__ == '__main__':
     configure_logging()
-    bot = Bot(group_id, token)
+    bot = Bot(settings.GROUP_ID, settings.TOKEN)
     bot.run()
