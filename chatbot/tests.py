@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from chatbot.bot import Bot
+from bot import Bot
 
 
 class Test1(TestCase):

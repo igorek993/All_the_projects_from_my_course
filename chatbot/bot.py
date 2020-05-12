@@ -7,7 +7,7 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 import random
 
 try:
-    import chatbot.settings as settings
+    import settings
 except ImportError:
     exit('Do cp settings.py.default settings.py and set token!')
 
