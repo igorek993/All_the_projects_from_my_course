@@ -10,28 +10,52 @@ class InvalidSymbol(Exception):
         return self.message
 
 
+class MoreThan10(Exception):
+
+    def __init__(self):
+        self.message = "Can't be more than 10 points per frame"
+
+    def __str__(self):
+        return self.message
+
+
+class EvenNumber(Exception):
+
+    def __init__(self):
+        self.message = "Can't be an odd number"
+
+    def __str__(self):
+        return self.message
+
+
 def get_score(game_result):
-    """
-    bowling function
-    >>> get_score('X4/34-4')
-    46
-    """
+    allowed_symbols = ['/', 'X', '-']
+    current_pair = str()
     score = 0
-    n = 2
     for symbol in game_result:
-        if symbol == 'X':
-            score += 20
-            game_result = game_result.replace(symbol, '')
-        elif symbol == '-':
-            game_result = game_result.replace(symbol, '0')
-        elif not symbol.isnumeric() and symbol != '/':
+        if not symbol.isnumeric() and symbol not in allowed_symbols:
             raise InvalidSymbol
-    game_result = [game_result[i:i + n] for i in range(0, len(game_result), n)]
-    for pair in game_result:
-        if pair.isnumeric():
-            score += int(pair[0]) + int(pair[1])
-        elif pair[0].isnumeric() and pair[1] == '/':
-            score += 15
+        elif current_pair and symbol == 'X':
+            raise EvenNumber
+        elif symbol == 'X':
+            score += 20
+            continue
+        elif current_pair:
+            current_pair += symbol
+            if symbol == '/':
+                score += 15
+                current_pair = str()
+                continue
+            for i in current_pair:
+                if i == '-':
+                    current_pair = current_pair.replace('-', '0')
+            if int(current_pair[0]) + int(current_pair[1]) <= 10:
+                score += int(current_pair[0]) + int(current_pair[1])
+            else:
+                raise MoreThan10
+            current_pair = str()
+        else:
+            current_pair += symbol
     return score
 
 
