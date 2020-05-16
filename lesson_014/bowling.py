@@ -49,7 +49,8 @@ def get_score(game_result):
             for i in current_pair:
                 if i == '-':
                     current_pair = current_pair.replace('-', '0')
-            if int(current_pair[0]) + int(current_pair[1]) <= 10:
+            if int(current_pair[0]) + int(current_pair[1]) <= 10:  # todo Тут на деле не должно быть более 9, так как
+                                                                   #  если все кегли сбиты, то это spare - /
                 score += int(current_pair[0]) + int(current_pair[1])
             else:
                 raise MoreThan10
