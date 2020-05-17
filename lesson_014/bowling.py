@@ -98,17 +98,23 @@ class Manager:
 
 class ShotOne(Manager):
 
-    def __init__(self):
+    def __init__(self):   # TODO Если инициализации нет, то нет смысла определять __init__
         pass
+    # TODO Нужен метод "обработчик броска", который считает очки за первый бросок и возвращает следующее "состоящие" в
+    #  зависимости от результата первого броска (если сбито менее 10, то возвращаем состояние "второй бросок", а если
+    #  результат броска страйк, то возвращаем состояниие "первого броска")
 
 
 class ShotTwo(Manager):
 
-    def __init__(self):
+    def __init__(self): # TOdO Тоже не нужен
         pass
+
+    # TODO А тут свой обратотчик броска
 
 
 def bowling(result):
+    # TODO А вот этот код должен быть в "менеджере"
     current_state, score = ShotOne(), 0
     for symbol in result:
         current_state, points = current_state.get_score(symbol)
