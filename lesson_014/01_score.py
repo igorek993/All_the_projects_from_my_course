@@ -41,7 +41,7 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
     print(get_score(args.result), 'points')
-
+    # TODO Тут надо создать объект менеджера и вызвать подсчёт
 # При написании кода помнить, что заказчик может захотеть доработок и новых возможностей...
 # И, возможно, вам пригодится паттерн проектирования "Состояние",
 #   см https://clck.ru/Fudd8 и https://refactoring.guru/ru/design-patterns/state

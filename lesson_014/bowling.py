@@ -67,7 +67,8 @@ class EvenNumber(Exception):
 class Manager:
 
     def bowling(self, result):
-        global current_pair
+        global current_pair   # TOdO Сделайте атрибутом объекта. А передавать его в объекты состояния надо через
+                              #  параметры, а не через глобальные переменные
         current_pair = str()
         current_state, score = ShotOne(), 0
         for symbol in result:
@@ -76,7 +77,8 @@ class Manager:
         return score
 
 
-class ShotOne(Manager):
+class ShotOne(Manager):  # TODO От менеджера не надо наследовать, есть смысл наследовать состояния от абстрактного
+                         # класса куда вынести дубликаты кода: допустимые символы
 
     def get_score(self, symbol):
         allowed_symbols = ['/', 'X', '-']
@@ -89,13 +91,14 @@ class ShotOne(Manager):
             return ShotTwo(), 20
         elif current_pair:
             current_pair += symbol
-            if symbol == '/':
+            if symbol == '/':    #TODO spare в первом броске??!
                 current_pair = str()
                 return ShotTwo(), 15
             for i in current_pair:
                 if i == '-':
                     current_pair = current_pair.replace('-', '0')
-            if int(current_pair[0]) + int(current_pair[1]) <= 9:
+            if int(current_pair[0]) + int(current_pair[1]) <= 9:   # todo проверка суммы  очков за два хода нужна только
+                                                                   #  во втором броске
                 points = int(current_pair[0]) + int(current_pair[1])
                 current_pair = str()
                 return ShotOne(), points
@@ -115,7 +118,7 @@ class ShotTwo(Manager):
             raise InvalidSymbol
         elif current_pair and symbol == 'X':
             raise EvenNumber
-        elif symbol == 'X':
+        elif symbol == 'X':   # TODO Страйк никогда не может быть во втором броске
             return ShotOne(), 20
         elif current_pair:
             current_pair += symbol
@@ -136,4 +139,4 @@ class ShotTwo(Manager):
             return ShotTwo(), 0
 
 
-game = Manager()
+game = Manager()  # TODO Объект менеджера созайвайте в главном модуле
