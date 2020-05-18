@@ -64,61 +64,76 @@ class EvenNumber(Exception):
 #
 #     doctest.testmod()
 
-
 class Manager:
-    def get_score(self, symbol):
-        allowed_symbols = ['/', 'X', '-']
-        score = 0
+
+    def bowling(self, result):
+        global current_pair
         current_pair = str()
-        for symbol in symbol:
-            if not symbol.isnumeric() and symbol not in allowed_symbols:
-                raise InvalidSymbol
-            elif current_pair and symbol == 'X':
-                raise EvenNumber
-            elif symbol == 'X':
-                return 20
-            elif current_pair:
-                current_pair += symbol
-                if symbol == '/':
-                    score += 15
-                    current_pair = str()
-                    continue
-                for i in current_pair:
-                    if i == '-':
-                        current_pair = current_pair.replace('-', '0')
-                if int(current_pair[0]) + int(current_pair[1]) <= 9:
-                    score += int(current_pair[0]) + int(current_pair[1])
-                else:
-                    raise MoreThan10
-                current_pair = str()
-            else:
-                current_pair += symbol
+        current_state, score = ShotOne(), 0
+        for symbol in result:
+            current_state, points = current_state.get_score(symbol)
+            score += points
         return score
 
 
 class ShotOne(Manager):
 
-    def __init__(self):   # TODO Если инициализации нет, то нет смысла определять __init__
-        pass
-    # TODO Нужен метод "обработчик броска", который считает очки за первый бросок и возвращает следующее "состоящие" в
-    #  зависимости от результата первого броска (если сбито менее 10, то возвращаем состояние "второй бросок", а если
-    #  результат броска страйк, то возвращаем состояниие "первого броска")
+    def get_score(self, symbol):
+        allowed_symbols = ['/', 'X', '-']
+        global current_pair
+        if not symbol.isnumeric() and symbol not in allowed_symbols:
+            raise InvalidSymbol
+        elif current_pair and symbol == 'X':
+            raise EvenNumber
+        elif symbol == 'X':
+            return ShotTwo(), 20
+        elif current_pair:
+            current_pair += symbol
+            if symbol == '/':
+                current_pair = str()
+                return ShotTwo(), 15
+            for i in current_pair:
+                if i == '-':
+                    current_pair = current_pair.replace('-', '0')
+            if int(current_pair[0]) + int(current_pair[1]) <= 9:
+                points = int(current_pair[0]) + int(current_pair[1])
+                current_pair = str()
+                return ShotOne(), points
+            else:
+                raise MoreThan10
+        else:
+            current_pair += symbol
+            return ShotOne(), 0
 
 
 class ShotTwo(Manager):
 
-    def __init__(self): # TOdO Тоже не нужен
-        pass
+    def get_score(self, symbol):
+        allowed_symbols = ['/', 'X', '-']
+        global current_pair
+        if not symbol.isnumeric() and symbol not in allowed_symbols:
+            raise InvalidSymbol
+        elif current_pair and symbol == 'X':
+            raise EvenNumber
+        elif symbol == 'X':
+            return ShotOne(), 20
+        elif current_pair:
+            current_pair += symbol
+            if symbol == '/':
+                current_pair = str()
+                return ShotOne(), 15
+            for i in current_pair:
+                if i == '-':
+                    current_pair = current_pair.replace('-', '0')
+            if int(current_pair[0]) + int(current_pair[1]) <= 9:
+                points = int(current_pair[0]) + int(current_pair[1])
+                current_pair = str()
+                return ShotOne(), points
+            else:
+                raise MoreThan10
+        else:
+            current_pair += symbol
+            return ShotTwo(), 0
 
-    # TODO А тут свой обратотчик броска
 
-
-def bowling(result):
-    # TODO А вот этот код должен быть в "менеджере"
-    current_state, score = ShotOne(), 0
-    for symbol in result:
-        current_state, points = current_state.get_score(symbol)
-        score += points
-
-
-print(bowling('X4/34-4'))
+game = Manager()
