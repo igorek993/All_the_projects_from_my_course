@@ -33,15 +33,15 @@
 #   Количество очков для результатов ХХХ - УУУ.
 import argparse
 
-from bowling import get_score
+from bowling import Manager
 
 parser = argparse.ArgumentParser(description="Bowling")
 parser.add_argument("-r", "--result", required=True)
 args = parser.parse_args()
 
 if __name__ == "__main__":
-    print(get_score(args.result), 'points')
-    # TODO Тут надо создать объект менеджера и вызвать подсчёт
+    game = Manager()
+    print(game.bowling(args.result), 'points')
 # При написании кода помнить, что заказчик может захотеть доработок и новых возможностей...
 # И, возможно, вам пригодится паттерн проектирования "Состояние",
 #   см https://clck.ru/Fudd8 и https://refactoring.guru/ru/design-patterns/state

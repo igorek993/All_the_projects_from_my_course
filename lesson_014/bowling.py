@@ -64,79 +64,53 @@ class EvenNumber(Exception):
 #
 #     doctest.testmod()
 
-class Manager:
+
+class Logic:
+
+    def __init__(self):
+        self.allowed_symbols = ['/', 'X', '-']
+
+
+class Manager(Logic):
 
     def bowling(self, result):
-        global current_pair   # TOdO Сделайте атрибутом объекта. А передавать его в объекты состояния надо через
-                              #  параметры, а не через глобальные переменные
         current_pair = str()
         current_state, score = ShotOne(), 0
         for symbol in result:
-            current_state, points = current_state.get_score(symbol)
+            current_state, points, pair = current_state.get_score(symbol, current_pair)
+            current_pair = pair
             score += points
         return score
 
 
-class ShotOne(Manager):  # TODO От менеджера не надо наследовать, есть смысл наследовать состояния от абстрактного
-                         # класса куда вынести дубликаты кода: допустимые символы
+class ShotOne(Logic):
 
-    def get_score(self, symbol):
-        allowed_symbols = ['/', 'X', '-']
-        global current_pair
-        if not symbol.isnumeric() and symbol not in allowed_symbols:
+    def get_score(self, symbol, current_pair):
+        if not symbol.isnumeric() and symbol not in self.allowed_symbols:
             raise InvalidSymbol
-        elif current_pair and symbol == 'X':
-            raise EvenNumber
         elif symbol == 'X':
-            return ShotTwo(), 20
-        elif current_pair:
-            current_pair += symbol
-            if symbol == '/':    #TODO spare в первом броске??!
-                current_pair = str()
-                return ShotTwo(), 15
-            for i in current_pair:
-                if i == '-':
-                    current_pair = current_pair.replace('-', '0')
-            if int(current_pair[0]) + int(current_pair[1]) <= 9:   # todo проверка суммы  очков за два хода нужна только
-                                                                   #  во втором броске
-                points = int(current_pair[0]) + int(current_pair[1])
-                current_pair = str()
-                return ShotOne(), points
-            else:
-                raise MoreThan10
+            return ShotOne(), 20, current_pair
         else:
             current_pair += symbol
-            return ShotOne(), 0
+            return ShotTwo(), 0, current_pair
 
 
-class ShotTwo(Manager):
+class ShotTwo(Logic):
 
-    def get_score(self, symbol):
-        allowed_symbols = ['/', 'X', '-']
-        global current_pair
-        if not symbol.isnumeric() and symbol not in allowed_symbols:
-            raise InvalidSymbol
-        elif current_pair and symbol == 'X':
+    def get_score(self, symbol, current_pair):
+        if current_pair and symbol == 'X':
             raise EvenNumber
-        elif symbol == 'X':   # TODO Страйк никогда не может быть во втором броске
-            return ShotOne(), 20
-        elif current_pair:
+        else:
             current_pair += symbol
             if symbol == '/':
                 current_pair = str()
-                return ShotOne(), 15
+                return ShotOne(), 15, current_pair
             for i in current_pair:
                 if i == '-':
                     current_pair = current_pair.replace('-', '0')
             if int(current_pair[0]) + int(current_pair[1]) <= 9:
                 points = int(current_pair[0]) + int(current_pair[1])
                 current_pair = str()
-                return ShotOne(), points
+                return ShotOne(), points, current_pair
             else:
                 raise MoreThan10
-        else:
-            current_pair += symbol
-            return ShotTwo(), 0
-
-
-game = Manager()  # TODO Объект менеджера созайвайте в главном модуле
