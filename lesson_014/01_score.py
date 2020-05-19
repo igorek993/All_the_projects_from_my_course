@@ -46,4 +46,4 @@ if __name__ == "__main__":
 # И, возможно, вам пригодится паттерн проектирования "Состояние",
 #   см https://clck.ru/Fudd8 и https://refactoring.guru/ru/design-patterns/state
 
-# зачет!
+# todo Пропускаются по два spare во фрейме и нечетное число бросков
