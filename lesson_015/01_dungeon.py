@@ -51,6 +51,7 @@
 # Внутри вы видите:
 # — Вход в локацию: Location_1_tm1040
 # — Вход в локацию: Location_2_tm123456
+# — Монстра Mob_exp10_tm0
 # Выберите действие:
 # 1.Атаковать монстра
 # 2.Перейти в другую локацию
@@ -93,10 +94,42 @@
 # и так далее...
 
 
-remaining_time = '123456.0987654321'
 # если изначально не писать число в виде строки - теряется точность!
+from pprint import pprint
+
 field_names = ['current_location', 'current_experience', 'current_date']
 
-# TODO тут ваш код
-
 # Учитывая время и опыт, не забывайте о точности вычислений!
+import json, re
+
+
+class Game:
+
+    def __init__(self):
+        self.INITIAL_LOCATION = 'Location_0_tm0'
+        self.current_exp = 0
+        self.remaining_time = '123456.0987654321'
+        self.time_in_game = 0
+        # self.current_location = None
+
+    def print_first_round(self):
+        print(
+            f'You are in {self.INITIAL_LOCATION}\nYou have {self.current_exp} experience and you have {self.remaining_time} seconds '
+            f'left before flooding\nTime passed in the dungeon: {self.time_in_game}')
+        print(f'You can see:\n- Dungeon entrance ')
+
+    def print_next_round(self):
+        pass
+
+    def find_next_location(self):
+        location_number = 0
+        location_pattern = r'[Location]'
+        with open('rpg.json', 'r') as read_file:
+            dungeon = json.load(read_file)
+            for key, message in dungeon.items():
+                pprint(message)
+
+
+test = Game()
+
+test.find_next_location()
