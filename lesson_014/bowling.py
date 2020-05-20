@@ -28,6 +28,15 @@ class EvenNumber(Exception):
         return self.message
 
 
+class TwoSpares(Exception):
+
+    def __init__(self):
+        self.message = "Can't have two spares in a frame"
+
+    def __str__(self):
+        return self.message
+
+
 # def get_score(game_result):
 #     allowed_symbols = ['/', 'X', '-']
 #     current_pair = str()
@@ -80,6 +89,8 @@ class Manager(Logic):
             current_state, points, pair = current_state.get_score(symbol, current_pair)
             current_pair = pair
             score += points
+        if current_pair:
+            raise EvenNumber
         return score
 
 
@@ -88,6 +99,8 @@ class ShotOne(Logic):
     def get_score(self, symbol, current_pair):
         if not symbol.isnumeric() and symbol not in self.allowed_symbols:
             raise InvalidSymbol
+        elif symbol == '/':
+            raise TwoSpares
         elif symbol == 'X':
             return ShotOne(), 20, current_pair
         else:

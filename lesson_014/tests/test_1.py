@@ -1,5 +1,5 @@
 import unittest
-from lesson_014.bowling import MoreThan10, EvenNumber, Manager
+from lesson_014.bowling import MoreThan10, EvenNumber, Manager, TwoSpares
 
 game = Manager()
 
@@ -29,8 +29,14 @@ class Bowling(unittest.TestCase):
     def test_even_exception(self):
         self.assertRaises(EvenNumber, game.bowling, '2-244X-')
 
+    def test_even_exception_2(self):
+        self.assertRaises(EvenNumber, game.bowling, '25412')
+
     def test_more_than_ten_exception(self):
         self.assertRaises(MoreThan10, game.bowling, '98745987')
+
+    def test_spare(self):
+        self.assertRaises(TwoSpares, game.bowling, '//////')
 
 
 if __name__ == "__main__":
