@@ -97,12 +97,11 @@
 # если изначально не писать число в виде строки - теряется точность!
 import datetime
 from collections import defaultdict
-from pprint import pprint
 
 field_names = ['current_location', 'current_experience', 'current_date']
 
 # Учитывая время и опыт, не забывайте о точности вычислений!
-import json, re, time, decimal
+import json, re, decimal
 
 
 class Game:
@@ -115,7 +114,6 @@ class Game:
         self.current_location = 1
         self.current_dungeon = "Location_0_tm0"
         self.current_monsters = list()
-        self.test =
 
     def open_dungeon_json(self):
         with open('rpg.json', 'r') as read_file:
@@ -144,6 +142,20 @@ class Game:
             if re.search(level_pattern, key):
                 self.current_location += 1
                 return re.search(level_pattern, key).group()
+
+    # def level_generator(self, dungeon):
+    #     current_dungeon = str()
+    #     monsters = list()
+    #     for key, value in dungeon.items():
+    #         for i in value:
+    #             if isinstance(i, str):
+    #                 monsters.append(i)
+    #             if isinstance(i, dict):
+    #                 current_dungeon = list(i.keys())[0]
+    #                 yield current_dungeon, monsters
+    #                 current_dungeon = str()
+    #                 monsters = list()
+    #                 self.level_generator(i)
 
     def run(self):
         self.create_levels_dict(self.open_dungeon_json())
