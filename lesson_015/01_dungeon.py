@@ -95,41 +95,61 @@
 
 
 # если изначально не писать число в виде строки - теряется точность!
+import datetime
+from collections import defaultdict
 from pprint import pprint
 
 field_names = ['current_location', 'current_experience', 'current_date']
 
 # Учитывая время и опыт, не забывайте о точности вычислений!
-import json, re
+import json, re, time, decimal
 
 
 class Game:
 
     def __init__(self):
-        self.INITIAL_LOCATION = 'Location_0_tm0'
         self.current_exp = 0
-        self.remaining_time = '123456.0987654321'
-        self.time_in_game = 0
-        # self.current_location = None
+        self.remaining_time = decimal.Decimal('123456.0987654321')
+        self.time_in_game = datetime.timedelta(seconds=0)
+        self.dungeon_levels = defaultdict(list)
+        self.current_location = 1
+        self.current_dungeon = "Location_0_tm0"
+        self.current_monsters = list()
+        self.test =
 
-    def print_first_round(self):
-        print(
-            f'You are in {self.INITIAL_LOCATION}\nYou have {self.current_exp} experience and you have {self.remaining_time} seconds '
-            f'left before flooding\nTime passed in the dungeon: {self.time_in_game}')
-        print(f'You can see:\n- Dungeon entrance ')
-
-    def print_next_round(self):
-        pass
-
-    def find_next_location(self):
-        location_number = 0
-        location_pattern = r'[Location]'
+    def open_dungeon_json(self):
         with open('rpg.json', 'r') as read_file:
             dungeon = json.load(read_file)
-            for key, message in dungeon.items():
-                pprint(message)
+            return dungeon
+
+    def print_next_round(self):
+        print(
+            f'You are in {self.current_dungeon}\nYou have {self.current_exp} experience and you have'
+            f' {self.remaining_time} seconds left before flooding\nTime passed in the dungeon: {self.time_in_game}')
+        print(
+            f'You can see:\n- Dungeon entrance: {self.find_next_level()}\n- Dungeon entrance: {self.find_next_level()}\n')
+
+    def create_levels_dict(self, dungeon):
+        for key, value in dungeon.items():
+            for i in value:
+                if isinstance(i, str):
+                    self.dungeon_levels[key].append(i)
+                if isinstance(i, dict):
+                    self.dungeon_levels[key] = []
+                    self.create_levels_dict(i)
+
+    def find_next_level(self):
+        level_pattern = rf'Location_{self.current_location}_.*'
+        for key, value in self.dungeon_levels.items():
+            if re.search(level_pattern, key):
+                self.current_location += 1
+                return re.search(level_pattern, key).group()
+
+    def run(self):
+        self.create_levels_dict(self.open_dungeon_json())
+        self.print_next_round()
 
 
 test = Game()
 
-test.find_next_location()
+test.run()
