@@ -96,6 +96,7 @@
 
 # если изначально не писать число в виде строки - теряется точность!
 import datetime
+import sys
 from collections import defaultdict
 
 field_names = ['current_location', 'current_experience', 'current_date']
@@ -114,7 +115,8 @@ class Game:
         self.dungeon_levels = defaultdict(list)
         self.current_location = None
         self.current_monsters = list()
-        self.time_pattern = f'tm\S*'
+        self.time_pattern = r'tm\S*'
+        self.exp_pattern = r'exp\d{0,3}'
         self.current_dungeons = list()
 
     def open_dungeon_json(self):
@@ -127,10 +129,6 @@ class Game:
             f'You are in {self.current_dungeon}\nYou have {self.current_exp} experience and'
             f' {self.remaining_time} seconds left before flooding\nTime passed in the dungeon: {self.time_in_game}\n'
             f'\nYou can see the following around you:')
-
-    def print_choice(self):
-        print('\nMake your choice:\n1.Attack a monster\n2.Enter a dungeon\n3.Give up and run away like a chicken')
-        return int(input())
 
     def remaining_time_counter(self, _object):
         if isinstance(_object, dict):
@@ -145,10 +143,15 @@ class Game:
     def time_in_game_counter(self, _object):
         if isinstance(_object, dict):
             time_spent = (re.search(self.time_pattern, ''.join(list(_object.keys()))).group())[2:]
-            self.time_in_game = self.time_in_game + datetime.timedelta(seconds=int(time_spent))
+            self.time_in_game = self.time_in_game + datetime.timedelta(seconds=float(time_spent))
         elif isinstance(_object, str):
             time_spent = (re.search(self.time_pattern, ''.join(_object)).group())[2:]
-            self.time_in_game = self.time_in_game + datetime.timedelta(seconds=int(time_spent))
+            self.time_in_game = self.time_in_game + datetime.timedelta(seconds=float(time_spent))
+
+    def exp_counter(self, mob):
+        if isinstance(mob, str):
+            exp = int(re.search(self.exp_pattern, mob).group()[3:])
+            self.current_exp += exp
 
     def time_counter(self, _object):
         self.time_in_game_counter(_object)
@@ -160,57 +163,76 @@ class Game:
             f'You have {self.current_exp} experience and you have {self.remaining_time} seconds left before '
             f'flooding\nTime passed in the dungeon: {self.time_in_game}\n')
 
-    def fight_a_monster(self):
+    def fight_or_move(self, dungeon):
         while True:
-            if not self.current_monsters:
-                print('There is no monster to fight!')
-            print('You decided to fight a monster\n')
-            if len(self.current_monsters) >= 2:
-                print(f'What monster are you gonna fight?\n')
-                counter = 1
-                for monster in self.current_monsters:
-                    print(f'{counter}.{monster}')
-                    counter += 1
-                monster_number = int(input()) - 1
-                monster_to_fight = self.current_monsters[monster_number]
-                self.current_monsters.pop(monster_number - 1)
-                self.time_counter(monster_to_fight)
-                self.print_after_fight(monster_to_fight)
-                print(
-                    f'Would you like to fight another monster or make your way deeper into the dungeon?\n1. I am ready '
-                    f'for another fight\n2. Move forward')
-                choice = int(input())
-                if choice == 1:
-                    pass
-                if choice == 2:
-                    for dungeon in self.current_dungeons:
-                        print(f'{counter}. {str().join(list(dungeon.keys()))}')
-                        counter += 1
-                        return int(input()) - 1
-            elif len(self.current_monsters) == 1:
-                self.time_counter(self.current_monsters[0])
-                self.print_after_fight(self.current_monsters[0])
-                self.current_monsters.remove(self.current_monsters[0])
-                print('There are no monsters left, please choose where you would like to go')
-                counter = 1
-                for dungeon in self.current_dungeons:
-                    print(f'{counter}. {str().join(list(dungeon.keys()))}')
-                    counter += 1
-                print(int(input()) - 1, '!!!!')
-                return int(input()) - 1
+            print(
+                f'Would you like to fight another monster or make your way deeper into the dungeon?\n1. I am ready '
+                f'for another fight\n2. Move forward')
+            choice = int(input())
+            if choice == 1:
+                pass
+            if choice == 2:
+                print('Please, choose where you would like to go')
+                return self.choose_dungeon(dungeon)
 
-    def print_post_choice(self, choice, dungeon):
+    def find_monster_to_figt(self):
+        print(f'What monster are you gonna fight?\n')
+        counter = 1
+        for monster in self.current_monsters:
+            print(f'{counter}.{monster}')
+            counter += 1
+        return int(input()) - 1
+
+    def fight_a_monster(self, dungeon):
+        if not self.current_monsters:
+            print('There are no monsters to fight, please choose where you would like to go')
+            return self.choose_dungeon(dungeon)
+        print('You decided to fight a monster\n')
+        if len(self.current_monsters) >= 2:
+            monster_number = self.find_monster_to_figt()
+            monster_to_fight = self.current_monsters[monster_number]
+            self.exp_counter(monster_to_fight)
+            self.current_monsters.pop(monster_number - 1)
+            self.time_counter(monster_to_fight)
+            self.print_after_fight(monster_to_fight)
+            return self.fight_or_move(dungeon)
+        elif len(self.current_monsters) == 1:
+            return self.fight_last_monster(dungeon)
+
+    def fight_last_monster(self, dungeon):
+        self.time_counter(self.current_monsters[0])
+        self.exp_counter(self.current_monsters[0])
+        self.print_after_fight(self.current_monsters[0])
+        self.current_monsters.remove(self.current_monsters[0])
+        print('There are no monsters left, please choose where you would like to go')
+        return self.choose_dungeon(dungeon)
+
+    def choose_dungeon(self, dungeon):
+        counter = 1
+        real_dungeons_index = defaultdict()
+        for dun in dungeon:
+            if isinstance(dun, dict):
+                print(f'{counter}. {str().join(list(dun.keys()))}')
+                real_dungeons_index[counter] = dungeon.index(dun)
+                counter += 1
+        return real_dungeons_index[int(input())]
+
+    def print_choice(self, dungeon):
+        print('\nMake your choice:\n1.Attack a monster\n2.Enter a dungeon\n3.Give up and run away like a chicken')
+        choice = int(input())
         if choice == 1:
-            return self.fight_a_monster()
+            return self.fight_a_monster(dungeon)
         elif choice == 2:
-            print(f'You are entering location {self.current_dungeon}\n')
-            self.time_counter(dungeon)
+            print('Choose your way wisely')
+            return self.choose_dungeon(dungeon)
         elif choice == 3:
             print('You are not strong enough for this challenge, come back when you are ready!\n')
+            sys.exit()
 
     def find_next_level(self, dungeon):
         while True:
             for key, value in dungeon.items():
+                self.time_counter(key)
                 self.current_monsters = list()
                 self.current_dungeons = list()
                 self.current_dungeon = key
@@ -222,9 +244,8 @@ class Game:
                     if isinstance(i, dict):
                         self.current_dungeons.append(i)
                         print('- Dungeon entrance', ''.join(list(i.keys())))
-                choice = self.print_choice()
-                dungeon = dungeon[key][choice]  # TODO change the order so 'choice' changes after the choice
-                self.print_post_choice(choice, dungeon)
+                choice = self.print_choice(dungeon[key])
+                dungeon = dungeon[key][choice]
 
     def run(self):
         self.find_next_level(self.open_dungeon_json())
