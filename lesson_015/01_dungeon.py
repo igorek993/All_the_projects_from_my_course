@@ -95,11 +95,14 @@
 
 
 # если изначально не писать число в виде строки - теряется точность!
-import datetime, sys
-from pprint import pprint
-import json, re, decimal
-from colorama import Fore, Style
+import datetime
+import decimal
+import json
+import re
+import sys
 from collections import defaultdict
+
+from colorama import Fore, Style
 
 field_names = ['current_location', 'current_experience', 'current_date']
 
@@ -168,23 +171,30 @@ class Game:
             f'flooding\nTime passed in the dungeon: {self.TIME_IN_GAME}\n')
 
     def fight_or_move(self, dungeon):
-        print(
-            f'Would you like to fight another monster or make your way deeper into the dungeon?\n1. I am ready '
-            f'for another fight\n2. Move forward')
-        choice = int(input())
-        if choice == 1:
-            pass
-        if choice == 2:
-            print(f'{Fore.LIGHTBLUE_EX}Please, choose where you would like to go{Style.RESET_ALL}')
-            return self.choose_dungeon(dungeon)
+        choice = 0
+        while not choice == '1' or not choice == '2':
+            print(
+                f'Would you like to fight another monster or make your way deeper into the dungeon?\n1. I am ready '
+                f'for another fight\n2. Move forward')
+            choice = input()
+            if choice == '1':
+                return
+            elif choice == '2':
+                print(f'{Fore.LIGHTBLUE_EX}Please, choose where you would like to go{Style.RESET_ALL}')
+                return self.choose_dungeon(dungeon)
 
     def find_monster_to_figt(self):
         print(f'What monster are you gonna fight?\n')
         counter = 1
+        possible_choice = list()
         for monster in self.current_monsters:
             print(f'{Fore.RED}{counter}.{monster}{Style.RESET_ALL}')
             counter += 1
-        return int(input()) - 1
+            possible_choice.append(str(counter - 1))
+        choice = 0
+        while not choice in possible_choice:
+            choice = input()
+        return int(choice) - 1
 
     def fight_a_monster(self, dungeon):
         while True:
@@ -217,29 +227,35 @@ class Game:
 
     def choose_dungeon(self, dungeon):
         counter = 1
+        possible_choice = list()
         real_dungeons_index = defaultdict()
         for dun in dungeon:
             if isinstance(dun, dict):
                 print(f'{Fore.LIGHTBLUE_EX}{counter}. {str().join(list(dun.keys()))}{Style.RESET_ALL}')
                 real_dungeons_index[counter] = dungeon.index(dun)
+                possible_choice.append(str(counter))
                 counter += 1
         if not self.current_dungeons:
             return 'end'
-        return real_dungeons_index[int(input())]
+        choice = 0
+        while not choice in possible_choice:
+            choice = input()
+        return real_dungeons_index[int(choice)]
 
     def print_choice(self, dungeon):
         print(
             f'\n{Fore.GREEN}Make your choice:{Style.RESET_ALL}\n{Fore.YELLOW}1.Attack a monster\n2.Enter a '
             f'dungeon\n3.Give up and run away like a chicken{Style.RESET_ALL}')
-        choice = int(input())
-        if choice == 1:
-            return self.fight_a_monster(dungeon)
-        elif choice == 2:
-            print('Choose your way wisely')
-            return self.choose_dungeon(dungeon)
-        elif choice == 3:
-            print('You are not strong enough for this challenge, come back when you are ready!\n')
-            sys.exit()
+        while True:
+            choice = input()
+            if choice == '1':
+                return self.fight_a_monster(dungeon)
+            elif choice == '2':
+                print('Choose your way wisely')
+                return self.choose_dungeon(dungeon)
+            elif choice == '3':
+                print('You are not strong enough for this challenge, come back when you are ready!\n')
+                sys.exit()
 
     def print_mobs_dungeons(self, value):
         for i in value:
