@@ -95,6 +95,7 @@
 
 
 # если изначально не писать число в виде строки - теряется точность!
+import csv
 import datetime
 import decimal
 import json
@@ -114,7 +115,7 @@ class Game:
 
     def __init__(self):
         self.current_dungeon = None
-        self.CURRENT_EXP = 0
+        self.current_exp = 0
         self.REMAINING_TIME = decimal.Decimal('123456.0987654321')
         self.TIME_IN_GAME = datetime.timedelta(seconds=0)
         self.dungeon_levels = defaultdict(list)
@@ -129,9 +130,16 @@ class Game:
             dungeon = json.load(read_file)
             return dungeon
 
+    def write_results(self):
+        result = {'current_location': self.current_dungeon, 'current_experience': self.current_exp,
+                  'current_date': self.TIME_IN_GAME}
+        with open('dungeon.csv', 'a', newline='') as _csv_file:
+            writer = csv.DictWriter(_csv_file, fieldnames=field_names)
+            writer.writerow(result)
+
     def print_next_round(self):
         print(
-            f'You are in {self.current_dungeon}\nYou have {self.CURRENT_EXP} experience and'
+            f'You are in {self.current_dungeon}\nYou have {self.current_exp} experience and'
             f' {self.REMAINING_TIME} seconds left before flooding\nTime passed in the dungeon: {self.TIME_IN_GAME}\n'
             f'\n{Fore.GREEN}You can see the following around you:{Style.RESET_ALL}')
 
@@ -156,7 +164,7 @@ class Game:
     def exp_counter(self, mob):
         if isinstance(mob, str):
             exp = int(re.search(self.EXP_PATTERN, mob).group()[3:])
-            self.CURRENT_EXP += exp
+            self.current_exp += exp
 
     def time_counter(self, _object):
         self.time_in_game_counter(_object)
@@ -167,7 +175,7 @@ class Game:
     def print_after_fight(self, monster):
         print(
             f'You fought {monster}\nYou are in {self.current_dungeon}\n'
-            f'You have {self.CURRENT_EXP} experience and you have {self.REMAINING_TIME} seconds left before '
+            f'You have {self.current_exp} experience and you have {self.REMAINING_TIME} seconds left before '
             f'flooding\nTime passed in the dungeon: {self.TIME_IN_GAME}\n')
 
     def fight_or_move(self, dungeon):
@@ -268,7 +276,7 @@ class Game:
 
     def reset_stat(self):
         self.REMAINING_TIME = decimal.Decimal('123456.0987654321')
-        self.CURRENT_EXP = 0
+        self.current_exp = 0
         self.TIME_IN_GAME = datetime.timedelta(seconds=0)
 
     def game_end_check(self, option='option'):
@@ -282,6 +290,7 @@ class Game:
                 f'kind of miracle? For some mysterious reason you open your eyes and see \nthe same dungeon entrance,'
                 f'again! You slowly walk into this dungeon and hear water filling up the first room again... \n'
                 f'it is time to keep going if you do not wanna end up like the last time!{Style.RESET_ALL}\n')
+            self.write_results()
             self.reset_stat()
             return True
         elif float(self.REMAINING_TIME) < 0:
@@ -296,16 +305,20 @@ class Game:
                 f"kind of miracle? For some mysterious reason you open your eyes and see \nthe same dungeon entrance,"
                 f"again! You slowly walk into this dungeon and hear water filling up the first room again... \n"
                 f"it is time to keep going if you do not wanna end up like the last time!\n{Style.RESET_ALL}")
+            self.write_results()
             self.reset_stat()
             return True
         elif 'Hatch_tm159.098765432' == self.current_dungeon:
-            print(f"{Fore.YELLOW}You've found a hatch! You can see the light coming out from the other side and you "
-                  f"fresh "
-                  f"air blowing into your face!\n Should you try to open it up? Do you think you are powerful "
-                  f"enough? \nYes/No{Style.RESET_ALL}")
-            choice = input()
+            choice = 0
+            while choice not in ['Yes', 'yes', 'No', 'no']:
+                print(
+                    f"{Fore.YELLOW}You've found a hatch! You can see the light coming out from the other side and you "
+                    f"fresh "
+                    f"air blowing into your face!\n Should you try to open it up? Do you think you are powerful "
+                    f"enough? \nYes/No{Style.RESET_ALL}")
+                choice = input()
             if choice == 'Yes' or choice == 'yes':
-                if self.CURRENT_EXP < 280:
+                if self.current_exp < 280:
                     print(f'{Fore.LIGHTRED_EX}You are trying to open up the hatch and finally get out from '
                           f'this dungeon. However, you '
                           f'feel that you did not gain enough power and experience during this\n journey so you can not '
@@ -319,16 +332,19 @@ class Game:
                           f'again! You slowly walk into this dungeon and hear water filling up the first room '
                           f'again... \n '
                           f'it is time to keep going if you do not wanna end up like the last time!{Style.RESET_ALL}\n')
+                    self.write_results()
                     self.reset_stat()
                     return True
-                elif self.CURRENT_EXP >= 280:
+                elif self.current_exp >= 280:
                     print(f'{Fore.YELLOW}You managed to open up the hatch and get out from this dungeon! '
                           f'Congratulations!{Style.RESET_ALL}')
+                    self.write_results()
                     sys.exit()
             elif choice == 'No' or choice == 'no':
                 print(f'{Fore.YELLOW}You decided to keep the hatch closed and stay in the dungeon forever... '
                       f'(Why Would you choose '
                       f'it?){Style.RESET_ALL}')
+                self.write_results()
                 sys.exit()
 
     def find_next_level(self, dungeon):
@@ -350,6 +366,11 @@ class Game:
         while True:
             self.find_next_level(self.open_dungeon_json())
 
+
+# with open('dungeon.csv', 'r', newline='') as csv_file:
+#     csv_data = csv.DictReader(csv_file)
+#     for row in csv_data:
+#         print(row)
 
 test = Game()
 
