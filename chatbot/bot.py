@@ -6,7 +6,7 @@ import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 import random
 
-from chatbot import handlers
+import handlers
 
 try:
     import settings
@@ -74,10 +74,10 @@ class Bot:
             log.info('We are not sure how to process this yet %s', event.type)
             return
 
-        user_id = event.object.peer_id
+        user_id = event.object['message']['peer_id']
         text = event.object['message']['text']
         if user_id in self.user_state:
-            text_to_send = self.continue_scenario(user_id, text=event.object['message']['text'])
+            text_to_send = self.continue_scenario(user_id, text=text)
         else:
             for intent in settings.INTENTS:
                 if any(token in text for token in intent['tokens']):
@@ -122,7 +122,8 @@ class Bot:
             text_to_send = step['failure_text'].format(**state.context)
         return text_to_send
 
-    if __name__ == '__main__':
-        configure_logging()
-        bot = Bot(settings.GROUP_ID, settings.TOKEN)
-        bot.run()
+
+if __name__ == '__main__':
+    configure_logging()
+    bot = Bot(settings.GROUP_ID, settings.TOKEN)
+    bot.run()
