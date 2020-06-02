@@ -6,6 +6,8 @@ import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 import random
 
+from chatbot import handlers
+
 try:
     import settings
 except ImportError:
@@ -27,6 +29,13 @@ def configure_logging():
     log.setLevel(logging.DEBUG)
 
 
+class UserSate:
+    def __init__(self, scenario_name, step_name, context=None):
+        self.scenario_name = scenario_name
+        self.step_name = step_name
+        self.context = context or {}
+
+
 class Bot:
     """
     Echo bot for vk.com
@@ -43,6 +52,7 @@ class Bot:
         self.vk = vk_api.VkApi(token=token)
         self.long_poller = VkBotLongPoll(vk=self.vk, group_id=self.group_id)
         self.api = self.vk.get_api()
+        self.user_state = dict()  # user_id → UserState
 
     def run(self):
         """
@@ -60,16 +70,59 @@ class Bot:
         :param event: VkBotMessageEvent object
         :return: None
         """
-        if event.type == VkBotEventType.MESSAGE_NEW:
-            log.debug('sending a message')
-            self.api.messages.send(message=(event.object['message']['text']),
-                                   random_id=random.randint(0, 2 ** 20),
-                                   peer_id=event.object['message']['peer_id'])
-        else:
+        if event.type != VkBotEventType.MESSAGE_NEW:
             log.info('We are not sure how to process this yet %s', event.type)
+            return
 
+        user_id = event.object.peer_id
+        text = event.object['message']['text']
+        if user_id in self.user_state:
+            text_to_send = self.continue_scenario(user_id, text=event.object['message']['text'])
+        else:
+            for intent in settings.INTENTS:
+                if any(token in text for token in intent['tokens']):
+                    if intent['answer']:
+                        text_to_send = intent['answer']
+                    else:
+                        text_to_send = self.start_scenario(user_id, intent['scenario'])
+                    break
+            else:
+                text_to_send = settings.DEFAULT_ANSWER
 
-if __name__ == '__main__':
-    configure_logging()
-    bot = Bot(settings.GROUP_ID, settings.TOKEN)
-    bot.run()
+        self.api.messages.send(message=text_to_send,
+                               random_id=random.randint(0, 2 ** 20),
+                               peer_id=user_id)
+
+    def start_scenario(self, user_id, scenario_name):
+        scenario = settings.SCENARIOS[scenario_name]
+        first_step = scenario['first_step']
+        step = scenario['steps'][first_step]
+        text_to_send = step['text']
+        self.user_state[user_id] = UserSate(scenario_name=scenario_name, step_name=first_step)
+        return text_to_send
+
+    def continue_scenario(self, user_id, text):
+        state = self.user_state[user_id]
+        step = settings.SCENARIOS[state.scenario_name]['steps'][state.step_name]
+        steps = settings.SCENARIOS[state.scenario_name]['steps']
+
+        handler = getattr(handlers, step['handler'])
+        if handler(text=text, context=state.context):
+            # next step
+            next_step = steps[step['next_step']]
+            text_to_send = next_step['text'].format(**state.context)
+            if next_step['next_step']:
+                # swich to next step
+                state.step_name = step['next_step']
+            else:
+                # scenario finished
+                self.user_state.pop(user_id)
+        else:
+            # repeat current step
+            text_to_send = step['failure_text'].format(**state.context)
+        return text_to_send
+
+    if __name__ == '__main__':
+        configure_logging()
+        bot = Bot(settings.GROUP_ID, settings.TOKEN)
+        bot.run()
