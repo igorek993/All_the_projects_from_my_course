@@ -106,7 +106,8 @@ class Bot:
         step = settings.SCENARIOS[state.scenario_name]['steps'][state.step_name]
         steps = settings.SCENARIOS[state.scenario_name]['steps']
 
-        handler = getattr(handlers, step['handler'])
+        handler = getattr(handlers, step['handler'])  # Todo Выглядит всё нормально, возможно в settings.SCENARIOS
+        # что-то не так, внесите эту структуру в settings.py.default, пожалуйста (и остальные несекретные настройки)
         if handler(text=text, context=state.context):
             # next step
             next_step = steps[step['next_step']]

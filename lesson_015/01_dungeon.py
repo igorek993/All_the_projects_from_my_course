@@ -183,7 +183,7 @@ class Game:
         while not choice == '1' or not choice == '2':
             print(
                 f'Would you like to fight another monster or make your way deeper into the dungeon?\n1. I am ready '
-                f'for another fight\n2. Move forward')
+                f'for another fight\n2. Move forward')  # maybe you missed an article "an" before "another fight"?
             choice = input()
             if choice == '1':
                 return
@@ -281,6 +281,9 @@ class Game:
 
     def game_end_check(self, option='option'):
         if option == 'end':
+            # todo Очень большой метод и много повторяющегося кода. Сохраните строковые константы в отдельном файле, а
+            #  для вывода их с форматированием используйте дополнительный метод, который будет вставлять подсветку и
+            #  вызывать два метода (или может быть только один из них) всегда идущие после print(<message>)
             print(
                 f'\n{Fore.LIGHTRED_EX}You got to a point where you can not find any other entrance and there is no way '
                 f'back because \nall '
@@ -308,16 +311,19 @@ class Game:
             self.write_results()
             self.reset_stat()
             return True
-        elif 'Hatch_tm159.098765432' == self.current_dungeon:
+        elif 'Hatch_tm159.098765432' == self.current_dungeon:  # todo Не стоит хардкодить целиком ключ локации, так как
+            # числа в ней могут поменяться, достаточно проверить наличие подстроки Hatch в ключе текущей локации
             choice = 0
-            while choice not in ['Yes', 'yes', 'No', 'no']:
+            while choice not in ['Yes', 'yes', 'No', 'no']:  # todo приведите ответ к нижнему регистру специальным
+                # методом и вариантов для проверки станет в два раза меньше (а ведь пользователь может ещё ввести YES
+                # или yES если запутается с капслоком
                 print(
                     f"{Fore.YELLOW}You've found a hatch! You can see the light coming out from the other side and you "
                     f"fresh "
                     f"air blowing into your face!\n Should you try to open it up? Do you think you are powerful "
                     f"enough? \nYes/No{Style.RESET_ALL}")
                 choice = input()
-            if choice == 'Yes' or choice == 'yes':
+            if choice == 'Yes' or choice == 'yes':  # todo вариант выше, со списком, лучше
                 if self.current_exp < 280:
                     print(f'{Fore.LIGHTRED_EX}You are trying to open up the hatch and finally get out from '
                           f'this dungeon. However, you '
@@ -340,7 +346,7 @@ class Game:
                           f'Congratulations!{Style.RESET_ALL}')
                     self.write_results()
                     sys.exit()
-            elif choice == 'No' or choice == 'no':
+            elif choice == 'No' or choice == 'no':  # todo аналогично
                 print(f'{Fore.YELLOW}You decided to keep the hatch closed and stay in the dungeon forever... '
                       f'(Why Would you choose '
                       f'it?){Style.RESET_ALL}')
