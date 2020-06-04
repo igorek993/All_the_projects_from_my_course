@@ -105,6 +105,8 @@ from collections import defaultdict
 
 from colorama import Fore, Style
 
+from lesson_015 import prints
+
 field_names = ['current_location', 'current_experience', 'current_date']
 
 
@@ -183,7 +185,8 @@ class Game:
         while not choice == '1' or not choice == '2':
             print(
                 f'Would you like to fight another monster or make your way deeper into the dungeon?\n1. I am ready '
-                f'for another fight\n2. Move forward')  # maybe you missed an article "an" before "another fight"?
+                f'for another fight\n2. Move forward')  # I think you should not use any article before the word
+            # "anther" it has an article included into it :) look at the first letter "a"nother of this word!
             choice = input()
             if choice == '1':
                 return
@@ -281,75 +284,33 @@ class Game:
 
     def game_end_check(self, option='option'):
         if option == 'end':
-            # todo Очень большой метод и много повторяющегося кода. Сохраните строковые константы в отдельном файле, а
-            #  для вывода их с форматированием используйте дополнительный метод, который будет вставлять подсветку и
-            #  вызывать два метода (или может быть только один из них) всегда идущие после print(<message>)
-            print(
-                f'\n{Fore.LIGHTRED_EX}You got to a point where you can not find any other entrance and there is no way '
-                f'back because \nall '
-                f'the other dungeons have already been flooded. You start feeling the breath of death slowly\n'
-                f'approaching towards your feet, you close your eyes trying to anticipate the amount of time left\n'
-                f'for you before you will not be able to breathe ever again... \nHold on! What is it? Is it some'
-                f'kind of miracle? For some mysterious reason you open your eyes and see \nthe same dungeon entrance,'
-                f'again! You slowly walk into this dungeon and hear water filling up the first room again... \n'
-                f'it is time to keep going if you do not wanna end up like the last time!{Style.RESET_ALL}\n')
+            print(prints.DEAD_END_PRINT)
             self.write_results()
             self.reset_stat()
             return True
         elif float(self.REMAINING_TIME) < 0:
-            print(
-                f"{Fore.LIGHTRED_EX}It seems like you have been awake for so long that you can't move on and you have "
-                f"to rest\n "
-                f"for a while, you put your head on the ground and close your eyes. While sleeping, you realise\n that "
-                f"there is too much water coming out of everywhere so you get up, try to escape this room\n but it's "
-                f"too late now and the water is getting closer and closer to your neck.\n You close your eyes for the "
-                f"last time thinking of everything you could have done if you did not get into this dungeon..."
-                f"\nHold on! What is it? Is it some"
-                f"kind of miracle? For some mysterious reason you open your eyes and see \nthe same dungeon entrance,"
-                f"again! You slowly walk into this dungeon and hear water filling up the first room again... \n"
-                f"it is time to keep going if you do not wanna end up like the last time!\n{Style.RESET_ALL}")
+            print(prints.NO_TIME_PRINT)
             self.write_results()
             self.reset_stat()
             return True
-        elif 'Hatch_tm159.098765432' == self.current_dungeon:  # todo Не стоит хардкодить целиком ключ локации, так как
-            # числа в ней могут поменяться, достаточно проверить наличие подстроки Hatch в ключе текущей локации
-            choice = 0
-            while choice not in ['Yes', 'yes', 'No', 'no']:  # todo приведите ответ к нижнему регистру специальным
-                # методом и вариантов для проверки станет в два раза меньше (а ведь пользователь может ещё ввести YES
-                # или yES если запутается с капслоком
-                print(
-                    f"{Fore.YELLOW}You've found a hatch! You can see the light coming out from the other side and you "
-                    f"fresh "
-                    f"air blowing into your face!\n Should you try to open it up? Do you think you are powerful "
-                    f"enough? \nYes/No{Style.RESET_ALL}")
-                choice = input()
-            if choice == 'Yes' or choice == 'yes':  # todo вариант выше, со списком, лучше
+        elif 'Hatch' in self.current_dungeon:
+            choice = 'None'
+            possible_choices = ['yes', 'no']
+            while choice not in possible_choices:
+                print(prints.HATCH_FOUND_PRINT)
+                choice = str(input()).lower()
+            if choice == possible_choices[0]:
                 if self.current_exp < 280:
-                    print(f'{Fore.LIGHTRED_EX}You are trying to open up the hatch and finally get out from '
-                          f'this dungeon. However, you '
-                          f'feel that you did not gain enough power and experience during this\n journey so you can not '
-                          f'lift the lid, it is too heavy for you! You start feeling the breath of death slowly\n'
-                          f'approaching towards your feet, you close your eyes trying to anticipate the amount of '
-                          f'time left\n '
-                          f'for you before you will not be able to breathe ever again... \nHold on! What is it? Is it '
-                          f'some '
-                          f'kind of miracle? For some mysterious reason you open your eyes and see \nthe same dungeon '
-                          f'entrance, '
-                          f'again! You slowly walk into this dungeon and hear water filling up the first room '
-                          f'again... \n '
-                          f'it is time to keep going if you do not wanna end up like the last time!{Style.RESET_ALL}\n')
+                    print(prints.TRY_OPEN_HATCH_PRINT)
                     self.write_results()
                     self.reset_stat()
                     return True
                 elif self.current_exp >= 280:
-                    print(f'{Fore.YELLOW}You managed to open up the hatch and get out from this dungeon! '
-                          f'Congratulations!{Style.RESET_ALL}')
+                    print(prints.END_GAME_PRINT)
                     self.write_results()
                     sys.exit()
-            elif choice == 'No' or choice == 'no':  # todo аналогично
-                print(f'{Fore.YELLOW}You decided to keep the hatch closed and stay in the dungeon forever... '
-                      f'(Why Would you choose '
-                      f'it?){Style.RESET_ALL}')
+            elif choice == possible_choices[1]:
+                print(prints.CLOSE_HATCH_CHOICE)
                 self.write_results()
                 sys.exit()
 
