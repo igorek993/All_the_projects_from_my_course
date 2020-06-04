@@ -80,7 +80,8 @@ class Bot:
             text_to_send = self.continue_scenario(user_id, text=text)
         else:
             for intent in settings.INTENTS:
-                if any(token in text for token in intent['tokens']):
+                log.debug(f"User gets {intent}")
+                if any(token in text.lower() for token in intent['tokens']):
                     if intent['answer']:
                         text_to_send = intent['answer']
                     else:
@@ -106,8 +107,7 @@ class Bot:
         step = settings.SCENARIOS[state.scenario_name]['steps'][state.step_name]
         steps = settings.SCENARIOS[state.scenario_name]['steps']
 
-        handler = getattr(handlers, step['handler'])  # Todo Выглядит всё нормально, возможно в settings.SCENARIOS
-        # что-то не так, внесите эту структуру в settings.py.default, пожалуйста (и остальные несекретные настройки)
+        handler = getattr(handlers, step['handler'])
         if handler(text=text, context=state.context):
             # next step
             next_step = steps[step['next_step']]
@@ -117,7 +117,8 @@ class Bot:
                 state.step_name = step['next_step']
             else:
                 # scenario finished
-                self.user_state.pop(user_id)
+                log.info(state.context)
+                self.user_state.pop("Registered: {name} {email}".format(**state.context))
         else:
             # repeat current step
             text_to_send = step['failure_text'].format(**state.context)
