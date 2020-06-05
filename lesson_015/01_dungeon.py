@@ -342,3 +342,5 @@ class Game:
 test = Game()
 
 test.run()
+
+# зачет!
