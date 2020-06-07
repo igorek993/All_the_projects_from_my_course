@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # coding=utf8
 import logging
-
-import vk_api
-from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 import random
 
 import handlers
+import vk_api
+from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 try:
     import settings
