@@ -13,21 +13,40 @@ from chatbot import settings
 
 
 class Test1(TestCase):
-    RAW_EVENT = {'type': 'message_new', 'object': {'message': {'date': 1589458882, 'from_id': 595122526, 'id': 127,
-                                                               'out': 0, 'peer_id': 595122526, 'text': 'm,ss',
-                                                               'conversation_message_id': 120, 'fwd_messages': [],
-                                                               'important': False, 'random_id': 0, 'attachments': [],
-                                                               'is_hidden': False},
-                                                   'client_info': {
-                                                       'button_actions': ['text', 'vkpay', 'open_app', 'location',
-                                                                          'open_link'],
-                                                       'keyboard': True, 'inline_keyboard': True, 'lang_id': 0}},
-                 'group_id': 194838302, 'event_id':
-                     '79e76d0f4e17e827dc0f67344f67d6f9c60455b0'}
+    RAW_EVENT = {
+        'type': 'message_new',
+        'object': {
+            'message': {
+                'date': 1589458882,
+                'from_id': 595122526,
+                'id': 127,
+                'out': 0,
+                'peer_id': 595122526,
+                'text': 'm,ss',
+                'conversation_message_id': 120,
+                'fwd_messages': [],
+                'important': False,
+                'random_id': 0,
+                'attachments': [],
+                'is_hidden': False
+            },
+            'client_info': {
+                'button_actions': [
+                    'text', 'vkpay', 'open_app', 'location', 'open_link'
+                ],
+                'keyboard': True,
+                'inline_keyboard': True,
+                'lang_id': 0
+            }
+        },
+        'group_id': 194838302,
+        'event_id':
+        '79e76d0f4e17e827dc0f67344f67d6f9c60455b0'
+    }
 
     def test_ok(self):
         count = 5
-        events = [{}] * count
+        events = [{'a': 1}] * count
         long_poller_mock = Mock(return_value=events)
         long_poller_listen_mock = Mock()
         long_poller_listen_mock.listen = long_poller_mock
@@ -70,7 +89,8 @@ class Test1(TestCase):
         events = []
         for input_text in self.INPUTS:
             event = deepcopy(self.RAW_EVENT)
-            event['text'] = input_text
+            event['text'] = input_text  # todo Это верно? Возможно вернее так:
+            # event['object']['message']['text'] = input_text
             events.append(VkBotMessageEvent(event))
 
         long_poller_mock = Mock()
