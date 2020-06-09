@@ -117,9 +117,8 @@ class Bot:
             else:
                 # scenario finished
                 log.info(state.context)
-                self.user_state.pop("Registered: {name} {email}".format(**state.context))
-                # todo Уверены что такой ключ существует в self.user_state? Не так ли должно быть:
-                # self.user_state.pop(user_id) ??
+                print(self.user_state)
+                self.user_state.pop(user_id)
         else:
             # repeat current step
             text_to_send = step['failure_text'].format(**state.context)

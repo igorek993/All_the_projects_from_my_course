@@ -41,7 +41,7 @@ class Test1(TestCase):
         },
         'group_id': 194838302,
         'event_id':
-        '79e76d0f4e17e827dc0f67344f67d6f9c60455b0'
+            '79e76d0f4e17e827dc0f67344f67d6f9c60455b0'
     }
 
     def test_ok(self):
@@ -89,8 +89,7 @@ class Test1(TestCase):
         events = []
         for input_text in self.INPUTS:
             event = deepcopy(self.RAW_EVENT)
-            event['text'] = input_text  # todo Это верно? Возможно вернее так:
-            # event['object']['message']['text'] = input_text
+            event['object']['message']['text'] = input_text
             events.append(VkBotMessageEvent(event))
 
         long_poller_mock = Mock()
