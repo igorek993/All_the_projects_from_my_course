@@ -129,3 +129,5 @@ if __name__ == '__main__':
     configure_logging()
     bot = Bot(settings.GROUP_ID, settings.TOKEN)
     bot.run()
+
+# зачет!
