@@ -32,7 +32,7 @@ class ExternalResourceGetterTest(unittest.TestCase):
         fake_result.text = _test_data
         fake_get_result = Mock(return_value=fake_result)
         handling_external_data.requests.get = fake_get_result
-        result = getter.run()
+        result = getter.get_data()
         self.assertEqual(result, 9)
 
 
