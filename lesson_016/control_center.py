@@ -67,22 +67,35 @@ class ControlPanel(DatabaseUpdater, WeatherMaker):
         self.final_date = None
         self.dates_range = None
 
+    def create_dates_range(self):
+        self.ask_dete_range()
+        self.dates_range = self.get_dates_range(Weather, self.dates_range)
+
+    def print_weather_forecast(self):
+        for day in Weather.select():
+            year, month, c_day = day.date.split("-")
+            date = datetime.date(int(year), int(month), int(c_day))
+            if date in self.dates_range:
+                print(f"_____________________\nDate: {day.date}\nMin temp: {day.min_temperature}\nMax temp: "
+                      f"{day.max_temperature}\nWeather type: {day.weather_type}\n_____________________")
+
     def menu(self):
         while True:
             print(f"Options:\n1)Add weather forecast for a date range into the database\n"
-                  f"2)Get weather forecast for a date range from the database\n")
+                  f"2)Get a dates range from the database\n")
             choice = input()
             if choice == "1":
                 self.add_date_range()
             elif choice == "2":
-                self.ask_dete_range()
+                self.create_dates_range()
                 print(
                     f"Options:\n1)Create post-cards for this date range\n2)Print weather forecast for this date range")
                 choice = input()
                 if choice == "1":
                     pass
                 elif choice == "2":
-                    pass
+                    self.print_weather_forecast()
+                    self.reset_dates_range()
 
 
 test = ControlPanel()

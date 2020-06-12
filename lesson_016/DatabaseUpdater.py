@@ -47,4 +47,11 @@ class DatabaseUpdater:
             weather_type=data[key]["weather_type"]
         )
 
-    def
+    def get_dates_range(self, db_object, dates_range):
+        dates_to_return = list()
+        for date in db_object.select():
+            year, month, day = date.date.split("-")
+            day = datetime.date(int(year), int(month), int(day))
+            if day in dates_range:
+                dates_to_return.append(day)
+        return dates_range
