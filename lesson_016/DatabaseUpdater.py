@@ -20,37 +20,31 @@ import sqlite3
 import peewee
 from WeatherMaker import WeatherMaker
 
-db = peewee.SqliteDatabase('weather.db')
-
-weather = WeatherMaker()
-
-
-class BaseTable(peewee.Model):
-    class Meta:
-        database = db
-
-
-class Weather(BaseTable):
-    date = peewee.CharField()
-    max_temperature = peewee.CharField()
-    min_temperature = peewee.CharField()
-    weather_type = peewee.CharField()
-
-
-db.create_tables([Weather])
+import datetime
 
 
 class DatabaseUpdater:
 
-    def save_forecast(self, data):
+    def add_days(self, data, db_object, dates_range):
         for key in data.keys():
-            day = Weather.create(
-                date=key,
-                max_temperature=data[key]["max_temperature"],
-                min_temperature=data[key]["min_temperature"],
-                weather_type=data[key]["weather_type"]
-            )
+            if key in dates_range:
+                self.update_weather_db(data, db_object, key)
+        print("The database was updated!\n")
 
+    def initial_load(self, data, db_object):
+        counter = 0
+        for key in data.keys():
+            self.update_weather_db(data, db_object, key)
+            counter += 1
+            if counter == 5:
+                break
 
-test = DatabaseUpdater()
-test.save_forecast(data=weather.get_data())
+    def update_weather_db(self, data, db_object, key):
+        day = db_object.get_or_create(
+            date=key,
+            max_temperature=data[key]["max_temperature"],
+            min_temperature=data[key]["min_temperature"],
+            weather_type=data[key]["weather_type"]
+        )
+
+    def

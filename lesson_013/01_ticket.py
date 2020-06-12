@@ -56,17 +56,17 @@ def make_ticket(fio, from_, to, date, path=None):
     ticket.save(path) if path else ticket.save(SAVE_PATH)
 
 
-#
-# parser = argparse.ArgumentParser(description="Ticket filler")
-# parser.add_argument("-fio", "--name_surname", required=True)
-# parser.add_argument("-from_", "--country_of_origin", required=True)
-# parser.add_argument("-t", "--destination", required=True)
-# parser.add_argument("-d", "--date", required=True)
-# parser.add_argument("-p", "--path", help='save to')
-# args = parser.parse_args()
-# #
-# if __name__ == "__main__":
-#     make_ticket(args.name_surname, args.country_of_origin, args.destination, args.date, args.path)
+
+parser = argparse.ArgumentParser(description="Ticket filler")
+parser.add_argument("-fio", "--name_surname", required=True)
+parser.add_argument("-from_", "--country_of_origin", required=True)
+parser.add_argument("-t", "--destination", required=True)
+parser.add_argument("-d", "--date", required=True)
+parser.add_argument("-p", "--path", help='save to')
+args = parser.parse_args()
+
+if __name__ == "__main__":
+    make_ticket(args.name_surname, args.country_of_origin, args.destination, args.date, args.path)
 
 if __name__ == "__main__":
     make_ticket('Igor', 'Australia', 'Nowhere', 'Now')

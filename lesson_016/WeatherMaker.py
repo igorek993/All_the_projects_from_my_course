@@ -32,7 +32,7 @@ class WeatherMaker:
         for date in daytime:
             just_date = re.search(daytime_rg, str(date))
             current_date = datetime.datetime.strptime(just_date.group(), '%Y-%m-%d')
-            self.data[str(current_date.strftime("%d, %b %Y"))].update({})
+            self.data[current_date.date()].update({})
 
     def get_temperature(self):
         for temp, day, weather_type in zip(self.temperature_div, self.data, self.weather_type):
@@ -44,6 +44,3 @@ class WeatherMaker:
         self.get_datetime()
         self.get_temperature()
         return self.data
-
-
-# test = WeatherMaker()
