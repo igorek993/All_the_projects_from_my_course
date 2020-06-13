@@ -8,7 +8,6 @@ import cv2
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-
 # Добавить класс ImageMaker.
 # Снабдить его методом рисования открытки
 # (использовать OpenCV, в качестве заготовки брать lesson_016/python_snippets/external_data/probe.jpg):
@@ -66,14 +65,17 @@ class ImageMaker:
             cv2.line(img, (0, x), (512, x), (90 + x, 90 + x, 90 + x), 1)
         self.current_img = img
 
-    def put_weather_picture(self):
+    def put_weather_picture(self, weather_type):
         x_offset = y_offset = 50
-        self.draw_snow_gradient()
-        paste_img = cv2.imread(CLOUD_IMG)
+        if "clear" in weather_type:
+            paste_img = cv2.imread(SUN_IMG)
+        elif "cloudy" or "overcast" in weather_type:
+            paste_img = cv2.imread(CLOUD_IMG)
+        elif "rain" in weather_type:
+            paste_img = cv2.imread(RAIN_IMG)
+        elif "snow" in weather_type:
+            paste_img = cv2.imread(SNOW_IMG)
         self.current_img[y_offset:y_offset + paste_img.shape[0], x_offset:x_offset + paste_img.shape[1]] = paste_img
-        self.no_white_bg()
-        self.viewImage(self.current_img)
-        # self.put_text(date)
 
     def no_white_bg(self):
         for x in range(50, 150):
@@ -83,21 +85,28 @@ class ImageMaker:
                 if compare.all():
                     self.current_img[x, y] = current_color
 
-    def put_text(self, date):  # TODO I can't finish this method yet coz I dunno how I am gonna be passing data to it(
-        # may be a dict? or just a date?)
-        img_to_draw = ImageDraw.Draw(self.current_img)
-        y = 30
-        img_to_draw.text((300, y), date, fill=(1, 1, 1), font=self.font)
-        for key in self.weather_data[date].keys():
+    def put_text(self, date, min_temp, max_temp, weather_type):
+        prints = [date, min_temp, max_temp, weather_type]
+        labels = ["Date: ", "Min temperature: ", "Min temperature: ", "Weather: "]
+        y = 60
+        for text, label in zip(prints, labels):
+            self.current_img = cv2.putText(self.current_img, (label + text), (250, y), cv2.FONT_HERSHEY_TRIPLEX,
+                                           0.5, (0, 191, 255))
             y += 30
-            info = self.weather_data[date][key]
-            img_to_draw.text((300, y), f"{key}: {info}", fill=(1, 1, 1), font=self.font)
-        self.current_img.show()
 
-    def make_postcard(self, date, temperature, weather_type):
-        pass
+    def draw_necessary_gradient(self, weather_type):
+        if "clear" in weather_type:
+            self.draw_sunny_gradient()
+        elif "cloudy" in weather_type:
+            self.draw_cloudy_gradient()
+        elif "rain" in weather_type:
+            self.draw_rainy_gradient()
+        elif "snow" in weather_type:
+            self.draw_snow_gradient()
 
-
-test2 = ImageMaker()
-# test2.put_weather_picture("2020-06-09")
-test2.put_weather_picture()
+    def make_postcard(self, date, min_temp, max_temp, weather_type):
+        self.draw_necessary_gradient(weather_type)
+        self.put_weather_picture(weather_type)
+        self.no_white_bg()
+        self.put_text(date, min_temp, max_temp, weather_type)
+        cv2.imwrite(POST_CARDS_FOLDER+date+".jpg", self.current_img)
