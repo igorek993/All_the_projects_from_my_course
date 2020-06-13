@@ -45,10 +45,6 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
         self.dates_range = "None"
 
     def find_dates_range(self):
-        day, month, year = str(self.initial_date).split(".")
-        self.initial_date = datetime.date(year=int(year), day=int(day), month=int(month))
-        day, month, year = str(self.final_date).split(".")
-        self.final_date = datetime.date(year=int(year), day=int(day), month=int(month))
         self.dates_range = [self.initial_date + datetime.timedelta(days=x) for x in
                             range(0, (self.final_date - self.initial_date).days + 1)]
 
@@ -62,16 +58,36 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
             self.initial_date = input()
             print(f"Final date: (format D/M/Y, e.g. 30.06.2020)")
             self.final_date = input()
+            if self.check_dates_range():
+                break
         self.find_dates_range()
 
+    def dates_str_to_daytime(self):
+        day, month, year = str(self.initial_date).split(".")
+        self.initial_date = datetime.date(year=int(year), day=int(day), month=int(month))
+        day, month, year = str(self.final_date).split(".")
+        self.final_date = datetime.date(year=int(year), day=int(day), month=int(month))
+
+    def check_dates_range(self):
+        self.dates_str_to_daytime()
+        if self.initial_date < list(self.data.keys())[1] or self.final_date > list(self.data.keys())[-1]:
+            print("These dates are not available!")
+            self.reset_dates_range()
+        else:
+            return True
+
     def create_post_card(self):
+        printed = False
         for day in Weather.select():
             year, month, c_day = day.date.split("-")
             date = datetime.date(int(year), int(month), int(c_day))
             date_to_print = f"{c_day}-{month}-{year}"
             if date in self.dates_range:
+                printed = True
                 self.make_postcard(date_to_print, day.min_temperature, day.max_temperature,
                                    day.weather_type.lower())
+        if not printed:
+            print("Dates are out of range or you haven't updated the database!\n")
 
     def add_date_range(self):
         self.ask_date_range()
@@ -88,13 +104,17 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
         self.dates_range = self.get_dates_range(Weather, self.dates_range)
 
     def print_weather_forecast(self):
+        printed = False
         for day in Weather.select():
             year, month, c_day = day.date.split("-")
             date = datetime.date(int(year), int(month), int(c_day))
             if date in self.dates_range:
+                printed = True
                 print(
                     f"_____________________\nDate: {date.strftime('%d.%m.%Y')}\nMin temp: {day.min_temperature}\nMax "
                     f"temp: {day.max_temperature}\nWeather type: {day.weather_type}\n_____________________")
+        if not printed:
+            print("Dates are out of range or you haven't updated the database!")
 
     def menu(self):
         while True:
