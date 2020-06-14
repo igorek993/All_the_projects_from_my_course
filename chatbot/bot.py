@@ -5,7 +5,9 @@ import random
 
 import handlers
 import vk_api
+from pony.orm import db_session
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
+from chatbot.models import UserState
 
 try:
     import settings
@@ -28,13 +30,6 @@ def configure_logging():
     log.setLevel(logging.DEBUG)
 
 
-class UserSate:
-    def __init__(self, scenario_name, step_name, context=None):
-        self.scenario_name = scenario_name
-        self.step_name = step_name
-        self.context = context or {}
-
-
 class Bot:
     """
     Echo bot for vk.com
@@ -51,7 +46,6 @@ class Bot:
         self.vk = vk_api.VkApi(token=token)
         self.long_poller = VkBotLongPoll(vk=self.vk, group_id=self.group_id)
         self.api = self.vk.get_api()
-        self.user_state = dict()  # user_id → UserState
 
     def run(self):
         """
@@ -63,6 +57,7 @@ class Bot:
             except Exception:
                 log.exception('error while processing the event')
 
+    @db_session
     def on_event(self, event):
         """
         sends a text message back to the user
@@ -75,8 +70,10 @@ class Bot:
 
         user_id = event.object['message']['peer_id']
         text = event.object['message']['text']
-        if user_id in self.user_state:
-            text_to_send = self.continue_scenario(user_id, text=text)
+        state = UserState.get(user_id=str(user_id))
+
+        if state is not None:
+            text_to_send = self.continue_scenario(text, state)
         else:
             for intent in settings.INTENTS:
                 log.debug(f"User gets {intent}")
@@ -98,11 +95,10 @@ class Bot:
         first_step = scenario['first_step']
         step = scenario['steps'][first_step]
         text_to_send = step['text']
-        self.user_state[user_id] = UserSate(scenario_name=scenario_name, step_name=first_step)
+        UserState(user_id=str(user_id), scenario_name=scenario_name, step_name=first_step, context={})
         return text_to_send
 
-    def continue_scenario(self, user_id, text):
-        state = self.user_state[user_id]
+    def continue_scenario(self, text, state):
         step = settings.SCENARIOS[state.scenario_name]['steps'][state.step_name]
         steps = settings.SCENARIOS[state.scenario_name]['steps']
 
@@ -117,8 +113,7 @@ class Bot:
             else:
                 # scenario finished
                 log.info(state.context)
-                print(self.user_state)
-                self.user_state.pop(user_id)
+                state.delete()
         else:
             # repeat current step
             text_to_send = step['failure_text'].format(**state.context)
@@ -129,5 +124,3 @@ if __name__ == '__main__':
     configure_logging()
     bot = Bot(settings.GROUP_ID, settings.TOKEN)
     bot.run()
-
-# зачет!
