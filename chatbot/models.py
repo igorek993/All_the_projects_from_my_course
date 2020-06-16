@@ -15,4 +15,10 @@ class UserState(db.Entity):
     context = Required(Json)
 
 
+class Registration(db.Entity):
+    """Application for registration"""
+    name = Required(str)
+    email = Required(str)
+
+
 db.generate_mapping(create_tables=True)

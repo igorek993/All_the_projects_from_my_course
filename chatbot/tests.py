@@ -7,9 +7,20 @@ from unittest import TestCase
 from unittest.mock import patch, Mock, ANY
 
 from bot import Bot
+from pony.orm import db_session, rollback
 from vk_api.bot_longpoll import VkBotMessageEvent, VkBotEvent
 
 from chatbot import settings
+from chatbot.generate_ticket import generate_ticket
+
+
+def isolate_db(test_func):
+    def wrapper(*args, **kwargs):
+        with db_session:
+            test_func(*args, **kwargs)
+            rollback()
+
+    return wrapper
 
 
 class Test1(TestCase):
@@ -44,6 +55,7 @@ class Test1(TestCase):
             '79e76d0f4e17e827dc0f67344f67d6f9c60455b0'
     }
 
+    @isolate_db
     def test_ok(self):
         count = 5
         events = [{'a': 1}] * count
@@ -107,3 +119,15 @@ class Test1(TestCase):
             args, kwargs = call
             real_outputs.append(kwargs["message"])
         assert real_outputs == self.EXPECTED_OUTPUTS
+
+    def test_image_generation(self):
+        with open("files\\test_avatar.png", "rb") as avatar_file:
+            avatar_mock = Mock()
+            avatar_mock.content = avatar_file.read()
+
+        with patch("requests.get", return_value=avatar_mock):
+            ticket_file = generate_ticket("fdaga", "fgdsag")
+
+        with open("files\\ticket-example.png", "rb") as expected_file:
+            expected_bytes = expected_file.read()
+        assert ticket_file.read() == expected_bytes
