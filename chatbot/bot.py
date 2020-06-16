@@ -95,6 +95,8 @@ class Bot:
     def send_image(self, image, user_id):
         upload_url = self.api.photos.getMessagesUploadServer()["upload_url"]
         response = requests.post(url=upload_url, files={"photo": image})
+        # todo для отправки файлов принято использовать self.api = self.vk.get_api() примерно так:
+        # self.api.messages.send(attachment=attachment,....)
         print(response)
 
     def send_step(self, step, user_id, text, context):
