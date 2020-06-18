@@ -32,6 +32,7 @@ class Weather(BaseTable):
 
 
 db.create_tables([Weather])
+# TODO Создайте модуль models.py и высите в него все классы моделей таблиц
 
 
 class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
@@ -137,3 +138,5 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
 
 test = ControlPanel()
 test.menu()
+
+# TODO Указал получить погоду за период с 18 по 21 июня, а в базу записались результаты за 14 - 18

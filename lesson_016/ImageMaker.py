@@ -26,6 +26,8 @@ SNOW_IMG = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\python_snipp
 CLOUD_IMG = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\python_snippets\external_data\weather_img\clouds.png"
 BLANK_SHEET = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\python_snippets\external_data\probe.jpg"
 POST_CARDS_FOLDER = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\post_cards\\"
+# TODO У каждого участника проекта свои собственные уникальные абсолютные пути к папке проекта, поэтому надо
+#  использовать только относительные пути внутри проекта
 
 
 class ImageMaker:
@@ -33,6 +35,7 @@ class ImageMaker:
     def __init__(self):
         self.current_img = None
         self.font = ImageFont.truetype("Samble_Tracie_Bold.ttf", 20)
+        # todo файл шрифта тоже должен быть "константой"
         # self.weather_data = weather_data
 
     def viewImage(self, image):
