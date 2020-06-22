@@ -48,8 +48,7 @@ class Bot:
         self.long_poller = VkBotLongPoll(vk=self.vk, group_id=self.group_id)
         self.api = self.vk.get_api()
 
-
-def run(self):
+    def run(self):
         """
         Start the bot
         """

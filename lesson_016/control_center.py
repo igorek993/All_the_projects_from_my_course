@@ -32,22 +32,25 @@ class Weather(BaseTable):
 
 
 db.create_tables([Weather])
-# TODO Создайте модуль models.py и высите в него все классы моделей таблиц
+# TODO Создайте модуль models.py и вынесите в него все классы моделей таблиц
 
 
 class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
+    # todo множественное наследование не простая тема, пока обойдиетсь без него - создате нужные объекты и присвойте
+    #  их атрибутам
 
     def __init__(self):
         super().__init__()
         self.data = self.get_data()
         self.initial_load(self.data, Weather)
-        self.initial_date = "None"
+        self.initial_date = "None"  # todo лучше использовать либо пустую строку ('') либо cобственно None
         self.final_date = "None"
         self.dates_range = "None"
 
     def find_dates_range(self):
         self.dates_range = [self.initial_date + datetime.timedelta(days=x) for x in
                             range(0, (self.final_date - self.initial_date).days + 1)]
+        # todo вы создаёте список [self.initial_date, self.final_date] таким громоздким способом?
 
     def ask_date_range(self):
         while not (re.search(DATE_REG, str(self.initial_date)) and re.search(DATE_REG, str(self.final_date))):

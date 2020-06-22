@@ -26,7 +26,7 @@ import datetime
 class DatabaseUpdater:
 
     def add_days(self, data, db_object, dates_range):
-        for key in data.keys():
+        for key in data.keys(): # todo проще итерировать по dates_range, тогда не нужен будет if и лишние итерации
             if key in dates_range:
                 self.update_weather_db(data, db_object, key)
         print("The database was updated!\n")
