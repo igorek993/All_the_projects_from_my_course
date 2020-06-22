@@ -67,7 +67,7 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
         self.find_dates_range()
 
     def dates_str_to_daytime(self):
-        day, month, year = str(self.initial_date).split(".")
+        day, month, year = str(self.initial_date).split(".")  # todo datetime.strptime(self.initial_date, '%d.%m.%Y')
         self.initial_date = datetime.date(year=int(year), day=int(day), month=int(month))
         day, month, year = str(self.final_date).split(".")
         self.final_date = datetime.date(year=int(year), day=int(day), month=int(month))
