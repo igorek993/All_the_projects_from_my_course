@@ -26,8 +26,12 @@ import datetime
 class DatabaseUpdater:
 
     def add_days(self, data, db_object, dates_range):
-        for key in data.keys(): # todo проще итерировать по dates_range, тогда не нужен будет if и лишние итерации
-            if key in dates_range:
+        for key in data.keys():  # todo I do not really think I could do it because it's a preloaded dict
+            # (so I do not have to ping yandex every x seconds) that sits
+            # in the system from the very beginning and has all the data in it. The dates_range is just
+            # like an indicator for the data that should be extracted from it. It does not actually gets it from
+            # the server every time you ask for it. Please, correct me if I am wrong. I would like to be wrong here :)
+            if dates_range[0] <= key <= dates_range[1]:
                 self.update_weather_db(data, db_object, key)
         print("The database was updated!\n")
 

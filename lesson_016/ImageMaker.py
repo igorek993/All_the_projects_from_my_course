@@ -20,23 +20,18 @@ from PIL import Image, ImageDraw, ImageFont
 # Снег - от голубого к белому
 # Облачно - от серого к белому
 
-SUN_IMG = 'C:\\Users\igorek\PycharmProjects\python_base\lesson_016\python_snippets\external_data\weather_img\sun.jpg'
-RAIN_IMG = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\python_snippets\external_data\weather_img\\rain.jpg"
-SNOW_IMG = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\python_snippets\external_data\weather_img\snow.jpg"
-CLOUD_IMG = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\python_snippets\external_data\weather_img\clouds.png"
-BLANK_SHEET = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\python_snippets\external_data\probe.jpg"
-POST_CARDS_FOLDER = "C:\\Users\igorek\PycharmProjects\python_base\lesson_016\post_cards\\"
-# TODO У каждого участника проекта свои собственные уникальные абсолютные пути к папке проекта, поэтому надо
-#  использовать только относительные пути внутри проекта
+SUN_IMG = 'python_snippets\external_data\weather_img\sun.jpg'
+RAIN_IMG = "python_snippets\external_data\weather_img\\rain.jpg"
+SNOW_IMG = "python_snippets\external_data\weather_img\snow.jpg"
+CLOUD_IMG = "python_snippets\external_data\weather_img\clouds.png"
+BLANK_SHEET = "python_snippets\external_data\probe.jpg"
+POST_CARDS_FOLDER = "post_cards\\"
 
 
 class ImageMaker:
 
     def __init__(self):
         self.current_img = None
-        self.font = ImageFont.truetype("Samble_Tracie_Bold.ttf", 20)
-        # todo файл шрифта тоже должен быть "константой"
-        # self.weather_data = weather_data
 
     def viewImage(self, image):
         cv2.namedWindow("window", cv2.WINDOW_NORMAL)
@@ -112,4 +107,4 @@ class ImageMaker:
         self.put_weather_picture(weather_type)
         self.no_white_bg()
         self.put_text(date, min_temp, max_temp, weather_type)
-        cv2.imwrite(POST_CARDS_FOLDER+date+".jpg", self.current_img)
+        cv2.imwrite(POST_CARDS_FOLDER + date + ".jpg", self.current_img)

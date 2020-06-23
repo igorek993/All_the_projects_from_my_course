@@ -94,10 +94,12 @@ class Bot:
 
     def send_image(self, image, user_id):
         upload_url = self.api.photos.getMessagesUploadServer()["upload_url"]
-        response = self.api.messages.send(message="Test", upload_url=upload_url, attachment={"photo": image},
-                                          random_id=random.randint(0, 2 ** 20), peer_id=user_id)
-        # response = requests.post(url=upload_url, files={"photo": image})
+        print(upload_url)
+        # response = self.api.messages.send(message="Test", upload_url=upload_url, attachment={"photo": image},
+        #                                   random_id=random.randint(0, 2 ** 20), peer_id=user_id)
+        response = requests.post(url=upload_url, files={'photo': ('image.png', image, 'image/png')})
         print(response)
+
     # todo Та команда, что я показывал должна идти последней во всей процедуре публикации картинки.
     #  После получения урла сервера для загрузки файлов (у вас всё верно), загружаем файл по полученному урлу сервера
     #  с помощью requests методом POST файл. Попробуйте указать данные о файле в виде кортежа:

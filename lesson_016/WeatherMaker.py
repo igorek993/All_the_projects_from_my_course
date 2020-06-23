@@ -16,13 +16,13 @@ from cv2.cv2 import FONT_HERSHEY_PLAIN
 
 daytime_rg = re.compile(r"\d{4}-\d{2}-\d{2}")
 temperature_rg = re.compile(r"\>[-+]\d{1,2}")
+YANDEX_URL = "https://yandex.com/weather/21265?via=srp"
 
 
 class WeatherMaker:
 
     def __init__(self):
-        self.html = requests.get('https://yandex.com/weather/21265?via=srp').text
-        # TODO Урлы тоже надо делать константами
+        self.html = requests.get(YANDEX_URL).text
         self.soup = bs4.BeautifulSoup(self.html, 'html.parser')
         self.temperature_div = self.soup.find_all("div", class_="forecast-briefly__day")
         self.weather_type = self.soup.find_all("div", class_="forecast-briefly__condition")

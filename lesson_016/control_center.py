@@ -9,48 +9,32 @@
 # При старте консольная утилита должна загружать прогнозы за прошедшую неделю.
 import datetime
 import re
-import peewee
+import time
 
 from WeatherMaker import WeatherMaker
 from DatabaseUpdater import DatabaseUpdater
 from ImageMaker import ImageMaker
+from models import db, Weather
 
-db = peewee.SqliteDatabase('weather.db')
 DATE_REG = re.compile(r"\d\d\.\d\d\.\d{4}")
-
-
-class BaseTable(peewee.Model):
-    class Meta:
-        database = db
-
-
-class Weather(BaseTable):
-    date = peewee.CharField()
-    max_temperature = peewee.CharField()
-    min_temperature = peewee.CharField()
-    weather_type = peewee.CharField()
-
-
 db.create_tables([Weather])
-# TODO Создайте модуль models.py и вынесите в него все классы моделей таблиц
+
+data_acquire = WeatherMaker()
+post_card = ImageMaker()
+updater = DatabaseUpdater()
 
 
-class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
-    # todo множественное наследование не простая тема, пока обойдиетсь без него - создате нужные объекты и присвойте
-    #  их атрибутам
+class ControlPanel:
 
     def __init__(self):
         super().__init__()
-        self.data = self.get_data()
-        self.initial_load(self.data, Weather)
-        self.initial_date = "None"  # todo лучше использовать либо пустую строку ('') либо cобственно None
-        self.final_date = "None"
-        self.dates_range = "None"
+        self.data = data_acquire.get_data()
+        self.initial_date = ""
+        self.final_date = ""
+        self.dates_range = ""
 
     def find_dates_range(self):
-        self.dates_range = [self.initial_date + datetime.timedelta(days=x) for x in
-                            range(0, (self.final_date - self.initial_date).days + 1)]
-        # todo вы создаёте список [self.initial_date, self.final_date] таким громоздким способом?
+        self.dates_range = [self.initial_date, self.final_date]
 
     def ask_date_range(self):
         while not (re.search(DATE_REG, str(self.initial_date)) and re.search(DATE_REG, str(self.final_date))):
@@ -67,10 +51,10 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
         self.find_dates_range()
 
     def dates_str_to_daytime(self):
-        day, month, year = str(self.initial_date).split(".")  # todo datetime.strptime(self.initial_date, '%d.%m.%Y')
-        self.initial_date = datetime.date(year=int(year), day=int(day), month=int(month))
-        day, month, year = str(self.final_date).split(".")
-        self.final_date = datetime.date(year=int(year), day=int(day), month=int(month))
+        date = time.strptime(self.initial_date, '%d.%m.%Y')
+        self.initial_date = datetime.date(year=int(date[0]), day=int(date[2]), month=int(date[1]))
+        date = time.strptime(self.final_date, '%d.%m.%Y')
+        self.final_date = datetime.date(year=int(date[0]), day=int(date[2]), month=int(date[1]))
 
     def check_dates_range(self):
         self.dates_str_to_daytime()
@@ -86,16 +70,16 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
             year, month, c_day = day.date.split("-")
             date = datetime.date(int(year), int(month), int(c_day))
             date_to_print = f"{c_day}-{month}-{year}"
-            if date in self.dates_range:
+            if self.dates_range[0] <= date <= self.dates_range[1]:
                 printed = True
-                self.make_postcard(date_to_print, day.min_temperature, day.max_temperature,
-                                   day.weather_type.lower())
+                post_card.make_postcard(date_to_print, day.min_temperature, day.max_temperature,
+                                        day.weather_type.lower())
         if not printed:
             print("Dates are out of range or you haven't updated the database!\n")
 
     def add_date_range(self):
         self.ask_date_range()
-        self.add_days(self.data, Weather, self.dates_range)
+        updater.add_days(self.data, Weather, self.dates_range)
         self.reset_dates_range()
 
     def reset_dates_range(self):
@@ -105,14 +89,14 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
 
     def create_dates_range(self):
         self.ask_date_range()
-        self.dates_range = self.get_dates_range(Weather, self.dates_range)
+        self.dates_range = updater.get_dates_range(Weather, self.dates_range)
 
     def print_weather_forecast(self):
         printed = False
         for day in Weather.select():
             year, month, c_day = day.date.split("-")
             date = datetime.date(int(year), int(month), int(c_day))
-            if date in self.dates_range:
+            if self.dates_range[0] <= date <= self.dates_range[1]:
                 printed = True
                 print(
                     f"_____________________\nDate: {date.strftime('%d.%m.%Y')}\nMin temp: {day.min_temperature}\nMax "
@@ -121,6 +105,7 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
             print("Dates are out of range or you haven't updated the database!")
 
     def menu(self):
+        updater.initial_load(self.data, Weather)
         while True:
             print(f"Options:\n1)Add weather forecast for a date range into the database\n"
                   f"2)Get a dates range from the database\n")
@@ -141,5 +126,3 @@ class ControlPanel(DatabaseUpdater, WeatherMaker, ImageMaker):
 
 test = ControlPanel()
 test.menu()
-
-# TODO Указал получить погоду за период с 18 по 21 июня, а в базу записались результаты за 14 - 18
