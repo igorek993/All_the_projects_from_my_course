@@ -7,6 +7,7 @@ import bs4
 import cv2
 import requests
 from PIL import Image, ImageDraw, ImageFont
+# TODO Неиспользуйемые импорты надо убирать
 
 # Добавить класс ImageMaker.
 # Снабдить его методом рисования открытки
@@ -26,7 +27,7 @@ SNOW_IMG = "python_snippets\external_data\weather_img\snow.jpg"
 CLOUD_IMG = "python_snippets\external_data\weather_img\clouds.png"
 BLANK_SHEET = "python_snippets\external_data\probe.jpg"
 POST_CARDS_FOLDER = "post_cards\\"
-
+# TODO Используйте нормализацию путей к файлам, чтобы код не зависел от операционной системы os.path.normpath()
 
 class ImageMaker:
 
