@@ -7,7 +7,7 @@ import bs4
 import cv2
 import requests
 from PIL import Image, ImageDraw, ImageFont
-# TODO Неиспользуйемые импорты надо убирать
+# TODO Неиспользуемые импорты надо убирать
 
 # Добавить класс ImageMaker.
 # Снабдить его методом рисования открытки
