@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
-import datetime
-import re
-from collections import defaultdict
-
-import bs4
+import os
 import cv2
-import requests
-from PIL import Image, ImageDraw, ImageFont
-# TODO Неиспользуемые импорты надо убирать
 
 # Добавить класс ImageMaker.
 # Снабдить его методом рисования открытки
@@ -21,13 +14,13 @@ from PIL import Image, ImageDraw, ImageFont
 # Снег - от голубого к белому
 # Облачно - от серого к белому
 
-SUN_IMG = 'python_snippets\external_data\weather_img\sun.jpg'
-RAIN_IMG = "python_snippets\external_data\weather_img\\rain.jpg"
-SNOW_IMG = "python_snippets\external_data\weather_img\snow.jpg"
-CLOUD_IMG = "python_snippets\external_data\weather_img\clouds.png"
-BLANK_SHEET = "python_snippets\external_data\probe.jpg"
-POST_CARDS_FOLDER = "post_cards\\"
-# TODO Используйте нормализацию путей к файлам, чтобы код не зависел от операционной системы os.path.normpath()
+SUN_IMG = os.path.normpath('python_snippets\external_data\weather_img\sun.jpg')
+RAIN_IMG = os.path.normpath("python_snippets\external_data\weather_img\\rain.jpg")
+SNOW_IMG = os.path.normpath("python_snippets\external_data\weather_img\snow.jpg")
+CLOUD_IMG = os.path.normpath("python_snippets\external_data\weather_img\clouds.png")
+BLANK_SHEET = os.path.normpath("python_snippets\external_data\probe.jpg")
+POST_CARDS_FOLDER = os.path.normpath("post_cards\\")
+
 
 class ImageMaker:
 
@@ -108,4 +101,4 @@ class ImageMaker:
         self.put_weather_picture(weather_type)
         self.no_white_bg()
         self.put_text(date, min_temp, max_temp, weather_type)
-        cv2.imwrite(POST_CARDS_FOLDER + date + ".jpg", self.current_img)
+        cv2.imwrite(os.path.join(POST_CARDS_FOLDER, date + ".jpg"), self.current_img)

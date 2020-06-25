@@ -4,9 +4,7 @@ import re
 from collections import defaultdict
 
 import bs4
-import cv2
 import requests
-from PIL import Image, ImageDraw, ImageFont
 
 # Создать модуль-движок с классом WeatherMaker, необходимым для получения и формирования предсказаний.
 # В нём должен быть метод, получающий прогноз с выбранного вами сайта (парсинг + re) за некоторый диапазон дат,
