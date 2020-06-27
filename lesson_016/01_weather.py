@@ -46,3 +46,5 @@
 # Приконнектится по полученному url-пути к базе данных
 # Инициализировать её через DatabaseProxy()
 # https://peewee.readthedocs.io/en/latest/peewee/database.html#dynamically-defining-a-database
+
+# TODO Требуется формить скрипт в виде консольной утилиты
