@@ -56,7 +56,6 @@ def make_ticket(fio, from_, to, date, path=None):
     ticket.save(path) if path else ticket.save(SAVE_PATH)
 
 
-
 parser = argparse.ArgumentParser(description="Ticket filler")
 parser.add_argument("-fio", "--name_surname", required=True)
 parser.add_argument("-from_", "--country_of_origin", required=True)

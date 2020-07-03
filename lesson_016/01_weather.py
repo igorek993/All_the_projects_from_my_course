@@ -47,4 +47,29 @@
 # Инициализировать её через DatabaseProxy()
 # https://peewee.readthedocs.io/en/latest/peewee/database.html#dynamically-defining-a-database
 
-# TODO Требуется формить скрипт в виде консольной утилиты
+
+import argparse
+from control_center import ControlPanel
+from models import db, Weather
+
+program = ControlPanel()
+db.create_tables([Weather])
+
+parser = argparse.ArgumentParser(description="Weather")
+parser.add_argument("-a", "--add_to_database", required=False, action='store_true')
+parser.add_argument("-p", "--print_forecast", required=False, action='store_true')
+parser.add_argument("-c", "--create_postcards", required=False, action='store_true')
+args = parser.parse_args()
+
+if __name__ == "__main__":
+    program.update_data()
+    if args.add_to_database:
+        program.add_date_range()
+    elif args.print_forecast:
+        program.ask_date_range()
+        program.print_weather_forecast()
+        program.reset_dates_range()
+    elif args.create_postcards:
+        program.ask_date_range()
+        program.create_post_card()
+        program.reset_dates_range()

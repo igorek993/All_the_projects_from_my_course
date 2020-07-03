@@ -104,8 +104,11 @@ class ControlPanel:
         if not printed:
             print("Dates are out of range or you haven't updated the database!")
 
-    def menu(self):
+    def update_data(self):
         updater.initial_load(self.data, Weather)
+
+    def menu(self):
+        self.update_data()
         while True:
             print(f"Options:\n1)Add weather forecast for a date range into the database\n"
                   f"2)Get a dates range from the database\n")
@@ -124,5 +127,5 @@ class ControlPanel:
                     self.reset_dates_range()
 
 
-test = ControlPanel()
-test.menu()
+# test = ControlPanel()
+# test.menu()
