@@ -15,12 +15,6 @@
 # Инициализировать её через DatabaseProxy()
 # https://peewee.readthedocs.io/en/latest/peewee/database.html#dynamically-defining-a-database
 
-
-import sqlite3
-import peewee
-from WeatherMaker import WeatherMaker
-# TODO Неиспользуемые импорты надо удалять
-
 import datetime
 
 
