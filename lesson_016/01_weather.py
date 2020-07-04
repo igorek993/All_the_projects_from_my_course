@@ -73,3 +73,5 @@ if __name__ == "__main__":
         program.ask_date_range()
         program.create_post_card()
         program.reset_dates_range()
+
+# зачет!
