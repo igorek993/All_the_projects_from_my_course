@@ -67,6 +67,8 @@ class ImageMaker:
             paste_img = cv2.imread(RAIN_IMG)
         elif "snow" in weather_type:
             paste_img = cv2.imread(SNOW_IMG)
+        # todo Что будет если погода будет "sunny" или появится ещё вариант? Код упадёт, так как в следующей строке
+        #  переменная paste_img окажется не определённой
         self.current_img[y_offset:y_offset + paste_img.shape[0], x_offset:x_offset + paste_img.shape[1]] = paste_img
 
     def no_white_bg(self):

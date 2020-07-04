@@ -19,6 +19,7 @@
 import sqlite3
 import peewee
 from WeatherMaker import WeatherMaker
+# TODO Неиспользуемые импорты надо удалять
 
 import datetime
 
